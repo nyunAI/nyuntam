@@ -4,9 +4,11 @@ set_system_path()
 
 from factory import Factory
 from argparse import ArgumentParser
-import logging
+from utils.logger import set_logger
 
-# main.py is to be run as python main.py --yaml_path path/to/yaml  (or) python main.py --json_path path/to/json
+set_logger()
+
+import logging
 
 
 def get_args():
@@ -21,25 +23,39 @@ def get_args():
     return args
 
 
-if __name__ == "__main__":
+def main():
     args = get_args()
-    print("Args: ", args)
-    if args.yaml_path is None and args.json_path is None:
-        raise ValueError("No config file provided.")
+    config_path = args.yaml_path or args.json_path
 
-    if args.yaml_path is not None:
-        factory = Factory.create_from_yaml(args.yaml_path)
-    elif args.json_path is not None:
-        factory = Factory.create_from_json(args.json_path)
-    else:
-        raise ValueError("No config file provided.")
+    if config_path is None:
+        raise ValueError(
+            "No configuration file provided. Please specify either a YAML or JSON file."
+        )
 
-    if factory is None:
-        raise ValueError("Factory instance could not be created.")
+    try:
+        if args.yaml_path:
+            factory = Factory.create_from_yaml(args.yaml_path)
+        else:
+            factory = Factory.create_from_json(args.json_path)
 
-    logger = logging.getLogger(__name__)
-    logger.info(f"Running job: {factory}")
+    except Exception as e:
+        logging.exception(f"Failed to create Factory instance: {e}")
+        raise
+
+    assert factory is not None, "Factory instance could not be created."
+
+    logging.info(f"Running job with configuration: {factory.__class__.__name__}")
+
     try:
         factory.run()
+        logging.info("Job completed successfully.")
     except Exception as e:
-        logger.exception(f"Failed to run job: {e}")
+        logging.exception(f"Failed to run job: {e}")
+        raise
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        logging.critical(f"Critical failure in main execution: {e}")

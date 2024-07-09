@@ -5,7 +5,7 @@ from pathlib import Path
 LOG_FILE_NAME = "log.log"
 
 
-def set_logger(logging_path: Optional[Union[str, Path]]) -> None:
+def set_logger(logging_path: Optional[Union[str, Path]] = None) -> None:
     """Set the logger for the module. Clears all handlers defined by previous loggers.
     The logger will be saved to the specified logging directory (or file).
 

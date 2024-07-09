@@ -21,7 +21,6 @@ def set_system_path(*paths: Optional[Union[str, Path]]):
 
     paths_to_add: Set[Union[str, Path]] = set()
 
-
     # root
     paths_to_add.add(ROOT)
     for submodule, algorithm in SUBMODULES.items():

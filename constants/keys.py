@@ -12,15 +12,7 @@ class Tasks(StrEnum):
 
 class FactoryTypes(StrEnum):
     TEXT_GENERATION: Tasks = Tasks.TEXT_GENERATION
-    VISION: Tasks = Tasks.CLASSIFICATION # default
-
-    # def __new__(cls, value: Union[str, Tasks]) -> "FactoryTypes":
-    #     if isinstance(value, str):
-    #         try:
-    #             value = Tasks(value)
-    #         except ValueError:
-    #             pass
-    #     return super().__new__(cls, value)
+    VISION: Tasks = Tasks.CLASSIFICATION  # default
 
 
 class FactoryArgumentKeys(StrEnum):

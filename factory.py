@@ -4,12 +4,14 @@ from utils.logger import set_logger
 from algorithm import Algorithm
 
 from typing import Dict, Optional, Union, List
-from pathlib import Path
 from abc import abstractmethod
+from pathlib import Path
+import logging
 import json
 import yaml
 
 __all__ = ["Factory", "FactoryTypes", "register_factory"]
+logger = logging.getLogger(__name__)
 
 
 def get_factories(task: Union[str, FactoryTypes, Tasks]) -> List["Factory"]:
@@ -33,7 +35,7 @@ def get_factories(task: Union[str, FactoryTypes, Tasks]) -> List["Factory"]:
         cls = []
     else:
         raise ValueError(f"Unsupported task: {task}")
-    
+
     return cls
 
 
@@ -83,8 +85,9 @@ class Factory:
                 instance = caller(args)
                 return instance
             except Exception as e:
+                logger.exception(f"[{cls}] {e}")
                 continue
-        raise ValueError("Factory instance could not be created.")
+        raise Exception("Factory instance could not be created.")
 
     @classmethod
     def create_from_json(
