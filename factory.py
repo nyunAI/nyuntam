@@ -32,7 +32,9 @@ def get_factories(task: Union[str, FactoryTypes, Tasks]) -> List["Factory"]:
         cls = [TextGenerationFactory]
     elif task == FactoryTypes.VISION:
         # vision
-        cls = []
+        from vision.factory import CompressionFactory as VisionFactory
+
+        cls = [VisionFactory]
     else:
         raise ValueError(f"Unsupported task: {task}")
 
