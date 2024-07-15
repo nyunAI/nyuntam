@@ -4,11 +4,10 @@ import sys
 
 ROOT = Path(__file__).parent
 
-
 # SUBMODULES = {"submodule-name": {"submodule-algorithm": ["paths/to/add"]}}
 SUBMODULES: Dict[str, Dict[str, List[Union[str, Path]]]] = {
-    "text_generation": {},
-    "vision": {},
+    "text_generation": {"pruning": ["flap", "flap/nyuntam_adapt"]},
+    # "vision": {},
 }
 
 
@@ -23,6 +22,8 @@ def set_system_path(*paths: Optional[Union[str, Path]]):
 
     # root
     paths_to_add.add(ROOT)
+    paths_to_add.add(ROOT.parent)
+
     for submodule, algorithm in SUBMODULES.items():
         # submodules
         paths_to_add.add(ROOT / submodule)

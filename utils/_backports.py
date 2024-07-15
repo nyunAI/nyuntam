@@ -9,6 +9,7 @@ def _import_StrEnum():
             # installs strenum
             import subprocess
             import sys
+
             subprocess.check_call([sys.executable, "-m", "pip", "install", "strenum"])
             return _import_StrEnum()
     return StrEnum

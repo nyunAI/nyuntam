@@ -32,6 +32,7 @@ def set_logger(logging_path: Optional[Union[str, Path]] = None) -> None:
             format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
             datefmt="%m/%d/%Y %H-%M-%S",
             level=logging.INFO,
+            force=True,  # force the configuration over any existing configuration
         )
 
     else:
@@ -39,4 +40,5 @@ def set_logger(logging_path: Optional[Union[str, Path]] = None) -> None:
             format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
             datefmt="%m/%d/%Y %H-%M-%S",
             level=logging.INFO,
+            force=True,  # force the configuration over any existing configuration
         )
