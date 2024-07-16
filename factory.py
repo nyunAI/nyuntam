@@ -82,9 +82,14 @@ class Factory:
     def create_from_dict(cls, args: Dict) -> Optional[Union["Factory", None]]:
         """Create a Factory instance from a dictionary."""
         cls = get_factories(args.get(FactoryArgumentKeys.TASK))
+        task = args.get(FactoryArgumentKeys.TASK)
+        task: FactoryTypes = FactoryTypes(task)
         for caller in cls:
             try:
-                instance = caller(args)
+                if task == FactoryTypes.VISION:
+                    instance = caller(**args)
+                else:
+                    instance = caller(**args)
                 return instance
             except Exception as e:
                 logger.exception(f"[{cls}] {e}")
