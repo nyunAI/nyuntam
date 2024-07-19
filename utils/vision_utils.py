@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 def validate(val_loader, model, criterion, args):
     from trailmet.utils import accuracy, AverageMeter
     import torch
+
     logger = logging.getLogger(__name__)
     name = "_".join(
         [
@@ -56,19 +57,22 @@ def validate(val_loader, model, criterion, args):
                 " * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}".format(
                     top1=top1, top5=top5
                 )
-                
             )
-            
+
         logger.info(
             " * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}".format(top1=top1, top5=top5)
         )
-        print(" * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}".format(top1=top1, top5=top5))
+        print(
+            " * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}".format(top1=top1, top5=top5)
+        )
 
     return top1.avg, top5.avg
 
-def modify_head_classification(model, model_name,num_classes):
+
+def modify_head_classification(model, model_name, num_classes):
     import torch
     import torch.nn as nn
+
     layer_names = [name for name, _ in model.named_children()]
     if "head" in layer_names:
         nc = [i for i in model.head.named_children()]
@@ -87,7 +91,12 @@ def modify_head_classification(model, model_name,num_classes):
         )
     elif "vanillanet" in model_name:
         model.switch_to_deploy()
-        model.cls[2] = nn.Conv2d(model.cls[2].in_channels,num_classes,kernel_size =model.cls[2].kernel_size, stride = model.cls[2].stride )
+        model.cls[2] = nn.Conv2d(
+            model.cls[2].in_channels,
+            num_classes,
+            kernel_size=model.cls[2].kernel_size,
+            stride=model.cls[2].stride,
+        )
     else:
         raise ValueError(
             f"Not able to find the last fc layer from the layer list {layer_names}"
