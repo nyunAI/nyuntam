@@ -86,10 +86,7 @@ class Factory:
         task: FactoryTypes = FactoryTypes(task)
         for caller in cls:
             try:
-                if task == FactoryTypes.VISION:
-                    instance = caller(**args)
-                else:
-                    instance = caller(**args)
+                instance = caller(args)
                 return instance
             except Exception as e:
                 logger.exception(f"[{cls}] {e}")
@@ -109,7 +106,7 @@ class Factory:
 
         with open(path, "r") as f:
             args = json.load(f)
-
+        set_logger(logging_path=args['LOGGING_PATH'])
         return cls.create_from_dict(args)
 
     @classmethod
@@ -126,7 +123,7 @@ class Factory:
 
         with open(path, "r") as f:
             args = yaml.safe_load(f)
-
+        set_logger(logging_path=args['LOGGING_PATH'])
         return cls.create_from_dict(args)
 
     @property
