@@ -1,7 +1,6 @@
-from constants.keys import FactoryArgumentKeys
-from constants.keys import FactoryTypes, Tasks
-from utils.logger import set_logger
-from algorithm import Algorithm
+from nyuntam.constants.keys import FactoryTypes, Tasks, FactoryArgumentKeys
+from nyuntam.utils.logger import set_logger
+from nyuntam.algorithm import Algorithm
 
 from typing import Dict, Optional, Union, List
 from abc import abstractmethod

@@ -2,9 +2,9 @@ from settings import set_system_path
 
 set_system_path()
 
-from factory import Factory
+from nyuntam.factory import Factory
+from nyuntam.utils.logger import set_logger
 from argparse import ArgumentParser
-from utils.logger import set_logger
 
 set_logger()
 
