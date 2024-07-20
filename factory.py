@@ -31,7 +31,9 @@ def get_factories(task: Union[str, FactoryTypes, Tasks]) -> List["Factory"]:
         cls = [TextGenerationFactory]
     elif task == FactoryTypes.VISION:
         # vision
-        cls = []
+        from vision.factory import CompressionFactory as VisionFactory
+
+        cls = [VisionFactory]
     else:
         raise ValueError(f"Unsupported task: {task}")
 
@@ -79,6 +81,8 @@ class Factory:
     def create_from_dict(cls, args: Dict) -> Optional[Union["Factory", None]]:
         """Create a Factory instance from a dictionary."""
         cls = get_factories(args.get(FactoryArgumentKeys.TASK))
+        task = args.get(FactoryArgumentKeys.TASK)
+        task: FactoryTypes = FactoryTypes(task)
         for caller in cls:
             try:
                 instance = caller(args)
@@ -101,7 +105,6 @@ class Factory:
 
         with open(path, "r") as f:
             args = json.load(f)
-
         return cls.create_from_dict(args)
 
     @classmethod
@@ -118,7 +121,6 @@ class Factory:
 
         with open(path, "r") as f:
             args = yaml.safe_load(f)
-
         return cls.create_from_dict(args)
 
     @property

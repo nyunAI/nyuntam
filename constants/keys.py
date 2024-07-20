@@ -6,7 +6,7 @@ from enum import auto
 
 class Tasks(StrEnum):
     TEXT_GENERATION = "llm"
-    CLASSIFICATION = "classification"
+    CLASSIFICATION = "image_classification"
 
 
 class FactoryTypes(StrEnum):
