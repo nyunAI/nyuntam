@@ -4,14 +4,29 @@ from dataclasses import dataclass, field
 from enum import auto
 
 
-class Tasks(StrEnum):
+class JobServices(StrEnum):
+    ADAPT = "Adapt"
+    KOMPRESS = "Kompress"
+
+
+class KompressTasks(StrEnum):
     TEXT_GENERATION = "llm"
     CLASSIFICATION = "image_classification"
 
 
+class AdaptTasks(StrEnum):
+    TEXT_GENERATION = "text_generation"
+    TEXT_CLASSIFICATION = "text_classification"
+    SEQ_2_SEQ_TRANSLATION = "Seq2Seq_tasks"
+    SEQ_2_SEQ_SUMMARIZATION = "Seq2Seq_tasks"
+    QUESTION_ANSWERING = "question_answering"
+    IMAGE_CLASSIFICATION = "image_classification"
+
+
 class FactoryTypes(StrEnum):
-    TEXT_GENERATION: Tasks = Tasks.TEXT_GENERATION
-    VISION: Tasks = Tasks.CLASSIFICATION  # default
+    TEXT_GENERATION: KompressTasks = KompressTasks.TEXT_GENERATION
+    VISION: KompressTasks = KompressTasks.CLASSIFICATION  # default
+    ADAPT: JobServices = JobServices.ADAPT
 
 
 class FactoryArgumentKeys(StrEnum):
