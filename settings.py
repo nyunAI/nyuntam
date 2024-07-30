@@ -41,7 +41,6 @@ def set_system_path(*paths: Optional[Union[str, Path]]):
 
     # additional paths
     if paths:
-        print("PATHHHHHH", paths)
         paths_to_add.update(paths)
 
     for path in paths_to_add:

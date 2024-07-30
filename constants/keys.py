@@ -21,6 +21,9 @@ class AdaptTasks(StrEnum):
     SEQ_2_SEQ_SUMMARIZATION = "Seq2Seq_tasks"
     QUESTION_ANSWERING = "question_answering"
     IMAGE_CLASSIFICATION = "image_classification"
+    OBJECT_DETECTION = "object_detection"
+    IMAGE_SEGMENTATION = "image_segmentation"
+    POSE_ESTIMATION = "pose_estimation"
 
 
 class FactoryTypes(StrEnum):
