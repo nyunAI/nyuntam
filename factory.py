@@ -88,7 +88,7 @@ class Factory:
                 instance = caller(args)
                 return instance
             except Exception as e:
-                logger.exception(f"[{cls}] {e}")
+                logger.exception(f"[{caller.__name__}] {e}")
                 continue
         raise Exception("Factory instance could not be created.")
 
