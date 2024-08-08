@@ -4,34 +4,15 @@ set_system_path()
 
 from nyuntam.factory import Factory
 from nyuntam.utils.logger import set_logger
-from argparse import ArgumentParser
+from nyuntam.commands import get_args
 
 set_logger()
 
 import logging
 
 
-def get_args():
-    parser = ArgumentParser()
-    parser.add_argument(
-        "--yaml_path", type=str, help="Path to config (.yaml file)", default=None
-    )
-    parser.add_argument(
-        "--json_path", type=str, help="Path to config (.json file)", default=None
-    )
-    args = parser.parse_args()
-    return args
-
-
 def main():
     args = get_args()
-    config_path = args.yaml_path or args.json_path
-
-    if config_path is None:
-        raise ValueError(
-            "No configuration file provided. Please specify either a YAML or JSON file."
-        )
-
     try:
         if args.yaml_path:
             factory = Factory.create_from_yaml(args.yaml_path)
@@ -44,7 +25,9 @@ def main():
 
     assert factory is not None, "Factory instance could not be created."
 
-    logging.info(f"Running job with configuration: {factory.__class__.__name__}")
+    logging.info(
+        f"Running job with configuration: {factory._instance.__class__.__name__}"
+    )
 
     try:
         factory.run()
