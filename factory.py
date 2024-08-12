@@ -31,7 +31,7 @@ def get_factories(
         List[Factory]: List of factory classes.
     """
 
-    if not job_service or job_service == JobServices.KOMPRESS:
+    if job_service == JobServices.KOMPRESS:
         task: FactoryTypes = FactoryTypes(task)
 
         # Kompress
@@ -46,15 +46,11 @@ def get_factories(
 
             cls = [VisionFactory]
     elif job_service == JobServices.ADAPT:
-        task: AdaptTasks = AdaptTasks(
-            task,
-        )
-        # adapt
         from nyuntam_adapt.factory import AdaptFactory
 
         cls = [AdaptFactory]
     else:
-        raise ValueError(f"Unsupported task: {task}")
+        raise ValueError(f"Unsupported task or job service: {task, job_service}")
 
     return cls
 
@@ -84,7 +80,10 @@ class Factory:
         fail fast to adapt to other factory classes."""
         kw = args[0]
 
-        if kw.get(FactoryArgumentKeys.JOB_SERVICE, None) == JobServices.ADAPT.value:
+        if (
+            FactoryTypes(kw.get(FactoryArgumentKeys.JOB_SERVICE, None))
+            == JobServices.ADAPT
+        ):
             assert (
                 FactoryTypes(kw.get(FactoryArgumentKeys.JOB_SERVICE, None))
                 == self._type
@@ -168,5 +167,4 @@ class Factory:
         if self.algorithm is None:
             raise ValueError("No algorithm instance has been created.")
 
-        if self._type != FactoryTypes.ADAPT:
-            self.algorithm.compress_model()
+        self.algorithm.compress_model()
