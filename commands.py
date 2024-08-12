@@ -46,7 +46,6 @@ class Command(ABC):
         self.reset_command()
 
     def run(self):
-        print(f"Running command: {self.command}")  ## remove
         if os.system(self.command) != 0:
             raise ValueError(f"Failed to run command: {self.command}")
 
