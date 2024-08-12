@@ -44,7 +44,9 @@ def main():
 
     assert factory is not None, "Factory instance could not be created."
 
-    logging.info(f"Running job with configuration: {factory.__class__.__name__}")
+    logging.info(
+        f"Running job with configuration: {factory.algorithm.__class__.__name__}"
+    )
 
     try:
         factory.run()
