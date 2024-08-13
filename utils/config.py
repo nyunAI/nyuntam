@@ -23,7 +23,7 @@ def load_config(config_path: Union[str, Path]) -> Dict:
 def dump_config(config: Dict, config_path: Union[str, Path]) -> Path:
     if isinstance(config_path, str):
         config_path = Path(config_path)
-    
+
     if config_path.exists():
         print(f"Warning: {config_path} already exists. Overwriting.")
         config_path.unlink()

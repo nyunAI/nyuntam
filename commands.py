@@ -154,7 +154,7 @@ def run_dist():
             runner = NyunRunAccelerate.from_namespace(args)
         else:
             runner = NyunRun.from_namespace(args)
-        
+
         del adapt_params
     elif job_service == JobServices.KOMPRESS:
         if config.get(FactoryArgumentKeys.ALGORITHM == "AQLM"):

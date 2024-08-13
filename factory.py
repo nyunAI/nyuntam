@@ -1,6 +1,6 @@
 from nyuntam.constants.keys import (
     FactoryTypes,
-    AdaptTasks,
+    Task,
     FactoryArgumentKeys,
     JobServices,
 )
@@ -14,18 +14,19 @@ import logging
 import json
 import yaml
 
-__all__ = ["Factory", "FactoryTypes", "register_factory"]
+__all__ = ["Factory", "FactoryTypes"]
 logger = logging.getLogger(__name__)
 
 
 def get_factories(
-    task: Union[str, AdaptTasks, FactoryTypes],
+    task: Union[str, Task],
     job_service: Union[str, JobServices],
 ) -> List["Factory"]:
-    """Get the factory classes for the given Job task.
+    """Get the factory classes for the given Job service & task.
 
     Args:
         task: Job task.
+        job_service: Job service.
 
     Returns:
         List[Factory]: List of factory classes.
@@ -79,25 +80,17 @@ class Factory:
         """Pre-initialization method. Use/extend this method to perform any checks before initializing the class and
         fail fast to adapt to other factory classes."""
         kw = args[0]
+        job_service = JobServices.get_service(
+            kw.get(FactoryArgumentKeys.JOB_SERVICE, None)
+        )
+        task = Task.create(job_service, kw.get(FactoryArgumentKeys.TASK, None))
+        factory_type = FactoryTypes.get_factory_type(job_service, task)
+        assert factory_type == self._type, f"Invalid factory type: {factory_type}"
 
-        if (
-            FactoryTypes(kw.get(FactoryArgumentKeys.JOB_SERVICE, None))
-            == JobServices.ADAPT
-        ):
-            assert (
-                FactoryTypes(kw.get(FactoryArgumentKeys.JOB_SERVICE, None))
-                == self._type
-            ), "Invalid task type."
-
-        else:
-            assert (
-                FactoryTypes(kw.get(FactoryArgumentKeys.TASK, None)) == self._type
-            ), "Invalid task type."
-
-            algorithm_name = kw.get(FactoryArgumentKeys.ALGORITHM, None)
-            assert (
-                self.get_algorithm(algorithm_name) is not None
-            ), f"Invalid algorithm: {algorithm_name}"
+        algorithm_name = kw.get(FactoryArgumentKeys.ALGORITHM, None)
+        assert (
+            self.get_algorithm(algorithm_name) is not None
+        ), f"Invalid algorithm: {algorithm_name}"
 
     @abstractmethod
     def get_algorithm(self, name: str) -> Algorithm:
@@ -163,8 +156,6 @@ class Factory:
         set_logger(logging_path=path, stream_stdout=stream_stdout)
 
     def run(self) -> None:
-        """Overloaded method for each Job Service"""
         if self.algorithm is None:
             raise ValueError("No algorithm instance has been created.")
-
-        self.algorithm.compress_model()
+        self.algorithm.run()
