@@ -99,8 +99,10 @@ class Factory:
     @classmethod
     def create_from_dict(cls, args: Dict) -> Optional[Union["Factory", None]]:
         """Create a Factory instance from a dictionary."""
-        job_service = args.get(FactoryArgumentKeys.JOB_SERVICE, None)
-        task = args.get(FactoryArgumentKeys.TASK)
+        job_service = JobServices.get_service(
+            args.get(FactoryArgumentKeys.JOB_SERVICE, None)
+        )
+        task = Task.create(job_service, args.get(FactoryArgumentKeys.TASK, None))
         cls = get_factories(task, job_service)
         for caller in cls:
             try:
