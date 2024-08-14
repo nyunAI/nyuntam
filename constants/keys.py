@@ -30,7 +30,6 @@ class Task(StrEnum):
 
     @classmethod
     def get_task(cls, task: str):
-        print(f"[{cls.__name__}] Task: {task}")
         return cls(task)
 
     @classmethod

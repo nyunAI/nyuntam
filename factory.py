@@ -1,6 +1,8 @@
 from nyuntam.constants.keys import (
     FactoryTypes,
     Task,
+    VisionTasks,
+    TextGenTasks,
     FactoryArgumentKeys,
     JobServices,
 )
@@ -33,15 +35,17 @@ def get_factories(
     """
 
     if job_service == JobServices.KOMPRESS:
-        task: FactoryTypes = FactoryTypes(task)
+
+        if isinstance(task, str):
+            task: Task = Task.create(job_service, task)
 
         # Kompress
-        if task == FactoryTypes.TEXT_GENERATION:
+        if isinstance(task, TextGenTasks):
             # text-generation
             from text_generation.main import Factory as TextGenerationFactory
 
             cls = [TextGenerationFactory]
-        elif task == FactoryTypes.VISION:
+        elif isinstance(task, VisionTasks):
             # vision
             from vision.factory import CompressionFactory as VisionFactory
 
