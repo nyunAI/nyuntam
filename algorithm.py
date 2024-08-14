@@ -42,6 +42,7 @@ class AdaptionAlgorithm(Algorithm):
 
     def run(self):
         """The run method for the algorithm."""
+        self.adapt_model()
 
     @abstractmethod
     def adapt_model(self):
