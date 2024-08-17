@@ -7,8 +7,7 @@ from nyuntam.constants.keys import (
     JobServices,
 )
 from nyuntam.utils.logger import set_logger
-from nyuntam.algorithm import Algorithm
-
+from nyuntam.algorithm import Algorithm, VisionAlgorithm
 from typing import Dict, Optional, Union, List
 from abc import abstractmethod
 from pathlib import Path
@@ -164,4 +163,7 @@ class Factory:
     def run(self) -> None:
         if self.algorithm is None:
             raise ValueError("No algorithm instance has been created.")
-        self.algorithm.run()
+        if issubclass(type(self.algorithm), VisionAlgorithm):
+            self.algorithm.compress_model()
+        else:
+            self.algorithm.run()
