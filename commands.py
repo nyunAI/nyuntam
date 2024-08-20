@@ -3,7 +3,7 @@ from nyuntam.utils.config import load_config, dump_config
 from nyuntam.constants.keys import FactoryArgumentKeys, JobServices
 
 # nyuntam_adapt
-from nyuntam_adapt.utils import AdaptParams, create_instance
+
 
 from dataclasses import dataclass, field, asdict
 from abc import ABC, abstractmethod
@@ -96,6 +96,7 @@ class NyunRunAccelerate(Command):
 
     @classmethod
     def from_namespace(cls, args: Namespace):
+        from nyuntam_adapt.utils import AdaptParams, create_instance
         nyun_run = NyunRun.from_namespace(args)
         config = load_config(args.yaml_path or args.json_path)
         adapt_params = create_instance(AdaptParams, config)
@@ -146,6 +147,7 @@ def run_dist():
         config.get(FactoryArgumentKeys.JOB_SERVICE, JobServices.KOMPRESS)
     )
     if job_service == JobServices.ADAPT:
+        from nyuntam_adapt.utils import AdaptParams, create_instance
         adapt_params = create_instance(AdaptParams, config)
         if adapt_params.DDP:
             num_gpu = len(adapt_params.cuda_id.split(","))
@@ -154,7 +156,7 @@ def run_dist():
             runner = NyunRunAccelerate.from_namespace(args)
         else:
             runner = NyunRun.from_namespace(args)
-        
+
         del adapt_params
     elif job_service == JobServices.KOMPRESS:
         if config.get(FactoryArgumentKeys.ALGORITHM == "AQLM"):

@@ -1,12 +1,13 @@
 from nyuntam.constants.keys import (
     FactoryTypes,
-    AdaptTasks,
+    Task,
+    VisionTasks,
+    TextGenTasks,
     FactoryArgumentKeys,
     JobServices,
 )
 from nyuntam.utils.logger import set_logger
 from nyuntam.algorithm import Algorithm
-
 from typing import Dict, Optional, Union, List
 from abc import abstractmethod
 from pathlib import Path
@@ -14,33 +15,36 @@ import logging
 import json
 import yaml
 
-__all__ = ["Factory", "FactoryTypes", "register_factory"]
+__all__ = ["Factory", "FactoryTypes"]
 logger = logging.getLogger(__name__)
 
 
 def get_factories(
-    task: Union[str, AdaptTasks, FactoryTypes],
+    task: Union[str, Task],
     job_service: Union[str, JobServices],
 ) -> List["Factory"]:
-    """Get the factory classes for the given Job task.
+    """Get the factory classes for the given Job service & task.
 
     Args:
         task: Job task.
+        job_service: Job service.
 
     Returns:
         List[Factory]: List of factory classes.
     """
 
     if job_service == JobServices.KOMPRESS:
-        task: FactoryTypes = FactoryTypes(task)
+
+        if isinstance(task, str):
+            task: Task = Task.create(job_service, task)
 
         # Kompress
-        if task == FactoryTypes.TEXT_GENERATION:
+        if isinstance(task, TextGenTasks):
             # text-generation
             from text_generation.main import Factory as TextGenerationFactory
 
             cls = [TextGenerationFactory]
-        elif task == FactoryTypes.VISION:
+        elif isinstance(task, VisionTasks):
             # vision
             from vision.factory import CompressionFactory as VisionFactory
 
@@ -79,25 +83,17 @@ class Factory:
         """Pre-initialization method. Use/extend this method to perform any checks before initializing the class and
         fail fast to adapt to other factory classes."""
         kw = args[0]
+        job_service = JobServices.get_service(
+            kw.get(FactoryArgumentKeys.JOB_SERVICE, None)
+        )
+        task = Task.create(job_service, kw.get(FactoryArgumentKeys.TASK, None))
+        factory_type = FactoryTypes.get_factory_type(job_service, task)
+        assert factory_type == self._type, f"Invalid factory type: {factory_type}"
 
-        if (
-            FactoryTypes(kw.get(FactoryArgumentKeys.JOB_SERVICE, None))
-            == JobServices.ADAPT
-        ):
-            assert (
-                FactoryTypes(kw.get(FactoryArgumentKeys.JOB_SERVICE, None))
-                == self._type
-            ), "Invalid task type."
-
-        else:
-            assert (
-                FactoryTypes(kw.get(FactoryArgumentKeys.TASK, None)) == self._type
-            ), "Invalid task type."
-
-            algorithm_name = kw.get(FactoryArgumentKeys.ALGORITHM, None)
-            assert (
-                self.get_algorithm(algorithm_name) is not None
-            ), f"Invalid algorithm: {algorithm_name}"
+        algorithm_name = kw.get(FactoryArgumentKeys.ALGORITHM, None)
+        assert (
+            self.get_algorithm(algorithm_name) is not None
+        ), f"Invalid algorithm: {algorithm_name}"
 
     @abstractmethod
     def get_algorithm(self, name: str) -> Algorithm:
@@ -106,8 +102,10 @@ class Factory:
     @classmethod
     def create_from_dict(cls, args: Dict) -> Optional[Union["Factory", None]]:
         """Create a Factory instance from a dictionary."""
-        job_service = args.get(FactoryArgumentKeys.JOB_SERVICE, None)
-        task = args.get(FactoryArgumentKeys.TASK)
+        job_service = JobServices.get_service(
+            args.get(FactoryArgumentKeys.JOB_SERVICE, None)
+        )
+        task = Task.create(job_service, args.get(FactoryArgumentKeys.TASK, None))
         cls = get_factories(task, job_service)
         for caller in cls:
             try:
@@ -163,8 +161,7 @@ class Factory:
         set_logger(logging_path=path, stream_stdout=stream_stdout)
 
     def run(self) -> None:
-        """Overloaded method for each Job Service"""
         if self.algorithm is None:
             raise ValueError("No algorithm instance has been created.")
 
-        self.algorithm.compress_model()
+        self.algorithm.run()
