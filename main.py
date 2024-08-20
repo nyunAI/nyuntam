@@ -26,7 +26,7 @@ def main():
     assert factory is not None, "Factory instance could not be created."
 
     logging.info(
-        f"Running job with configuration: {factory._instance.__class__.__name__}"
+        f"Running job with configuration: {factory.algorithm.__class__.__name__}"
     )
 
     try:
@@ -38,7 +38,4 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        logging.critical(f"Critical failure in main execution: {e}")
+    main()

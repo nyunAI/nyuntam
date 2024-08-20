@@ -6,9 +6,12 @@ ROOT = Path(__file__).parent
 
 # SUBMODULES = {"submodule-name": {"submodule-algorithm": ["paths/to/add"]}}
 SUBMODULES: Dict[str, Dict[str, List[Union[str, Path]]]] = {
-    "text_generation": {"pruning": ["flap"]},
     "nyuntam_adapt": {},
-    # "vision": {},
+    "text_generation": {
+        "pruning": ["flap"],
+        "quantization": ["aqlm", "aqlm/AQLM"],
+    },
+    "vision": {},
 }
 
 
