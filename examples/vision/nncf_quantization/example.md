@@ -55,13 +55,29 @@ nyun run {CONFIG_PATH}
 
 After the job is completed the folder structure will be as follows
 ```
-jobs/
-	└──  mds.xml
-	└── mds.bin
-logs/
-	└── log.log
+{WORKSPACE}
+├── datasets
+│   ├── {JOB_ID}
+│   |	├── train
+│   |	├── val
+├── logs
+│   ├── log.log
+├── jobs
+│   ├── mds.xml
+│   ├── mds.bin
 ```
 	
 ####  7. Results
 
-The model post finetuning on cifar-10 for 10 epochs had validation 67.4 % validation accuracy and after quantization had an accuracy of 67.2 %. To benchmark the reduced latency of the model use [NNCF Benchmarking tool](https://docs.openvino.ai/2024/learn-openvino/openvino-samples/benchmark-tool.html).
+The model post finetuning on cifar-10 for 10 epochs had validation 67.4 % validation accuracy and after quantization had an accuracy of 67.2 %. To benchmark the reduced latency of the model use [NNCF Benchmarking tool](https://docs.openvino.ai/2024/learn-openvino/openvino-samples/benchmark-tool.html) using the following command. 
+
+```bash
+benchmark_app -m {path to .xml file} -d CPU -api async
+```
+The Final Results are as follows:
+
+| Model | Accuracy | Latency |
+|-------|----------|---------|
+| FP32  | 67.7     | 1.32 ms |
+| INT8  | 67.2     | 0.68 ms |
+

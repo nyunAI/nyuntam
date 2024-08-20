@@ -62,14 +62,34 @@ jobs/
 logs/
 	└── log.log
 ```
+```
+{WORKSPACE}
+├── datasets
+│   ├── {JOB_ID}
+|	|	├──root
+│   |	|	├── train
+│   |	|	├── val
+│   |	|	├── annotations
+├── logs
+│   ├── log.log
+├── jobs
+│   ├── mds.pt
+│   ├── flops_{target_flop_ratio}.pth
+|	├── fix_subnet.json
+```
 	
 ####  7. Results
 
-We use MAP and Flops to assess the result produced. The results are as follows:
-	|Model | MAP | Latency|
-   |Yolox-tiny|32.0|0.3515 ms|
-   |YoloX-tiny pruned| 29.6| 0.3170 ms
+We use MAP and Latency to assess the result produced. 
 To calculate the latency and map post pruning you can use mmrazor's test.py using the following code
 ```bash
 cd {mmrazor tools folder}
 python test.py {cache_path}/current_fisher_finetune_config.py.py {path to mds.pt} {batch_size}
+```
+
+The results are as follows:
+
+| Model          | MAP  | Latency |
+|----------------|------|---------|
+| UnPruned       | 32.0 | 0.35    |
+| Prune+Finetune | 29.6 | 0.31 ms |
