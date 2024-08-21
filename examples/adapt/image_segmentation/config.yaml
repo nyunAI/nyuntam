@@ -38,7 +38,7 @@ resume  : #False # ['auto']
 auto_scale_lr :  False
 cfg_options  : None
 launcher :  none
-dest_root : './.mmdet_cache'   #This saves the checkpoints and .py files for the model congigs and mmdet logs   
+dest_root : './.mmdet_cache'   #This saves the checkpoints and .py files for the model configs and mmdet logs   
 train_ann_file : "train_ann_file.txt" 
 val_ann_file : "val_ann_file.txt" 
 work_dir : ./results/mmdet  # same as output dir
