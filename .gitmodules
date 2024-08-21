@@ -4,3 +4,6 @@
 [submodule "vision"]
 	path = vision
 	url = https://github.com/nyunAI/nyuntam-vision.git
+[submodule "nyuntam_adapt"]
+	path = nyuntam_adapt
+	url = https://github.com/nyunAI/nyuntam_adapt.git

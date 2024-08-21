@@ -1,11 +1,30 @@
 import logging
 from typing import Union, Optional
 from pathlib import Path
+import sys
 
 LOG_FILE_NAME = "log.log"
 
 
-def set_logger(logging_path: Optional[Union[str, Path]] = None) -> None:
+class LogFile(object):
+    """File-like object to log text using the `logging` module."""
+
+    def __init__(self, name=None):
+        self.logger = logging.getLogger(name)
+
+    def write(self, msg, level=logging.INFO):
+        if msg != "\n":
+            self.logger.log(level, msg)
+
+    def flush(self):
+        for handler in self.logger.handlers:
+            handler.flush()
+
+
+def set_logger(
+    logging_path: Optional[Union[str, Path]] = None,
+    stream_stdout: Optional[bool] = None,
+) -> None:
     """Set the logger for the module. Clears all handlers defined by previous loggers.
     The logger will be saved to the specified logging directory (or file).
 
@@ -42,3 +61,6 @@ def set_logger(logging_path: Optional[Union[str, Path]] = None) -> None:
             level=logging.INFO,
             force=True,  # force the configuration over any existing configuration
         )
+
+    if stream_stdout:
+        sys.stdout = LogFile("stdout")

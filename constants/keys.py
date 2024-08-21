@@ -1,17 +1,109 @@
 from nyuntam.utils._backports import StrEnum
+from enum import auto, Enum
+from typing import Optional
 
-from dataclasses import dataclass, field
-from enum import auto
+
+class JobServices(Enum):
+    ADAPT = auto()
+    KOMPRESS = auto()
+
+    @classmethod
+    def get_service(cls, service: str):
+        if service.lower() == "adapt":
+            return cls.ADAPT
+        elif service.lower() == "kompress":
+            return cls.KOMPRESS
+        else:
+            raise ValueError(f"Invalid service: {service}")
 
 
-class Tasks(StrEnum):
+class Task(StrEnum):
+
+    @classmethod
+    def create(cls, job_service: JobServices, task: str):
+        if job_service == JobServices.KOMPRESS:
+            return KompressTask.get_task_from_subclass(task)
+        elif job_service == JobServices.ADAPT:
+            return AdaptTasks.get_task(task)
+        else:
+            raise ValueError(f"Invalid job_service: {job_service}")
+
+    @classmethod
+    def get_task(cls, task: str):
+        return cls(task)
+
+    @classmethod
+    def has_subclass(cls):
+        """Check if the class has any subclasses."""
+        return len(cls.__subclasses__()) > 0
+
+    @classmethod
+    def get_task_from_subclass(cls, task: str):
+        if not cls.has_subclass():
+            return cls.get_task(task)
+        else:
+            for subclass in cls.__subclasses__():
+                try:
+                    if subclass.has_subclass():
+                        return subclass.get_task_from_subclass(task)
+                    else:
+                        return subclass.get_task(task)
+                except ValueError:
+                    continue
+        raise ValueError(f"Invalid task: {task}")
+
+
+class KompressTask(Task):
+    pass
+
+
+class TextGenTasks(KompressTask):
     TEXT_GENERATION = "llm"
-    CLASSIFICATION = "image_classification"
 
 
-class FactoryTypes(StrEnum):
-    TEXT_GENERATION: Tasks = Tasks.TEXT_GENERATION
-    VISION: Tasks = Tasks.CLASSIFICATION  # default
+class VisionTasks(KompressTask):
+    IMAGE_CLASSIFICATION = "image_classification"
+    OBJECT_DETECTION = "object_detection"
+    IMAGE_SEGMENTATION = "image_segmentation"
+    POSE_ESTIMATION = "pose_estimation"
+
+
+class AdaptTasks(Task):
+    TEXT_GENERATION = "text_generation"
+    TEXT_CLASSIFICATION = "text_classification"
+    SEQ_2_SEQ_TRANSLATION = "Seq2Seq_tasks"
+    SEQ_2_SEQ_SUMMARIZATION = "Seq2Seq_tasks"
+    QUESTION_ANSWERING = "question_answering"
+    IMAGE_CLASSIFICATION = "image_classification"
+    OBJECT_DETECTION = "object_detection"
+    IMAGE_SEGMENTATION = "image_segmentation"
+    POSE_ESTIMATION = "pose_estimation"
+
+
+class FactoryTypes(Enum):
+    TEXT_GENERATION = auto()
+    VISION = auto()
+    ADAPT = auto()
+
+    @classmethod
+    def get_factory_type(
+        cls, job_service: Optional[JobServices] = None, task: Optional[Task] = None
+    ):
+        assert (
+            job_service is not None or task is not None
+        ), "Either job_service or task must be provided"
+
+        if job_service == JobServices.ADAPT:
+            return cls.ADAPT
+        elif job_service == JobServices.KOMPRESS:
+            if isinstance(task, VisionTasks):
+                return cls.VISION
+            elif isinstance(task, TextGenTasks):
+                return cls.TEXT_GENERATION
+            else:
+                raise ValueError(f"Invalid task: {task}")
+        else:
+            raise ValueError(f"Invalid job_service: {job_service}")
 
 
 class FactoryArgumentKeys(StrEnum):
