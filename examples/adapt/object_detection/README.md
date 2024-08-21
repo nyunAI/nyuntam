@@ -16,7 +16,7 @@ This guide provides a walkthrough of applying RTMDet for face detection on the f
 
 ## Introduction 
 
-In this example, we'll be applying the LoRA technique to fine-tune the RTMDet model on the Face-Det dataset. The training process will be distributed across 2 GPUs using Distributed Data Parallel (DDP) to maximize efficiency. LoRA's ability to introduce low-rank adaptations allows for targeted model updates, significantly reducing memory and computational requirements while increasing OOD generalization performance. 
+In this example, we'll be applying the LoRA technique to fine-tune the RTMDet model on the Face-Det dataset. The training process will be distributed across 2 GPUs using Distributed Data Parallel (DDP) to maximize efficiency. LoRA's ability to introduce low-rank adaptations allows for targeted model updates, significantly reducing memory and computational requirements while increasing (Out Of Distribution) OOD generalization performance. 
 
 ## Requirements
 
@@ -165,13 +165,13 @@ user_data/
 
 ```
 
-LoRa decreases the toal trainable parameters of the model by freezing the original model weights and updating LoRA adapters only. 
+LoRA decreases the total trainable parameters of the model by freezing the original model weights and updating LoRA adapters only. 
 ```log 
 08/05/2024 23-04-20 - INFO - nyuntam_adapt.core.base_algorithm - trainable params: 1491594 || all params: 6009438 || trainable%: 24.82
 ```
 
 
-This is a sample log the experiment logs  : 
+This is a sample of the experiment logs  : 
 
 ```log
 08/05/2024 23-04-34 - INFO - stdout - 08/05 23:04:34 - mmengine - INFO - Epoch(train) [1][ 150/2988]  base_lr: 5.0000e-03 lr: 5.0000e-03  eta: 0:03:39  time: 0.0673  data_time: 0.0008  memory: 220  loss: 2.0014  loss_cls: 0.9983  loss_bbox: 1.0031

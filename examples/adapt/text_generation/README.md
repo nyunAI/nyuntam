@@ -191,11 +191,11 @@ The output model will be stored in `user_data/jobs/Adapt/SUMM/` directory and th
 user_data/
 ├── jobs
 │   └── Adapt
-│       └── SUMM
+│       └── 100
 │           └── merged_model_state_dict.pth
 ├── logs
     └── Adapt
-        └── SUMM
+        └── 100
             └── log.log
 
 ```

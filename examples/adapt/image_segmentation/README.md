@@ -51,7 +51,24 @@ $ cd /workspace/nyuntam
 
 ## Dataset 
 
-For this experiment we will be using the [CityScapes](https://www.kaggle.com/datasets/ipythonx/stanford-background-dataset) dataset. In this dataset we will only be using the "regions" as the segmentation maps. The data folder structure is formatted in the folowing way: 
+For this experiment we will be using the [CityScapes](https://www.kaggle.com/datasets/ipythonx/stanford-background-dataset) dataset. The original folder structure of the dataset loks like :  
+```bash
+iccv09Data
+└── images
+|   └── image1.jpg
+|   └── image2.jpg
+|   └── image3.jpg
+    ...
+└── seg_maps
+|   └── image1.layers.txt
+|   └── image1.regions.txt
+|   └── image1.surfaces.txt
+└── ann_file.txt
+└── horizons.txt
+```
+
+The text files contain the segmentation maps in digits. In this dataset we will only be using the "regions" as the segmentation maps. These are the text files which are named as "image1.regions.txt". These text files are converted to ".png" images.  
+The new data folder structure is formatted in the folowing way: 
 
 ```bash
 iccv09Data
@@ -116,10 +133,10 @@ resume  : #False # ['auto']
 auto_scale_lr :  False
 cfg_options  : None
 launcher :  none
-dest_root : './.mmdet_cache'   #This saves the checkpoints and .py files for the model congigs and mmdet logs   
+dest_root : './.mmseg_cache'   #This saves the checkpoints and .py files for the model configs and mmseg logs   
 train_ann_file : "train_ann_file.txt" 
 val_ann_file : "val_ann_file.txt" 
-work_dir : ./results/mmdet  # same as output dir
+work_dir : ./results/mmseg  # same as output dir
 checkpoint_interval : 45
 train_img_file: images  #For MMSEG - Folder containing training images
 train_seg_file: seg_maps  #For MMSEG - Folder containing training segmentation maps
