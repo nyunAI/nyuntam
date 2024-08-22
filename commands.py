@@ -97,6 +97,7 @@ class NyunRunAccelerate(Command):
     @classmethod
     def from_namespace(cls, args: Namespace):
         from nyuntam_adapt.utils import AdaptParams, create_instance
+
         nyun_run = NyunRun.from_namespace(args)
         config = load_config(args.yaml_path or args.json_path)
         adapt_params = create_instance(AdaptParams, config)
@@ -143,11 +144,12 @@ def run_dist():
 
     config = load_config(args.yaml_path or args.json_path)
 
-    job_service = JobServices(
+    job_service = JobServices.get_service(
         config.get(FactoryArgumentKeys.JOB_SERVICE, JobServices.KOMPRESS)
     )
     if job_service == JobServices.ADAPT:
         from nyuntam_adapt.utils import AdaptParams, create_instance
+
         adapt_params = create_instance(AdaptParams, config)
         if adapt_params.DDP:
             num_gpu = len(adapt_params.cuda_id.split(","))
