@@ -185,7 +185,7 @@ user_data/
             └── log.log
 
 ```
-The output model will be stored in `user_data/jobs/Adapt/SUMM/` directory and the final directory structure will be:
+The output model will be stored in `user_data/jobs/Adapt/100/` directory and the final directory structure will be:
 
 ```bash
 user_data/
