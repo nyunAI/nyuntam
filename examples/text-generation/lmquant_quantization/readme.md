@@ -5,6 +5,7 @@
 This guide provides a detailed walkthrough of applying **LMQuant** using the QoQ algorithm (quattuor-octo-quattuor) to quantize the Llama3.1-8b model. By using 4-bit weights, 8-bit activations, and 4-bit key-value cache (W4A8KV4), LMQuant aims to significantly reduce model size while maintaining high performance and efficient inference speed. This process is particularly beneficial for deploying large language models in environments with limited resources.
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -20,6 +21,7 @@ In this example, we will use the QoQ algorithm provided by LMQuant to quantize t
 ## Requirements
 
 Before starting, ensure that you have the following:
+
 - A GPU-enabled environment with CUDA support.
 - The LMQuant repository cloned and set up as described in the [Installation Guide](#installation).
 
@@ -28,6 +30,7 @@ Before starting, ensure that you have the following:
 ### Step 1: Clone the Nyuntam Repository
 
 Clone the repository and navigate to the `nyuntam` directory:
+
 ```bash
 git clone https://github.com/nyunAI/nyuntam.git
 cd nyuntam
@@ -36,12 +39,14 @@ cd nyuntam
 ### Step 2: Set Up the workspace
 
 Create and activate an environment for the AWQ quantization example:
+
 ```bash
 conda create -n lmquant_quantization python=3.10 # or use virtualenv if preferred
 conda activate lmquant_quantization
 ```
 
 Install the required dependencies:
+
 ```bash
 pip install torch==2.3.0 # (any other version as suitable)
 pip install -r text_generation/engines/mit_han_lab_qserve/requirements.txt text_generation/engines/mit_han_lab_qserve/QServe/kernels # for QServe
@@ -168,16 +173,17 @@ Compare the results with the original model to assess the impact of quantization
 
 ### Performance Metrics
 
-| Model       	| Task                        	| Metric       	| Baseline 	| Quantized 	| Impact 	|
-|-------------	|-----------------------------	|--------------	|----------	|-----------	|--------	|
-| Llama3.1-8b 	| Perplexity (wikitext, gptq) 	| Perplexity ↓ 	| 6.14     	| 6.76      	| +0.62  	|
-| Llama3.1-8b 	| ARC Challenge (25 shot)     	| Accuracy ↑   	| 60.66    	| 60.10     	| -0.56  	|
-| Llama3.1-8b 	| Size (in GB)                	| Model Size ↓ 	| 15.0     	| 05.1      	| -09.90  |
+| Model        | Task                         | Metric        | Baseline  | Quantized  | Impact  |
+|------------- |----------------------------- |-------------- |---------- |----------- |-------- |
+| Llama3.1-8b  | Perplexity (wikitext, gptq)  | Perplexity ↓  | 6.14      | 6.76       | +0.62   |
+| Llama3.1-8b  | ARC Challenge (25 shot)      | Accuracy ↑    | 60.66     | 60.10      | -0.56   |
+| Llama3.1-8b  | Size (in GB)                 | Model Size ↓  | 15.0      | 05.1       | -09.90  |
 
 ### Throughput Comparison
-| A100 (80G) 	| TRT-LLM-FP16 	| TRT-LLM-W4A16 	| TRT-LLM-W8A8 	| QServe-W4A8KV4 	| Throughput Increase* 	|
-|------------	|--------------	|---------------	|--------------	|----------------	|----------------------	|
-| Llama-3-8B 	| 2503         	| 2370          	| 2396         	| **3005**       	| **1.20x**            	|
+
+| A100 (80G)  | TRT-LLM-FP16  | TRT-LLM-W4A16  | TRT-LLM-W8A8  | QServe-W4A8KV4  | Throughput Increase*  |
+|------------ |-------------- |--------------- |-------------- |---------------- |---------------------- |
+| Llama-3-8B  | 2503          | 2370           | 2396          | **3005**        | **1.20x**             |
 
 *
 
@@ -196,4 +202,4 @@ LMQuant’s QoQ algorithm offers a robust method for compressing large models li
 - **[Llama3.1 70B: 0.5x the cost & size](../flap_pruning/readme.md)**
 - **[Accelerating a 4-bit Quantised Llama Model](../tensorrtllm_engine/readme.md)**
 
---- 
+---

@@ -5,6 +5,7 @@
 This guide demonstrates how to accelerate a 4-bit quantized Llama model using the TensorRTLLM engine. TensorRTLLM is a high-performance inference engine that leverages NVIDIA's TensorRT library to optimize and accelerate models for deployment on NVIDIA GPUs.
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -20,6 +21,7 @@ In this example, we'll demonstrate how to accelerate a 4-bit quantized model usi
 ## Requirements
 
 Before you begin, ensure that you have the following:
+
 - A GPU-enabled environment with CUDA support.
 
 ## Installation
@@ -27,6 +29,7 @@ Before you begin, ensure that you have the following:
 ### Step 1: Clone the Nyuntam Repository
 
 Clone the repository and navigate to the `nyuntam` directory:
+
 ```bash
 git clone https://github.com/nyunAI/nyuntam.git
 cd nyuntam/examples/text-generation/tensorrtllm_engine/
@@ -35,17 +38,20 @@ cd nyuntam/examples/text-generation/tensorrtllm_engine/
 ### Step 2: Set Up the workspace
 
 Create and activate an environment for the AWQ quantization example:
+
 ```bash
 conda create -n tensorrtllm_engine python=3.10 -y # or use virtualenv if preferred
 conda activate tensorrtllm_engine
 ```
 
 Install the required dependencies:
+
 ```bash
 pip install git+https://github.com/nyunAI/nyunzero-cli.git
 ```
 
 Setup the nyun workspace
+
 ```bash
 mkdir workspace && cd workspace
 nyun init -e kompress-text-generation # wait for the extensions to be installed
@@ -131,17 +137,15 @@ The output model will be saved in the `workspace/example/jobs/Kompress/tensorrtl
 
 Following is the comparison of the results* with the original model to assess the impact of quantization on accuracy and inference speed.
 
-| Model                    	| Optimised with            	| Quantization Type                     	| WM (GB) 	| RM (GB) 	| Tokens/s 	| Perplexity 	|
-|--------------------------	|---------------------------	|---------------------------------------	|---------	|---------	|----------	|------------	|
-| meta-llama/Llama-2-7b-hf 	| TensorRT-LLM              	| AWQ GEMM 4bit (quant_method=int4_awq) 	| 3.42    	| 5.69    	| 194.86   	| 6.02       	|
-|                          	|                           	| INT8 (quant_method=int8)              	| 6.53    	| 8.55    	| 143.57   	| 5.89       	|
-|                          	|                           	| FP16 (to_quantize=false)              	| 12.55   	| 14.61   	| 83.43    	| 5.85       	|
-| meta-llama/Llama-2-7b-hf 	| Text-Generation-Inference 	| AWQ GEMM 4bit                         	| 3.62    	| 36.67   	| 106.84   	| 6.02       	|
-|                          	|                           	| FP16                                  	| 12.55   	| 38.03   	| 74.19    	| 5.85       	|
+| Model                     | Optimised with             | Quantization Type                      | WM (GB)  | RM (GB)  | Tokens/s  | Perplexity  |
+|-------------------------- |--------------------------- |--------------------------------------- |--------- |--------- |---------- |------------ |
+| meta-llama/Llama-2-7b-hf  | TensorRT-LLM               | AWQ GEMM 4bit (quant_method=int4_awq)  | 3.42     | 5.69     | 194.86    | 6.02        |
+|                           |                            | INT8 (quant_method=int8)               | 6.53     | 8.55     | 143.57    | 5.89        |
+|                           |                            | FP16 (to_quantize=false)               | 12.55    | 14.61    | 83.43     | 5.85        |
+| meta-llama/Llama-2-7b-hf  | Text-Generation-Inference  | AWQ GEMM 4bit                          | 3.62     | 36.67    | 106.84    | 6.02        |
+|                           |                            | FP16                                   | 12.55    | 38.03    | 74.19     | 5.85        |
 
 _*Source: [Faster and Lighter LLMs: A Survey on Current Challenges and Way Forward](https://arxiv.org/abs/2402.01799)_
-
-
 
 ## Conclusion
 
@@ -149,7 +153,7 @@ In this example, we demonstrated how to accelerate a 4-bit quantized Llama3.1-8b
 
 ---
 
-*Author: [Kushwaha, Shubham](https://www.linkedin.com/in/shwoobham/)*
+_Author: [Kushwaha, Shubham](https://www.linkedin.com/in/shwoobham/)_
 
 ### Additional Examples
 
@@ -158,4 +162,4 @@ In this example, we demonstrated how to accelerate a 4-bit quantized Llama3.1-8b
 - **[Llama3.1 70B: 0.5x the cost & size](../flap_pruning/readme.md)**
 - **[Achieving Up to 2.5x TensorRTLLM Speedups: Efficient 4-8-4 Quantization (w4a8kv4) of Llama3.1-8b](../lmquant_quantization/readme.md)**
 
---- 
+---

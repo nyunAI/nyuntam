@@ -5,7 +5,7 @@
 This guide provides a detailed walkthrough on maximizing the performance of a highly compressed Llama3-8b model using 2-bit weights and 16-bit activations. We will apply the Additive Quantization for Large Models (AQLM) technique to compress and optimize the Llama3-8b model, drastically reducing its memory footprint while maintaining performance.
 
 ## Table of Contents
-- [Introduction](#introduction)
+
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -20,6 +20,7 @@ In this guide, we will try and maximise the Grade School Math abilities of an ex
 ## Requirements
 
 Before starting, ensure that you have the following:
+
 - A GPU-enabled environment with CUDA support.
 - The nyuntam repository cloned and set up as per the [Installation Guide](#installation).
 
@@ -28,6 +29,7 @@ Before starting, ensure that you have the following:
 ### Step 1: Clone the Nyuntam Repository
 
 Clone the repository and navigate to the `nyuntam` directory:
+
 ```bash
 git clone https://github.com/nyunAI/nyuntam.git
 cd nyuntam
@@ -40,12 +42,14 @@ cd ..
 ### Step 2: Set Up the Environment
 
 Create and activate an environment for the AQLM quantization:
+
 ```bash
 conda create -n aqlm_quantization python=3.10 # or use virtualenv if preferred
 conda activate aqlm_quantization
 ```
 
 Install the required dependencies:
+
 ```bash
 pip install torch==2.3.0 # (adjust version if needed)
 pip install -r text_generation/quantization/aqlm/requirements.txt
@@ -53,11 +57,11 @@ pip install -r text_generation/quantization/aqlm/requirements.txt
 
 ## Experimentations
 
-**Step 1: SFT + Iterative DPO**
+### Step 1: SFT + Iterative DPO
 
 We first apply SFT + Iterative DPO to the model to boost upfront the downstream task performance. For a quicker reproducibility, we use the llama3 checkpoints provided by RLHFlow - `RLHFlow/LLaMA3-iterative-DPO-final` for this experiment.
 
-**Step 2: AQLM Quantization**
+### Step 2: AQLM Quantization
 
 Dataset: We use the `openai/gsm8k` dataset for calibration and fine-tuning of the quantized model. Use the following script to create the dataset:
 
@@ -66,6 +70,9 @@ python examples/text-generation/aqlm_quantization/create_dataset.py
 ```
 
 Next, we quantize and finetune the model.
+
+## Configuration
+
 Prepare the YAML configuration file specific to AQLM quantization. Use the following template as a starting point:
 
 ```yaml
@@ -153,6 +160,7 @@ user_data/
 ```
 
 The quantized model will be saved in the `user_data/jobs/Kompress/aqlm_quantization` directory:
+
 ```bash
 user_data/
 └── jobs
@@ -230,9 +238,9 @@ python examples/text-generation/aqlm_quantization/evaluate.py \
 
 Compare the results with the original model to assess the impact of quantization on accuracy and inference speed.
 
-|                	| Llama3-8b 	| Llama3Q PV Tuned 	|
-|----------------	|-----------	|------------------	|
-| GSM8K (5 shot) 	| 50.9      	| 58.9             	|
+|                 | Llama3-8b  | Llama3Q PV Tuned  |
+|---------------- |----------- |------------------ |
+| GSM8K (5 shot)  | 50.9       | 58.9              |
 
 ## Conclusion
 
@@ -249,4 +257,4 @@ From the results, we can see that the Llama3Q PV Tuned model achieves a GSM8K sc
 - **[Achieving Up to 2.5x TensorRTLLM Speedups: Efficient 4-8-4 Quantization (w4a8kv4) of Llama3.1-8b](../lmquant_quantization/readme.md)**
 - **[Accelerating a 4-bit Quantised Llama Model](../tensorrtllm_engine/readme.md)**
 
---- 
+---

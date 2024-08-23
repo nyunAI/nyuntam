@@ -5,13 +5,13 @@
 This guide provides a walkthrough of applying **FLAP** (Fluctuation-based Adaptive Structured Pruning) to compress and accelerate the Llama3.1-70b model. FLAP allows for significant reduction in model size and computational requirements without sacrificing performance. Unlike traditional pruning techniques, FLAP requires no retraining and adapts the pruning ratio across different modules and layers, offering an efficient and effective approach for deploying large language models in resource-constrained environments.
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Running the Pruning](#running-the-pruning)
 - [Performance Evaluation](#performance-evaluation)
-- [Conclusion](#conclusion)
 
 ## Introduction
 
@@ -20,6 +20,7 @@ In this example, we'll be utilizing the FLAP technique to prune the Llama3.1-70b
 ## Requirements
 
 Before you begin, ensure that you have the following:
+
 - A GPU-enabled environment with CUDA support.
 - The Nyuntam repository cloned and set up as per the [Installation Guide](#installation).
 
@@ -28,6 +29,7 @@ Before you begin, ensure that you have the following:
 ### Step 1: Clone the Nyuntam Repository
 
 Clone the repository and navigate to the `nyuntam` directory:
+
 ```bash
 git clone https://github.com/nyunAI/nyuntam.git
 cd nyuntam
@@ -36,12 +38,14 @@ cd nyuntam
 ### Step 2: Set Up the Workspace
 
 Create and activate an environment for the FLAP pruning example:
+
 ```bash
 conda create -n flap_pruning python=3.10 # or use virtualenv if preferred
 conda activate flap_pruning
 ```
 
 Install the required dependencies:
+
 ```bash
 pip install -r text_generation/pruning/flap/requirements.txt
 ```
@@ -117,6 +121,7 @@ user_data/
 ```
 
 The pruned model will be saved in the `user_data/jobs/Kompress/flap_pruning` directory.
+
 ```bash
 user_data/
 └── jobs
@@ -168,14 +173,11 @@ python examples/text-generation/flap_pruning/evaluate.py \
 
 Compare the results with the original model to assess the impact of pruning on accuracy and inference speed.
 
-
-| Model       	| Task                        	| Metric       	| Baseline 	| Pruned   	| Impact 	|
-|-------------	|-----------------------------	|--------------	|----------	|----------	|--------	|
-| Llama3.1-70b 	| Size (in GB)                	| Model Size ↓ 	| 132.0    	| 85.0     	| -47.0 	|
-| Llama3.1-70b 	| Perplexity (wikitext, gptq) 	| Perplexity ↓ 	| 3.79     	| 84146.23 	| > +84k 	|
-| Llama3.1-70b 	| ARC Challenge (25 shot)     	| Accuracy ↑   	| 70.48    	| 27.82    	| -42.66 	|
-
-<br>
+| Model        | Task                         | Metric        | Baseline  | Pruned    | Impact  |
+|------------- |----------------------------- |-------------- |---------- |---------- |-------- |
+| Llama3.1-70b  | Size (in GB)                 | Model Size ↓  | 132.0     | 85.0      | -47.0  |
+| Llama3.1-70b  | Perplexity (wikitext, gptq)  | Perplexity ↓  | 3.79      | 84146.23  | > +84k  |
+| Llama3.1-70b  | ARC Challenge (25 shot)      | Accuracy ↑    | 70.48     | 27.82     | -42.66  |
 
 ---
 
