@@ -16,6 +16,7 @@
 ## Installation
 
 ### NyunZero CLI (Recommended)
+
 The fastest way to install and use Nyuntam is through the NyunZero CLI. It streamlines the setup process and gets you running experiments in no time.
 
 For more details, visit the [NyunZero CLI Documentation](https://github.com/nyunAI/nyunzero-cli).
@@ -23,17 +24,20 @@ For more details, visit the [NyunZero CLI Documentation](https://github.com/nyun
 ### Git + Docker
 
 1. **Clone the Repository**:
+
     ```bash
     git clone --recursive https://github.com/nyunAI/nyuntam.git
     cd nyuntam
     ```
 
 2. **Pull the Required Docker Image**:
+
     ```bash
     docker pull <docker_image_name_or_id>
     ```
 
 3. **Run the Docker Container**:
+
     ```bash
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host <docker_image_name_or_id> bash
     ```
@@ -43,38 +47,45 @@ For more details, visit the [NyunZero CLI Documentation](https://github.com/nyun
 ### Git + Virtual Environment
 
 1. **Clone the Repository**:
+
     ```bash
     git clone --recursive https://github.com/nyunAI/nyuntam.git
     cd nyuntam
     ```
 
 2. **Create and Activate a Virtual Environment**:
+
     ```bash
     python3 -m venv {ENVIRONMENT_NAME}
     source {ENVIRONMENT_NAME}/bin/activate
     ```
 
 3. **Install the Required Packages**:
+
     ```bash
     pip install -r <submodule>/requirements.txt
     ```
 
 ### Docker for Submodules
+
 For running each submodule independently via Docker, use the following commands:
 
 - **Nyuntam Text Generation**:
+
     ```bash
     docker pull nyunadmin/nyunzero_text_generation:v0.1
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_text_generation:v0.1 bash
     ```
 
 - **Nyuntam Vision**:
+
     ```bash
     docker pull nyunadmin/nyunzero_kompress_vision:v0.1
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_kompress_vision:v0.1 bash
     ```
 
 - **Nyuntam Adapt**:
+
     ```bash
     docker pull nyunadmin/nyunzero_adapt:v0.1
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_adapt:v0.1 bash
@@ -83,6 +94,7 @@ For running each submodule independently via Docker, use the following commands:
 ## Usage
 
 ### Setting Up YAML Configuration Files
+
 Each submodule in Nyuntam requires a YAML file that defines all the necessary hyperparameters and configurations for running experiments. Examples and templates for these YAML files can be found within each submodule.
 
 - **Nyuntam Text Generation**:
@@ -96,6 +108,7 @@ Each submodule in Nyuntam requires a YAML file that defines all the necessary hy
   - For fine-tuning and transfer learning tasks, example YAML configurations and detailed explanations are available in the [official documentation](https://nyunai.github.io/nyun-docs/).
 
 ### Running Experiments
+
 To run an experiment, use the following command from within the appropriate submodule directory:
 
 ```bash
@@ -104,16 +117,10 @@ python main.py --yaml_path {path/to/recipe.yaml}
 
 This command will execute the main script using the configurations specified in the YAML file.
 
-## Development Guide
+## Examples
 
-For contributing to Nyuntam or adding new algorithms, refer to the following resources:
-
-- **Nyuntam Text Generation**: [Development Guide](https://github.com/nyunAI/nyuntam-text-generation/development-guide/algorithm.md)
-- **Nyuntam Vision**: [Development Guide](https://github.com/nyunAI/nyuntam-vision/development-guide/algorithm.md)
-- **Nyuntam Adapt**: [Development Guide](https://github.com/nyunAI/nyuntam-adapt/development-guide/algorithm.md)
+For detailed examples and use cases, refer to [examples](./examples/readme.md)
 
 ## Documentation
-For complete details checkout [NyunAI Docs](https://nyunai.github.io/nyun-docs)
 
-## Support and Contribution
-For any issues or contributions, please refer to the [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md). For further assistance, open an issue on the respective GitHub repository.
+For complete details checkout [NyunAI Docs](https://nyunai.github.io/nyun-docs)
