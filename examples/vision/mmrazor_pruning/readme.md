@@ -55,14 +55,6 @@ nyun run {CONFIG_PATH}
 
 After the job is completed the folder structure at Workspace_path will be as follows
 ```
-jobs/
-	└──  mds.pt
-	└──  flops_{target_flop_ratio}.pth
-	└──  fix_subnet.json
-logs/
-	└── log.log
-```
-```
 {WORKSPACE}
 ├── datasets
 │   ├── {JOB_ID}
