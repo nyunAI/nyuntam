@@ -28,7 +28,7 @@ _This guide provides a detailed walkthrough of applying LMQuant using the QoQ al
 
 _This guide demonstrates how to accelerate a 4-bit quantized (awq) Llama model with the TensorRTLLM engine. TensorRTLLM is a high-performance inference engine that leverages NVIDIA's TensorRT library to optimize and accelerate models for deployment on NVIDIA GPUs._
 
-### Computer Vision
+## Computer Vision
 
 ### 1. [Pruning YOLOX with MMRazor](./vision/mmrazor_pruning/readme.md)
 
@@ -38,6 +38,22 @@ _Pruning Object Detection is supported via MMRazor Pruning. Currently activation
 
 _8-bit quantization of Image Classification models are done via NNCF, ONNX Quantizers for CPU and TensorRT Quantizer for GPU deployment. This example shows how to Quantize a ResNet50 model with NNCF for CPU Quantization._
 
-### Adaption
+## Adaption
+
+### 1. [Adapting SegNeXt to cityscapes dataset using SSF](./adapt/image_segmentation/README.md)
+
+_This guide provides a walkthrough of applying SegNeXt for instance segmentation on the cityscapes dataset using SSF (Scaling and Shifting the deep Features). SSF enables parameter efficient fine-tuning by proposing that performace simillar to full fine-tuning can be achieved by only scaling and shifting the features of a deep neural network._
+
+### 2. [Finetuning RTMDet on face-det dataset using LoRA and DDP](./adapt/object_detection/README.md)
+
+_This guide provides a walkthrough of applying RTMDet for face detection on the face-det dataset using LoRA (Low-Rank Adaptation) with Distributed Data Parallel (DDP) across 2 GPUs. LoRA enables efficient fine-tuning by reducing the memory footprint, making it a powerful approach for high-performance face detection while maintaining scalability and resource efficiency._
+
+### 3. [Finetuning T5 large with QLoRA on XSUM dataset](./adapt/summarization/README.md)
+
+_This guide provides a detailed walkthrough for finetuning T5 Large model on the xsum Dataset with QLoRA using nyuntam-adapt. QLoRA is a PEFT technique where the original weights are frozen to reduce the trainable parameters and and qre quantized to reduce the memory usage._
+
+### 4. [Finetuning Llama3-8b with QDoRA and FSDP](./adapt/text_generation/README.md)
+
+_In this example we will be finetuning Llama3-8b with QDoRA and FSDP. We will be using the the Llama-1k dataset for this example but any dataset can be used for this purpose. [DoRA](https://arxiv.org/abs/2402.09353) is a PEFT method which, simillar to LoRA, trains adapters by freezing and quantizing the original model weights._
 
 ---

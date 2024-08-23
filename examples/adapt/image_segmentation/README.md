@@ -37,16 +37,11 @@ $ cd nyuntam
 
 ### Step 2: Set Up the workspace
 
-To setup the environment to run nyuntam_adapt, we will have to pull the nyuntam_adapt docker image. 
+To setup the environment use the following command(s),
 
-```bash 
-$ docker pull nyunadmin/nyunzero_adapt:v0.1
-
-$ docker run -it -d --gpus all -v /dev/shm:/dev/shm -v $(pwd):/workspace --name nyuntam_adapt_docker --network=host nyunadmin/nyunzero_adapt:v0.1 bash 
-
-$ docker exec -it nyuntam_adapt_docker /bin/bash
-
-$ cd /workspace/nyuntam
+```bash
+pip install git+https://github.com/nyunAI/nyunzero-cli.git
+nyun init {WORKSPACE_PATH} -e adapt
 ```
 
 ## Dataset 
@@ -94,7 +89,7 @@ The following YAML file is used for setting up the experiment :
 
 #DATASET
 JOB_SERVICE: Adapt
-CUSTOM_DATASET_PATH : "/workspace/nyuntam/iccv09Data" 
+CUSTOM_DATASET_PATH : "/custom_data/iccv09Data" 
 
 
 MODEL : 'segnext' 
@@ -157,9 +152,9 @@ peft_type : 'SSF'
 
 Library :  'MMSEG'
 cuda_id : '0'
-OUTPUT_DIR : "/workspace/nyuntam/user_data/jobs/Adapt/IMGSEG"
+OUTPUT_DIR : "/user_data/jobs/Adapt/IMGSEG"
 OVERWRITE_OUTPUT_DIR : False
-LOGGING_PATH : "/workspace/nyuntam/user_data/logs/Adapt/IMGSEG" 
+LOGGING_PATH : "/user_data/logs/Adapt/IMGSEG" 
 MERGE_ADAPTER: False
 TASK : 'image_segmentation'
 auto_select_modules: True
@@ -171,7 +166,7 @@ SAVE_METHOD : 'state_dict'
 With the yaml file configured, the adaptation process is initiated with the following command : 
 
 ```bash 
-$ python main.py --yaml_path examples/adapt/image_segmentation/config.yaml
+nyun run examples/adapt/image_segmentation/config.yaml
 ```
 
 Once the job starts, you will find the following directory structure in the `user_data` folder:

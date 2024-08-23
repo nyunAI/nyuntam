@@ -2,7 +2,7 @@
 JOB_SERVICE: Adapt
 TRAIN_DIR : 'train/'
 VAL_DIR : 'validation/'
-CUSTOM_DATASET_PATH : "/workspace/nyuntam/face_det"  
+CUSTOM_DATASET_PATH : "custom_data/face_det"  
 
 #MODEL_ARGS :
 MODEL : 'rtmdet'
@@ -77,9 +77,9 @@ init_lora_weights : True
 TASK : 'object_detection'
 Library :  'MMDET' 
 cuda_id : '0,1'
-OUTPUT_DIR : "user_data/jobs/Aadpt/OBJDET"
+OUTPUT_DIR : "/user_data/jobs/Aadpt/OBJDET"
 OVERWRITE_OUTPUT_DIR : False
-LOGGING_PATH : "user_data/logs/Adapt/OBJDET"
+LOGGING_PATH : "/user_data/logs/Adapt/OBJDET"
 dataset_text_field: "image"
 MERGE_ADAPTER: False
 auto_select_modules: True

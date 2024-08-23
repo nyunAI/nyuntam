@@ -1,20 +1,23 @@
 # Finetuning Llama3-8b with QDoRA and FSDP
 
 ## Table on Contents
- - [Introduction](#introduction)
- - [Requirements](#requirements)
- - [Installation](#installation)
- - [Dataset](#dataset)
- - [Configuration](#configuration)
- - [Adapting the model](#adapting-the-model)
- - [Conclusion](#conclusion)
- 
-## Introduction 
-In this example we will be finetuning Llama3-8b with QDoRA and FSDP. We will be using the the Llama-1k dataset for this example but any dataset (properly formatted) can be used for this purpose. [DoRA](https://arxiv.org/abs/2402.09353) is a PEFT method which simillar to LoRA trains adapter by freezing and quantizing the original model weights. 
+
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Dataset](#dataset)
+- [Configuration](#configuration)
+- [Adapting the model](#adapting-the-model)
+- [Conclusion](#conclusion)
+
+## Introduction
+
+In this example we will be finetuning Llama3-8b with QDoRA and FSDP. We will be using the the Llama-1k dataset for this example but any dataset (properly formatted) can be used for this purpose. [DoRA](https://arxiv.org/abs/2402.09353) is a PEFT method which simillar to LoRA trains adapter by freezing and quantizing the original model weights.
 
 ## Requirements
 
 Before you begin, ensure that you have the following:
+
 - A GPU-enabled environment with CUDA support.
 - The Nyuntam repository cloned and set up as per the [Installation Guide](#installation).
 - Docker
@@ -24,28 +27,24 @@ Before you begin, ensure that you have the following:
 ### Step 1: Clone the Nyuntam Repository
 
 Clone the repository and navigate to the `nyuntam` directory:
+
 ```bash
-$ git clone https://github.com/nyunAI/nyuntam.git
-$ cd nyuntam
+git clone https://github.com/nyunAI/nyuntam.git
+cd nyuntam
 ```
 
 ### Step 2: Set Up the workspace
 
-To setup the environment to run nyuntam_adapt, we will have to pull the nyuntam_adapt docker image. 
+To setup the environment use the following command(s),
 
-```bash 
-$ docker pull nyunadmin/nyunzero_adapt:v0.1
-
-$ docker run -it -d --gpus all -v /dev/shm:/dev/shm -v $(pwd):/workspace --name nyuntam_adapt_docker --network=host nyunadmin/nyunzero_adapt:v0.1 bash 
-
-$ docker exec -it nyuntam_adapt_docker /bin/bash
-
-$ cd /workspace/nyuntam
+```bash
+pip install git+https://github.com/nyunAI/nyunzero-cli.git
+nyun init {WORKSPACE_PATH} -e adapt
 ```
 
 ## Dataset
 
-For this example we are using the [mlabonne/guanaco-llama2-1k](https://huggingface.co/datasets/mlabonne/guanaco-llama2-1k) dataset from 🤗 huggingface. Other datasets might need proper formatting according to the model and the task. 
+For this example we are using the [mlabonne/guanaco-llama2-1k](https://huggingface.co/datasets/mlabonne/guanaco-llama2-1k) dataset from 🤗 huggingface. Other datasets might need proper formatting according to the model and the task.
 
 | Text                                                                                                                                                                                                                                       |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -56,7 +55,7 @@ For this example we are using the [mlabonne/guanaco-llama2-1k](https://huggingfa
 
 ## Configuration
 
-The configuration yaml file is as follows: 
+The configuration yaml file is as follows:
 
 ```yaml
 #Training Arguments
@@ -166,10 +165,11 @@ use_cpu: true
 ```
 
 ## Adapting the model
-With the yaml file configured, the adaptation process is initiated with the following command : 
 
-```bash 
-$ python run_dist.py --yaml_path examples/adapt/text_generation/config.yaml
+With the yaml file configured, the adaptation process is initiated with the following command:
+
+```bash
+nyun run examples/adapt/text_generation/config.yaml
 ```
 
 Once the job starts, you will find the following directory structure in the `user_data` folder:
@@ -185,6 +185,7 @@ user_data/
             └── log.log
 
 ```
+
 The output model will be stored in `user_data/jobs/Adapt/100/` directory and the final directory structure will be:
 
 ```bash
@@ -201,11 +202,9 @@ user_data/
 ```
 
 ## Conclusion
+
 This guide has walked you through the process of adapting the Llama3-8b model using QDoRA for text generation. By employing QDoRA, we efficiently fine-tuned the model with a reduced memory footprint. The configuration and setup steps were outlined, ensuring that even complex tasks like distributed training and low-rank adaptation are manageable. The final trained model and logs are organized in a clear directory structure, making it easy to retrieve and analyze results.
-
-
 
 ---
 
 *Author: [Panigrahi, Abhranta](https://www.linkedin.com/in/abhranta-panigrahi-626a23191/)*
-

@@ -35,16 +35,11 @@ $ cd nyuntam
 
 ### Step 2: Set Up the workspace
 
-To setup the environment to run nyuntam_adapt, we will have to pull the nyuntam_adapt docker image. 
+To setup the environment use the following command(s),
 
-```bash 
-$ docker pull nyunadmin/nyunzero_adapt:v0.1
-
-$ docker run -it -d --gpus all -v /dev/shm:/dev/shm -v $(pwd):/workspace --name nyuntam_adapt_docker --network=host nyunadmin/nyunzero_adapt:v0.1 bash 
-
-$ docker exec -it nyuntam_adapt_docker /bin/bash
-
-$ cd /workspace/nyuntam
+```bash
+pip install git+https://github.com/nyunAI/nyunzero-cli.git
+nyun init {WORKSPACE_PATH} -e adapt
 ```
 
 ## Dataset
@@ -74,9 +69,9 @@ max_input_length : 512
 max_target_length : 128
 eval_metric : 'rouge' 
 cuda_id : '0'
-OUTPUT_DIR : "/workspace/nyuntam/user_data/jobs/Adapt/SUMM"
+OUTPUT_DIR : "/user_data/jobs/Adapt/SUMM"
 OVERWRITE_OUTPUT_DIR : False
-LOGGING_PATH: "/workspace/nyuntam/user_data/logs/Adapt/SUMM" 
+LOGGING_PATH: "/user_data/logs/Adapt/SUMM" 
 packing : True
 dataset_text_field : 'text' 
 max_seq_length : 512
@@ -152,7 +147,7 @@ bnb_4bit_use_double_quant : False
 With the yaml file configured, the adaptation process is initiated with the following command : 
 
 ```bash 
-$ python main.py --yaml_path examples/adapt/summarization/config.yaml
+nyun run examples/adapt/summarization/config.yaml
 ```
 
 Once the job starts, you will find the following directory structure in the `user_data` folder:

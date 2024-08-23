@@ -1,5 +1,5 @@
 JOB_SERVICE: Adapt
-CUSTOM_DATASET_PATH : "/workspace/nyuntam/iccv09Data" 
+CUSTOM_DATASET_PATH : "custom_data/iccv09Data" 
 
 
 MODEL : 'segnext' 
@@ -62,9 +62,9 @@ peft_type : 'SSF'
 
 Library :  'MMSEG'
 cuda_id : '0'
-OUTPUT_DIR : "/workspace/nyuntam/user_data/jobs/Adapt/IMGSEG"
+OUTPUT_DIR : "/user_data/jobs/Adapt/IMGSEG"
 OVERWRITE_OUTPUT_DIR : False
-LOGGING_PATH : "/workspace/nyuntam/user_data/logs/Adapt/IMGSEG" 
+LOGGING_PATH : "/user_data/logs/Adapt/IMGSEG" 
 MERGE_ADAPTER: False
 TASK : 'image_segmentation'
 auto_select_modules: True

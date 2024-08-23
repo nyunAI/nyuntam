@@ -36,17 +36,11 @@ $ cd nyuntam
 ```
 
 ### Step 2: Set Up the workspace
+To setup the environment use the following command(s),
 
-To setup the environment to run nyuntam_adapt, we will have to pull the nyuntam_adapt docker image. 
-
-```bash 
-$ docker pull nyunadmin/nyunzero_adapt:v0.1
-
-$ docker run -it -d --gpus all -v /dev/shm:/dev/shm -v $(pwd):/workspace --name nyuntam_adapt_docker --network=host nyunadmin/nyunzero_adapt:v0.1 bash 
-
-$ docker exec -it nyuntam_adapt_docker /bin/bash
-
-$ cd /workspace/nyuntam
+```bash
+pip install git+https://github.com/nyunAI/nyunzero-cli.git
+nyun init {WORKSPACE_PATH} -e adapt
 ```
 
 ## Dataset
@@ -77,7 +71,7 @@ JOB_SERVICE: Adapt
 TRAIN_DIR : 'train/'
 VAL_DIR : 'validation/'
 TEST_DIR : 
-CUSTOM_DATASET_PATH : "/workspace/nyuntam/face_det"
+CUSTOM_DATASET_PATH : "/custom_data/face_det"
 
 #MODEL_ARGS :
 MODEL : 'rtmdet' 
@@ -134,8 +128,8 @@ init_lora_weights : True
 TASK : 'object_detection'
 Library :  'MMDET' 
 cuda_id : '0,1'
-OUTPUT_DIR : "user_data/jobs/Aadpt/OBJDET"
-LOGGING_PATH : "user_data/logs/Adapt/OBJDET"
+OUTPUT_DIR : "/user_data/jobs/Aadpt/OBJDET"
+LOGGING_PATH : "/user_data/logs/Adapt/OBJDET"
 MERGE_ADAPTER: True
 auto_select_modules: True
 SAVE_METHOD : 'state_dict'
@@ -148,13 +142,13 @@ num_nodes: 1
 With the yaml file configured, the adaptation process is initiated with the following command : 
 
 ```bash 
-$ python run_dist.py --yaml_path examples/adapt/object_detection/config.yaml
+nyun run examples/adapt/object_detection/config.yaml
 ```
 
-Once the job starts, you will find the following directory structure in the `user_data` folder:
+Once the job starts, you will find the following directory structure in the `/user_data` folder:
 
 ```bash
-user_data/
+/user_data/
 ├── jobs
 │   └── Adapt
 │       └── OBJDET
@@ -181,10 +175,10 @@ This is a sample of the experiment logs  :
 08/05/2024 23-04-40 - INFO - stdout - 08/05 23:04:40 - mmengine - INFO - Epoch(train) [1][ 250/2988]  base_lr: 5.0000e-03 lr: 5.0000e-03  eta: 0:03:22  time: 0.0695  data_time: 0.0008  memory: 220  loss: 1.7820  loss_cls: 0.8524  loss_bbox: 0.9297
 
 ```
-The output model will be stored in `user_data/jobs/Adapt/100/` directory and the final directory structure will be:
+The output model will be stored in `/user_data/jobs/Adapt/100/` directory and the final directory structure will be:
 
 ```bash
-user_data/
+/user_data/
 ├── jobs
 │   └── Adapt
 │       └── OBJDET
