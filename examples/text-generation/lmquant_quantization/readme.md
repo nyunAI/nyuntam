@@ -73,11 +73,10 @@ llm:
     # Quantization parameters
     save_model: True
     keep_scales: True
-    loads_with_qserve: True
+    loads_with_qserve: False
     dtype: float32
 
     quant_type: "gchn"
-    # python -m lmquant.llm.run configs/llm.yaml configs/qoq/gchn.yaml --model-name llama3-8b 
     quant.develop_dtype: torch.float32
     quant.smooth.xw.alpha: 0.05 
     quant.smooth.xw.beta: 0.95 
@@ -192,9 +191,9 @@ LMQuant’s QoQ algorithm offers a robust method for compressing large models li
 
 ### Additional Examples
 
-- **Pruning - 0.5x Pruned Llama3.1-8b**
-- **AWQ - 4-bit Quantization (w4a16) of Llama3.1-8b**
-- **AQLM - Sub 4-bit (w2a16) Quantization of Llama3.1-8b**
-- **TensorRTLLM - Accelerating a 4-bit Quantized Llama3.1-8b**
+- **[Maximising math performance for extreme compressions: 2-bit Llama3-8b (w2a16)](../aqlm_quantization/readme.md)**
+- **[Efficient 4-bit Quantization (w4a16) of Llama3.1-8b for Optimized Text Generation](../awq_quantization/readme.md)**
+- **[Llama3.1 70B: 0.5x the cost & size](../flap_pruning/readme.md)**
+- **[Accelerating a 4-bit Quantised Llama Model](../tensorrtllm_engine/readme.md)**
 
 --- 

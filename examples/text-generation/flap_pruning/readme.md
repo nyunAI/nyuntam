@@ -1,4 +1,4 @@
-# FLAP 0.5x Llama3.1-70b
+# Llama3.1 70B: 0.5x the cost & size
 
 ## Overview
 
@@ -70,11 +70,9 @@ llm:
   FlapPruner:
     dtype: "float16"
     metrics: "WIFV"
-    nsamples: 1024
     pruning_ratio: 0.5
     remove_heads: -1
-    seed: 0
-    start_pruning_layer_idx: 22
+    start_pruning_layer_idx: 56
     structure: "AL-AM"
 
     to_finetune: False
@@ -185,9 +183,9 @@ Compare the results with the original model to assess the impact of pruning on a
 
 ### Additional Examples
 
-- **Pruning - 0.5x Pruned Llama3.1-70b**
-- **LMQuant - 4-8-4 Quantisation (w4a8kv4) of Llama3.1-70b**
-- **AQLM - Sub 4-bit (w2a16) Quantisation of Llama3.1-70b**
-- **TensorRTLLM - Accelerating a 4-bit Quantised Llama3.1-70b**
+- **[Maximising math performance for extreme compressions: 2-bit Llama3-8b (w2a16)](../aqlm_quantization/readme.md)**
+- **[Efficient 4-bit Quantization (w4a16) of Llama3.1-8b for Optimized Text Generation](../awq_quantization/readme.md)**
+- **[Achieving Up to 2.5x TensorRTLLM Speedups: Efficient 4-8-4 Quantization (w4a8kv4) of Llama3.1-8b](../lmquant_quantization/readme.md)**
+- **[Accelerating a 4-bit Quantised Llama Model](../tensorrtllm_engine/readme.md)**
 
 ---

@@ -1,4 +1,4 @@
-# TensorRTLLM - Accelerating a 4-bit Quantised Llama Model
+# Accelerating a 4-bit Quantised Llama Model
 
 ## Overview
 
@@ -9,7 +9,7 @@ This guide demonstrates how to accelerate a 4-bit quantized Llama model using th
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Running the Quantization](#running-the-quantization)
+- [Running the engine build](#running-the-engine-build)
 - [Performance Evaluation](#performance-evaluation)
 - [Conclusion](#conclusion)
 
@@ -81,71 +81,7 @@ llm:
     smoothquant: 0.5 # in case smoothquant value is given
     calib_size: 32
 
-    # ==================
-    # convert ckpt args
-    # ==================
-
-    # kv_cache_dtype: "int8" # int8 - for 'int4_awq' quant; fp8 - for 'fp8' quant;
-    max_input_len: 2048 # 32256 for mistral/mixtral
-
-    # N-way pipeline parallelism size
-    pp_size: 1
-
-    # By default, we use a single static scaling factor for the GEMM's result. per_channel instead uses a different static scaling factor for each channel.
-    per_channel: False
-
-    # By default, we use a single static scaling factor to scale activations in the int8 range. per_token chooses at run time, and for each token, a custom scaling factor.
-    per_token: False
-
-    # By default, we use dtype for KV cache. int8_kv_cache chooses int8 quantization for KV
-    int8_kv_cache: False
-
-    # By default, we use a single static scaling factor to scale weights in the int4 range. per_group chooses at run time, and for each group, a custom scaling factor.
-    per_group: False
-
-    # Load a pretrained model shard-by-shard.
-    load_by_shard: False
-
-    # Activation function
-    hidden_act: silu
-
-    # Rotary base
-    rotary_base: 10000.0
-
-    # ==========
-    # quant args
-    # ==========
-
-    # Max sequence length to initialize the tokenizers (default: 2048)
-    max_seq_length: 2048
-
-    # Batch size for calibration (default: 1)
-    batch_size: 1
-
-    # Block size for awq (default: 128)
-    awq_block_size: 128
-
-    # ==========
-    # build args
-    # ==========
-
-    max_batch_size: 1
-    # Maximum batch size
-
-    max_output_len: 1024
-    # Maximum output sequence length
-
-    max_beam_width: 1
-    # Maximum beam width for beam search
-
-    max_num_tokens: null
-    # Maximum number of tokens, calculated based on other parameters if not specified
-
-    max_prompt_embedding_table_size: 0
-    # Maximum size of the prompt embedding table, enables support for prompt tuning or multimodal input
-
-    use_fused_mlp: false
-    # Enable horizontal fusion in GatedMLP, reduces layer input traffic and potentially improves performance
+    ...other params
 
 # Job configuration
 CUDA_ID: "0"
@@ -217,9 +153,9 @@ In this example, we demonstrated how to accelerate a 4-bit quantized Llama3.1-8b
 
 ### Additional Examples
 
-- **Pruning - 0.5x Pruned Llama3.1-8b**
-- **LMQuant - 4-8-4 Quantisation (w4a8kv4) of Llama3.1-8b**
-- **AQLM - Sub 4-bit (w2a16) Quantisation of Llama3.1-8b**
-- **TensorRTLLM - Accelerating a 4-bit Quantised Llama3.1-8b**
+- **[Maximising math performance for extreme compressions: 2-bit Llama3-8b (w2a16)](../aqlm_quantization/readme.md)**
+- **[Efficient 4-bit Quantization (w4a16) of Llama3.1-8b for Optimized Text Generation](../awq_quantization/readme.md)**
+- **[Llama3.1 70B: 0.5x the cost & size](../flap_pruning/readme.md)**
+- **[Achieving Up to 2.5x TensorRTLLM Speedups: Efficient 4-8-4 Quantization (w4a8kv4) of Llama3.1-8b](../lmquant_quantization/readme.md)**
 
 --- 

@@ -18,7 +18,7 @@ llm:
     # Quantization parameters
     save_model: True
     keep_scales: True
-    loads_with_qserve: True
+    loads_with_qserve: False
     dtype: float32
 
     quant_type: "gchn"
