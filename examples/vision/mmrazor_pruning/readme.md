@@ -13,7 +13,7 @@ Pruning Object Detection is supported via MMRazor Pruning. Currently activation 
 #### 1. Downloading NyunCLI
 Nyun-cli offers the users the luxury to compress their neural networks via a single command line. To download and install NyunCLI.
 ```bash
-pip install nyuncli
+pip install git+https://github.com/nyunAI/nyunzero-cli.git
 nyun init {WORKSPACE_PATH} ""
 ```
 Here ``WORKSPACE_PATH`` is the root folder for running the experimentation and ``CUSTOM_DATA_PATH`` defines the path of custom data. The ``YAML_PATH`` is the path of configuration to be used. The base configuration used for this example can be found at [vision scripts]().This example offers a basic example for  installing nyuncli visit nyuncli documentation for a more advanced installation.
@@ -91,5 +91,5 @@ The results are as follows:
 
 | Model          | MAP  | Latency |
 |----------------|------|---------|
-| UnPruned       | 32.0 | 0.35    |
+| Unpruned       | 32.0 | 0.35    |
 | Prune+Finetune | 29.6 | 0.31 ms |
