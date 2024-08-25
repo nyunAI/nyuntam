@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides a walkthrough of applying **FLAP** (Fluctuation-based Adaptive Structured Pruning) to compress and accelerate the Llama3.1-70b model. FLAP allows for significant reduction in model size and computational requirements without sacrificing performance. Unlike traditional pruning techniques, FLAP requires no retraining and adapts the pruning ratio across different modules and layers, offering an efficient and effective approach for deploying large language models in resource-constrained environments.
+This guide provides a walkthrough of applying **FLAP** (Fluctuation-based Adaptive Structured Pruning) to compress and accelerate the Llama3.1-70b-instruct model. FLAP allows for significant reduction in model size and computational requirements without sacrificing performance. Unlike traditional pruning techniques, FLAP requires no retraining and adapts the pruning ratio across different modules and layers, offering an efficient and effective approach for deploying large language models in resource-constrained environments.
 
 ## Table of Contents
 
@@ -165,7 +165,7 @@ pip install lm-eval git+https://github.com/PanQiWei/AutoGPTQ.git
 python examples/text-generation/flap_pruning/evaluate.py \
   --base_model "meta-llama/Meta-Llama-3.1-70B-Instruct" \
   --pruned_model "user_data/jobs/Kompress/flap_pruning/" \
-  --tasks "arc_challenge:25,gptq_wikitext:0" \
+  --tasks "mmlu:5,gptq_wikitext:0" \
   --results "user_data/evals/meta-llama_3.1-70b" \
   --cache_dir "user_data/.cache"
 
@@ -173,11 +173,9 @@ python examples/text-generation/flap_pruning/evaluate.py \
 
 Compare the results with the original model to assess the impact of pruning on accuracy and inference speed.
 
-| Model        | Task                         | Metric        | Baseline  | Pruned    | Impact  |
-|------------- |----------------------------- |-------------- |---------- |---------- |-------- |
-| Llama3.1-70b  | Size (in GB)                 | Model Size ↓  | 132.0     | 85.0      | -47.0  |
-| Llama3.1-70b  | Perplexity (wikitext, gptq)  | Perplexity ↓  | 3.79      | 84146.23  | > +84k  |
-| Llama3.1-70b  | ARC Challenge (25 shot)      | Accuracy ↑    | 70.48     | 27.82     | -42.66  |
+| Model         | Task                         | Metric        | Baseline  | Pruned    |
+| ------------- |----------------------------- |-------------- |---------- |---------- |
+| Llama3.1-70b  | MMLU (5 shot)                | Accuracy ↑    | 83.6      | 82.31     |
 
 ---
 
