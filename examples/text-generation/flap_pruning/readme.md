@@ -1,4 +1,4 @@
-# Llama3.1 70B: 0.5x the cost & size
+# Llama3.1-60B-Instruct: Removing 10B parameters (15%) with minimal performance loss and no retraining.
 
 ## Overview
 
@@ -173,9 +173,12 @@ python examples/text-generation/flap_pruning/evaluate.py \
 
 Compare the results with the original model to assess the impact of pruning on accuracy and inference speed.
 
-| Model         | Task                         | Metric        | Baseline  | Pruned    |
-| ------------- |----------------------------- |-------------- |---------- |---------- |
-| Llama3.1-70b  | MMLU (5 shot)                | Accuracy ↑    | 83.6      | 82.31     |
+| Model                 	| Task            	| Metric                 	| Baseline 	| Pruned 	| Impact         	|
+|-----------------------	|-----------------	|------------------------	|----------	|--------	|----------------	|
+| Llama3.1-70b-Instruct 	| MMLU (5 shot)   	| Accuracy ↑             	| 83.6     	| 82.31  	| -1.29          	|
+| Llama3.1-70b-Instruct 	| Num. parameters 	| Count (in billions, B) ↓	| 70.56    	| 60.16  	| -10.4 (14.74%) 	|
+
+The results show that the pruned model retains a high level of accuracy while reducing the number of parameters by ~15%.
 
 ---
 

@@ -238,9 +238,9 @@ python examples/text-generation/aqlm_quantization/evaluate.py \
 
 Compare the results with the original model to assess the impact of quantization on accuracy and inference speed.
 
-|                 | Llama3-8b  | Llama3Q PV Tuned  |
-|---------------- |----------- |------------------ |
-| GSM8K (5 shot)  | 50.9       | 58.9              |
+|                	| Llama3<br>(Llama3-8b) 	| Llama3*<br>(SFT + Iterative DPO Llama3) 	| Llama3Q PV Tuned<br>(Quantized + PV Tuned Llama3*) 	|
+|----------------	|-----------------------	|-----------------------------------------	|----------------------------------------------------	|
+| GSM8K (5 shot) 	| 50.9                  	| 78.99                                   	| 58.9                                               	|
 
 ## Conclusion
 

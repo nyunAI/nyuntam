@@ -4,14 +4,14 @@
 
 - **Nyuntam Text Generation**: Focuses on compressing large language models for text generation tasks.
 - **Nyuntam Vision**: Tailored for compressing and optimizing vision models.
-- **Nyuntam Adapt**: A robust module for fine-tuning and transfer learning across both vision and language models.
+- **Nyuntam Adapt**: A robust module for fine-tuning and transfer learning across both vision and language models leveraging SoTA PEFT, full-finetuning and GPU parallelism.
 
 ## Key Features
 
 - **State-of-the-Art Compression**: Includes techniques such as pruning, quantization, distillation, and more, to ensure model efficiency without compromising performance.
-- **Adaptation**: Fine-tune and adapt models to specific tasks and datasets using methods like LoRA, SSF, and others.
+- **Adaptation**: Fine-tune and adapt vision and language models to specific tasks and datasets using methods like (Q)LoRA, (Q)SSF, and others.
 - **Multi-Platform Support**: Run experiments seamlessly on various platforms using Docker or virtual environments.
-- **CLI Integration**: Simplify your workflow with the NyunZero CLI.
+- **CLI Integration**: Simplify your workflow with the [NyunZero CLI](https://github.com/nyunAI/nyunzero-cli?tab=readme-ov-file#nyun-cli).
 
 ## Installation
 
@@ -63,7 +63,12 @@ For more details, visit the [NyunZero CLI Documentation](https://github.com/nyun
 3. **Install the Required Packages**:
 
     ```bash
-    pip install -r <submodule>/requirements.txt
+    # for text_generation
+    pip install -r text_generation/requirements.txt 
+    # for vision
+    pip install -r vision/requirements.txt 
+    # for nyuntam_adapt
+    pip install -r nyuntam_adapt/requirements.txt 
     ```
 
 ### Docker for Submodules
@@ -102,10 +107,12 @@ Each submodule in Nyuntam requires a YAML file that defines all the necessary hy
   - Scripts and example YAML files are available [here](https://github.com/nyunAI/nyuntam-text-generation/tree/main/scripts).
 
 - **Nyuntam Vision**:
-  - Example YAML configurations are provided in the repository. Details on setting up paths, compression algorithms, and other parameters can be found in the documentation.
+  - Example YAML configurations are can be found [here](https://github.com/nyunAI/nyuntam-vision/tree/main/scripts). 
+  - Details on setting up model & dataset paths, compression algorithms, and other parameters can be found in the [documentation here](https://nyunai.github.io/nyun-docs/kompress/).
 
 - **Nyuntam Adapt**:
-  - For fine-tuning and transfer learning tasks, example YAML configurations and detailed explanations are available in the [official documentation](https://nyunai.github.io/nyun-docs/).
+  - For fine-tuning and transfer learning tasks, example YAML configurations are available [here](https://github.com/nyunAI/nyuntam_adapt/tree/main/scripts)
+  - Detailed explanations on model & dataset path setups, params, and algorithms are available in the [documentation](https://nyunai.github.io/nyun-docs/adapt/).
 
 ### Running Experiments
 
