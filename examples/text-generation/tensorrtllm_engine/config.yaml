@@ -1,0 +1,102 @@
+# tensorrtllm_engine.yaml
+
+# Model configuration
+MODEL: "meta-llama/Llama-2-7b-hf"
+
+# Data configuration
+DATASET_NAME: "wikitext"
+DATASET_SUBNAME: "wikitext-2-raw-v1"
+TEXT_COLUMN: "text"                     
+SPLIT: "train"
+
+DATA_PATH:
+FORMAT_STRING:
+
+# Acceleration configuration
+llm:
+  TensorRTLLM:
+    to_quantize: true # to first quantize the model and then build engine. (Supported only for llama, gptj, & falcon models.)
+    dtype: float16
+
+    # quantization parameters
+    quant_method: "int4_awq" # 'fp8', 'int4_awq', 'smoothquant', 'int8'
+    smoothquant: 0.5 # in case smoothquant value is given
+    calib_size: 32
+
+    # ==================
+    # convert ckpt args
+    # ==================
+
+    # kv_cache_dtype: "int8" # int8 - for 'int4_awq' quant; fp8 - for 'fp8' quant;
+    max_input_len: 2048 # 32256 for mistral/mixtral
+
+    # N-way pipeline parallelism size
+    pp_size: 1
+
+    # By default, we use a single static scaling factor for the GEMM's result. per_channel instead uses a different static scaling factor for each channel.
+    per_channel: False
+
+    # By default, we use a single static scaling factor to scale activations in the int8 range. per_token chooses at run time, and for each token, a custom scaling factor.
+    per_token: False
+
+    # By default, we use dtype for KV cache. int8_kv_cache chooses int8 quantization for KV
+    int8_kv_cache: False
+
+    # By default, we use a single static scaling factor to scale weights in the int4 range. per_group chooses at run time, and for each group, a custom scaling factor.
+    per_group: False
+
+    # Load a pretrained model shard-by-shard.
+    load_by_shard: False
+
+    # Activation function
+    hidden_act: silu
+
+    # Rotary base
+    rotary_base: 10000.0
+
+    # ==========
+    # quant args
+    # ==========
+
+    # Max sequence length to initialize the tokenizers (default: 2048)
+    max_seq_length: 2048
+
+    # Batch size for calibration (default: 1)
+    batch_size: 1
+
+    # Block size for awq (default: 128)
+    awq_block_size: 128
+
+    # ==========
+    # build args
+    # ==========
+
+    max_batch_size: 1
+    # Maximum batch size
+
+    max_output_len: 1024
+    # Maximum output sequence length
+
+    max_beam_width: 1
+    # Maximum beam width for beam search
+
+    max_num_tokens: null
+    # Maximum number of tokens, calculated based on other parameters if not specified
+
+    max_prompt_embedding_table_size: 0
+    # Maximum size of the prompt embedding table, enables support for prompt tuning or multimodal input
+
+    use_fused_mlp: false
+    # Enable horizontal fusion in GatedMLP, reduces layer input traffic and potentially improves performance
+
+# Job configuration
+CUDA_ID: "0"
+ALGORITHM: "TensorRTLLM"
+JOB_SERVICE: "Kompress"
+USER_FOLDER: "/user_data/example"
+JOB_ID: "tensorrtllm_engine"
+CACHE_PATH: "/user_data/example/.cache"
+JOB_PATH: "/user_data/example/jobs/tensorrtllm_engine"
+LOGGING_PATH: "/user_data/example/logs/tensorrtllm_engine"
+ALGO_TYPE: "llm"
+TASK: "llm"

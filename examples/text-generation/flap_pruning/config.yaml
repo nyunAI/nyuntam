@@ -21,7 +21,7 @@ llm:
     pruning_ratio: 0.5
     remove_heads: -1
     seed: 0
-    start_pruning_layer_idx: 22
+    start_pruning_layer_idx: 56
     structure: "AL-AM"
 
     to_finetune: False
