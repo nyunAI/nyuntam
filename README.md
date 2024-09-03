@@ -103,16 +103,16 @@ For running each submodule independently via Docker, use the following commands:
 Each submodule in Nyuntam requires a YAML file that defines all the necessary hyperparameters and configurations for running experiments. Examples and templates for these YAML files can be found within each submodule.
 
 - **Nyuntam Text Generation**:
-  - Configuration details for datasets and models can be found [here](https://nyunai.github.io/nyun-docs/dataset/).
+  - Refer to [dataset imports](https://nyunai.github.io/nyuntam-docs/dataset/) and [models imports](https://nyunai.github.io/nyuntam-docs/model/) for configuration details.
   - Scripts and example YAML files are available [here](https://github.com/nyunAI/nyuntam-text-generation/tree/main/scripts).
 
 - **Nyuntam Vision**:
   - Example YAML configurations are can be found [here](https://github.com/nyunAI/nyuntam-vision/tree/main/scripts). 
-  - Details on setting up model & dataset paths, compression algorithms, and other parameters can be found in the [documentation here](https://nyunai.github.io/nyun-docs/kompress/).
+  - Details on setting up model & dataset paths, compression algorithms, and other parameters can be found in the [documentation here](https://nyunai.github.io/nyuntam-docs/nyuntam_vision/).
 
 - **Nyuntam Adapt**:
   - For fine-tuning and transfer learning tasks, example YAML configurations are available [here](https://github.com/nyunAI/nyuntam_adapt/tree/main/scripts)
-  - Detailed explanations on model & dataset path setups, params, and algorithms are available in the [documentation](https://nyunai.github.io/nyun-docs/adapt/).
+  - Detailed explanations on model & dataset path setups, params, and algorithms are available in the [documentation](https://nyunai.github.io/nyuntam-docs/adapt/).
 
 ### Running Experiments
 
@@ -130,4 +130,4 @@ For detailed examples and use cases, refer to [examples](./examples/readme.md)
 
 ## Documentation
 
-For complete details checkout [NyunAI Docs](https://nyunai.github.io/nyun-docs)
+For complete details checkout [NyunAI Docs](https://nyunai.github.io/nyuntam-docs)
