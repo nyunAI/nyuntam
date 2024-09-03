@@ -63,7 +63,10 @@ We first apply SFT + Iterative DPO to the model to boost upfront the downstream 
 
 ### Step 2: AQLM Quantization
 
-Dataset: We use the `openai/gsm8k` dataset for calibration and fine-tuning of the quantized model. Use the following script to create the dataset:
+[Optional] GSM8K Dataset creation:
+
+We can use the `openai/gsm8k` dataset for fine-tuning of the quantized model. 
+Use the following script to create the dataset in case finetuning with gsm8k:
 
 ```bash
 python examples/text-generation/aqlm_quantization/create_dataset.py
@@ -86,7 +89,7 @@ DATASET_NAME: "togethercomputer/RedPajama-Data-1T-Sample"
 TEXT_COLUMN: "text"                     
 SPLIT: "train"
 
-# Data configuration (if finetuning on gsm8k)
+# Data configuration (replace the data configuration above with the following if finetuning on gsm8k)
 # DATASET_NAME: "gsm8k_restructured"
 # DATA_PATH: "user_data/datasets/gsm8k_restructured"
 # TEXT_COLUMN: "text"                     
