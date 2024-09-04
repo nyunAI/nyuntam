@@ -26,6 +26,13 @@ To get started with contributing to Nyuntam:
     git clone https://github.com/your-username/nyuntam.git
     cd nyuntam
     ```
+   Note: For any contributions across nyuntam and its subsequent submodules (nyuntam-text-generation, nyuntam-vision, or nyuntam-adapt) make sure you do a recursive submodule init to add the submodule(s)
+
+    ```bash
+    # based on what part of the code you are working on
+    git submodule update --init --recursive <submodule>
+    ```
+   where submodule can be text_generation, vision or nyuntam_adapt. Post that, change the directory in the submodule you work on and follow these steps,
 
 3. **Install Dependencies**: Depending on which part of the project you're working on, you might need to set up a virtual environment or a Docker container. Refer to the [Installation section](#installation) in the README for detailed instructions.
 
@@ -59,19 +66,6 @@ If you find a bug or have a feature request, please [open an issue](https://gith
 - Any relevant logs, screenshots, or code snippets.
 
 ### Submitting Pull Requests
-
-**Note**
-
-For any contributions across nyuntam and its subsequent submodules (nyuntam-text-generation, nyuntam-vision, or nyuntam-adapt) make sure you clone the nyuntam repository and do a recursive submodule init to add all the submodules.
-
-    ```bash
-    # clone nyuntam as
-    git clone https://github.com/nyunAI/nyuntam.git
-
-    # based on what part of the code you are working on
-    git submodule update --init --recursive <submodule>
-    ```
-where submodule can be text_generation, vision or nyuntam_adapt. Post that, change the directory in the submodule you work on and follow these steps,
 
 1. **Create a Branch**: Make sure to branch off from the `main` branch.
 
