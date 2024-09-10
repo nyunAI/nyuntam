@@ -16,7 +16,7 @@ def process(requirements: list) -> list:
 
     def check_clashes(unique_requirements):
         unique_packages = get_package_names(unique_requirements)
-        if len(set(unique_packages) != len(unique_requirements)):
+        if len(set(unique_packages)) != len(unique_requirements):
             counter = Counter(unique_packages)
             repeating_packages = [
                 package for package, count in counter.items() if count > 1
@@ -32,15 +32,14 @@ def process(requirements: list) -> list:
 
 install_requires = [
     "strenum",
-    "json",
     "PyYAML",
-    "torch==2.3.0+cu121",
+    "torch==2.3.0",
     "gdown",
     "pathtools",
     "tqdm",
-    "requests==2.28.2" "psutil",
+    "requests==2.28.2",
+    "psutil",
     "wandb",
-    "shutil",
 ]
 
 visionbase = [
@@ -60,10 +59,10 @@ mmdet = openmm + ["mmdet==3.3.0"]  # for now
 mmseg = openmm + ["mmsegmentation==1.2.2"]
 mmpose = openmm + ["mmpose==1.3.1"]
 mmyolo = openmm + ["mmyolo==0.6.0"]
-mmdeploy = openmm + tensorrt + nncf + ["mmdeploy=1.2.0"]
-mmrazor = openmm + tensorrt + nncf["mmrazor==1.0.0"]
+mmdeploy = openmm + tensorrt + nncf + ["mmdeploy==1.2.0"]
+mmrazor = openmm + tensorrt + nncf+["mmrazor==1.0.0"]
 
-classification_datasets = ["trailmet==0.0.1rc", "torchvision"]
+classification_datasets = ["trailmet==0.0.1r3", "torchvision"]
 classification_modelloading = [
     "huggingface==0.0.1",
     "timm==0.9.2",
@@ -82,13 +81,13 @@ segmentation = od_dataset + mmseg
 quantization = nncf + onnx + tensorrt
 
 
-adapt_base = [
+adaptbase = [
     "peft==0.11.1",
     "bitsandbytes==0.43.1",
     "sentence-transformers==2.2.2",
     "sentencepiece==0.2.0",
     "transformers==4.40.1",
-    "triton==2.1.0",
+    "triton==2.3.0",
     "trl==0.8.6",
 ]
 accelerate = ["accelerate==0.29.3"]
@@ -103,14 +102,13 @@ aqlm = accelerate + [
 flap = [
     "packaging",
     "flash_attn",
-] + adapt_base
+] + adaptbase
 
 tensorrtllm = ["mpi4py", "tensorrt-llm"]
 qserve = ["Qserve"]
 
 
 dependency_links = ["https://download.pytorch.org/whl/cu121", "https://pypi.nvidia.com"]
-
 setup(
     name="nyuntam",
     version="0.0.1",
@@ -125,7 +123,6 @@ setup(
         "classification": process(visionbase + classification),
         "pose": process(visionbase + pose),
         "segmentation": process(visionbase + segmentation),
-        "mmadapt": proecess(adaptbase + mmpose + mmseg + mmdet),
         "nncf": process(visionbase + nncf),
         "tensorrt": process(visionbase + tensorrt),
         "onnx": process(visionbase + onnx),
@@ -136,11 +133,11 @@ setup(
             visionbase + object_detection + quantization + mmrazor + mmdeploy
         ),
         "classificationstack": process(visionbase + classification + quantization),
-        # adapt
+        # # adapt
         "adapt": adaptbase,
         "adaptmm": process(adaptbase + mmpose + mmseg + mmdet),
         "accelerate": accelerate,
-        # text-generation
+        # # text-generation
         "text-gen": process(
             textgen_base + flap + tensorrtllm + qserve + autoawq + aqlm
         ),
@@ -149,5 +146,6 @@ setup(
         "aqlm": process(textgen_base + aqlm),
         "autoawq": process(textgen_base + autoawq),
         "qserve": process(textgen_base + qserve),
-    },
+        "adapt":process(adaptbase)
+    }
 )
