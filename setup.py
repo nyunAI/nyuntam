@@ -40,6 +40,7 @@ install_requires = [
     "requests==2.28.2",
     "psutil",
     "wandb",
+    "wheel"
 ]
 
 visionbase = [
@@ -54,27 +55,12 @@ tensorrt = onnx + ["tensorrt==8.5.2", "pycuda"]
 
 torchprune = ["torch-pruning==1.3.2"]
 
-openmm = ["openmim==0.3.9", "mmengine==0.10.2", "mmcv==2.2.0"]
-mmdet = openmm + ["mmdet==3.3.0"]  # for now
-mmseg = openmm + ["mmsegmentation==1.2.2"]
-mmpose = openmm + ["mmpose==1.3.1"]
-mmyolo = openmm + ["mmyolo==0.6.0"]
-mmdeploy = openmm + tensorrt + nncf + ["mmdeploy==1.2.0"]
-mmrazor = openmm + tensorrt + nncf+["mmrazor==1.0.0"]
-
-classification_datasets = ["trailmet==0.0.1r3", "torchvision"]
+classification_datasets = ["trailmet==0.0.1rc3", "torchvision"]
 classification_modelloading = [
     "huggingface==0.0.1",
     "timm==0.9.2",
-    "trailmet==0.0.1r3",
+    "trailmet==0.0.1rc3",
 ]
-od_dataset = [
-    "pycocotools",
-    "ultralytics==8.0.161",
-]
-od_modelloading = mmyolo + mmdet
-
-object_detection = od_dataset + od_modelloading
 classification = classification_datasets + classification_modelloading
 pose = od_dataset + mmpose
 segmentation = od_dataset + mmseg
@@ -104,7 +90,6 @@ flap = [
     "flash_attn",
 ] + adaptbase
 
-tensorrtllm = ["mpi4py", "tensorrt-llm"]
 qserve = ["Qserve"]
 
 
@@ -127,22 +112,15 @@ setup(
         "tensorrt": process(visionbase + tensorrt),
         "onnx": process(visionbase + onnx),
         "torchprune": process(visionbase + torchprune),
-        "mmrazor": process(visionbase + mmrazor),
-        "mmdeploy": process(visionbase + mmdeploy),
-        "objectdetectionstack": process(
-            visionbase + object_detection + quantization + mmrazor + mmdeploy
-        ),
         "classificationstack": process(visionbase + classification + quantization),
         # # adapt
         "adapt": adaptbase,
-        "adaptmm": process(adaptbase + mmpose + mmseg + mmdet),
         "accelerate": accelerate,
         # # text-generation
         "text-gen": process(
             textgen_base + flap + tensorrtllm + qserve + autoawq + aqlm
         ),
         "flap": process(textgen_base + flap),
-        "tensorrtllm": process(textgen_base + tensorrtllm),
         "aqlm": process(textgen_base + aqlm),
         "autoawq": process(textgen_base + autoawq),
         "qserve": process(textgen_base + qserve),
