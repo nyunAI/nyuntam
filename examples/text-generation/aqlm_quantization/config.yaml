@@ -1,0 +1,144 @@
+# aqlm_quantization.yaml
+
+# Model configuration
+MODEL: "RLHFlow/LLaMA3-iterative-DPO-final"
+
+# Data configuration
+DATASET_NAME: "togethercomputer/RedPajama-Data-1T-Sample"
+TEXT_COLUMN: "text"                     
+SPLIT: "train"
+
+# Data configuration (if finetuning on gsm8k)
+# DATASET_NAME: "gsm8k_restructured"
+# DATA_PATH: "user_data/datasets/gsm8k_restructured"
+# TEXT_COLUMN: "text"                     
+# SPLIT: "train"
+
+DATASET_SUBNAME: ""
+FORMAT_STRING:
+
+# Quantization configuration
+
+llm:
+  AQLM:
+    # Quantization parameters
+    save_intermediate_results: true
+    dtype: "float16"
+    overwrite: false
+
+    calibration_config:
+      attn_implementation: null
+      beam_size: 1
+      codebook_value_nbits: 16
+      codebook_value_num_groups: 1
+      dtype: "float16"
+      finetune_adam_beta1: 0.9
+      finetune_adam_beta2: 0.999
+      finetune_batch_size: 256
+      finetune_early_stop: 3
+      finetune_keep_best: true
+      finetune_lr: 0.0001
+      finetune_max_epochs: 25
+      in_group_size: 8
+      init_max_iter: 100
+      init_max_points_per_centroid: null
+      local_batch_size: 4
+      lr: 0.0001
+      max_epochs: 100
+      mix_compression: false
+      model_seqlen: 4096
+      nbits_per_codebook: 16
+      new_eval: false
+      no_quant: false
+      nsamples: 2048
+      num_codebooks: 1
+      offload_activations: true
+      on_save: null
+      out_group_size: 1
+      print_frequency: 1
+      relative_mse_tolerance: 0.01
+      resume: false
+      scale_nbits: 0
+      seed: 0
+      skip_out_loss: false
+      steps_per_epoch: 100
+      true_sequential: false
+      trust_remote_code: true
+      use_checkpointing: false
+      use_faiss: false
+      use_fast_tokenizer: false
+      val_size: 256
+      wandb: false
+    conversion_config:
+      attn_implementation: null
+      code_dtype: int32
+      load_dtype: auto
+      trust_remote_code: true
+    finetune_config:
+      adam_beta1: 0.9
+      adam_beta2: 0.95
+      amp_dtype: float32
+      amsgrad: false
+      attn_implementation: null
+      batch_size: 128
+      beam_size: 1
+      block_type: LlamaDecoderLayer
+      code_adam_16bit: false
+      code_beta1: 0.0
+      code_beta2: 0.95
+      code_dtype: uint16
+      code_lr: 0.001
+      code_selection_temperature: 0
+      code_trust_ratio: 0.01
+      debias: true
+      delta_decay: 0
+      download_num_workers: null
+      eval_datasets:
+      - wikitext2
+      - c4
+      eval_every_steps: 15
+      force_code_update: false
+      gradient_checkpointing: true
+      keep_best_model: true
+      lamb: true
+      limit_parallel_inits: 4
+      load_dtype: float32
+      lr: 0.0001
+      master_dtype: float32
+      max_code_change_per_step: 0.01
+      max_epochs: 10
+      microbatch_size: 2
+      minimize_sync: false
+      model_seqlen: 4096
+      monkeypatch_old_pickle: false
+      num_workers: 8
+      overwrite_cache: false
+      preprocessing_chunk_length: null
+      preprocessing_keep_in_memory: false
+      preprocessing_num_workers: 24
+      print_every_steps: 1
+      save_every_steps: 10
+      seed: 1337
+      skip_grouping: true
+      straight_through_buffer_dtype: float32
+      trust_remote_code: true
+      update_codebooks_and_scales: true
+      update_codes: true
+      update_non_quantized_parameters: true
+      use_fast_tokenizer: false
+      use_fsdp_amp: false
+      verbose_optimizer: true
+      wandb: false
+      wrap_separately: []
+
+# Job configuration
+CUDA_ID: "0,1,2,3"
+ALGORITHM: "AQLM"
+JOB_SERVICE: "Kompress"
+USER_FOLDER: "user_data"
+JOB_ID: "aqlm_quantization"
+CACHE_PATH: "user_data/.cache"
+JOB_PATH: "user_data/jobs/aqlm_quantization"
+LOGGING_PATH: "user_data/logs/aqlm_quantization"
+ALGO_TYPE: "llm"
+TASK: "llm"

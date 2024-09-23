@@ -1,0 +1,53 @@
+# lmquant_quantization.yaml
+
+# Model configuration
+MODEL: "meta-llama/Meta-Llama-3.1-8B-Instruct"
+
+# Data configuration
+DATASET_NAME: "mit-han-lab/pile-val-backup"
+DATASET_SUBNAME: ""
+TEXT_COLUMN: "text"                     
+SPLIT: "validation"
+
+DATA_PATH:
+FORMAT_STRING:
+
+# Quantization configuration
+llm:
+  LMQuant:
+    # Quantization parameters
+    save_model: True
+    keep_scales: True
+    loads_with_qserve: False
+    dtype: float32
+
+    quant_type: "gchn"
+    quant.develop_dtype: torch.float32
+    quant.smooth.xw.alpha: 0.05 
+    quant.smooth.xw.beta: 0.95 
+    quant.smooth.yx.strategy: GridSearch 
+    quant.smooth.yx.beta: " -2"
+
+    quant.wgts.calib_range.outputs_device: cpu
+    quant.reorder.outputs_device: cpu
+    quant.smooth.xw.outputs_device: cpu
+    quant.smooth.yx.outputs_device: cpu
+
+    # Nested dictionary for quantization parameters
+    eval.tasks:
+      - arc_challenge:25
+    eval.max_seq_length: 4096
+    eval.evaluator: "lm_eval"
+
+
+# Job configuration
+CUDA_ID: "0,1,2,3"
+ALGORITHM: "LMQuant"
+JOB_SERVICE: "Kompress"
+USER_FOLDER: "user_data"
+JOB_ID: "lmquant_quantization"
+CACHE_PATH: "user_data/.cache"
+JOB_PATH: "user_data/jobs/lmquant_quantization"
+LOGGING_PATH: "user_data/logs/lmquant_quantization"
+ALGO_TYPE: "llm"
+TASK: "llm"
