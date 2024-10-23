@@ -13,9 +13,10 @@ import json
 import requests
 import logging
 import time
+import os
 
 LOGGER = None
-DEFAULT_CONFIG = "recipe/default.yaml"
+DEFAULT_CONFIG = "/home/piuser/voice/nyuntam/examples/experimentals/voice_engine/recipe/rpi5.yaml"
 
 
 def set_logger(*args, **kwargs):
@@ -200,6 +201,11 @@ def parse_args():
 ##################################################
 
 
+class EnvironmentTypes(StrEnum):
+    STT = "stt"
+    LLM = "llm"
+
+
 @dataclass
 class STTInput:
     environment_config: STTEnvironmentConfig
@@ -356,14 +362,23 @@ class Engine:
         llm_input = LLMInput.from_stt_response(self.config.llm, stt_response)
         if llm_input.stream:
             # implement stream response handling
+            tts_processing_queue = queue.Queue()
             decoded_streams = queue.Queue()
             stream_queue = queue.Queue()
             stop_event = threading.Event()
+
             decode_thread = threading.Thread(
                 target=decode_stream,
-                args=(stop_event, stream_queue, decoded_streams, True),
+                args=(stop_event, stream_queue, decoded_streams, tts_processing_queue, True),
             )
             decode_thread.start()
+
+            tts_processing_thread = threading.Thread(
+                target=create_tts_wav,
+                args=(stop_event, tts_processing_queue)
+            )
+            tts_processing_thread.start()
+
             llm_input.data["stream"] = True
             ttfs = None
             response = call_llm_environment(llm_input)
@@ -379,7 +394,10 @@ class Engine:
                     stream_queue.put(line)
             tock = time.time()
             stop_event.set()
+
             decode_thread.join()
+            tts_processing_thread.join()
+
             llm_response = LLMResponse(
                 text=decoded_streams_to_text(list(decoded_streams.queue)),
                 streams=list(decoded_streams.queue),
@@ -436,6 +454,7 @@ def initialize_environment(config: EnvironmentConfig):
             + config.get_options().split()
             + config.get_model_option().split()
         )
+        
         LOGGER.info(f"Initializing environment with command: {' '.join(cmd)}")
         return subprocess.Popen(cmd)
 
@@ -473,7 +492,9 @@ def decode_stream(
     stop_event: threading.Event,
     stream_queue: queue.Queue,
     decoded_streams: queue.Queue,
+    tts_processing_queue: queue.Queue,
     decode_and_print: bool = False,
+    decode_and_talk: bool = True
 ):
     while not stop_event.is_set() or not stream_queue.empty():
         try:
@@ -486,8 +507,94 @@ def decode_stream(
                 # if decode_and_print:
                 #     # print decoded stream continously with flush
                 #     print(json_response["content"], end="", flush=True)
+                if decode_and_talk:
+                    #use piper to start saying after delay of n tokens
+                    tts_processing_queue.put(json_response["content"])
+
         except queue.Empty:
             pass  # No data to process yet, continue
+
+def create_tts_wav(
+    stop_event: threading.Event,
+    tts_processing_queue: queue.Queue,
+    output_dir: str  = "/home/piuser/voice/core/test-ouput"
+):
+    # Ensure output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Start Piper in a subprocess with --output_dir
+    piper_process = subprocess.Popen(
+        # ["piper", "--model", "en_US-lessac-medium", "--output_dir", output_dir],
+        ["piper", "--model", "en_US-lessac-medium","--length-scale" , "2.0" ,  "--output_raw"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True
+    )
+
+    # "ffmpeg -f s16le -ar 22050 -ac 1 -i - -acodec aac -ab 128k -f adts -content_type audio/aac -listen 1 http://0.0.0.0:8090/feed.aac"
+    # Define FFmpeg command to stream the audio over HTTP
+
+    #NOTE This is experimental because I am rying to hear the audio via a stream over SSH
+    ffmpeg_command = [
+        "ffmpeg",
+        "-f", "s16le",  # Input format (16-bit PCM, little-endian)
+        "-ar", "22050",  # Sample rate
+        "-ac", "1",  # Number of audio channels (mono)
+        "-i", "-",  # Input from stdin (output from Piper)
+        "-acodec", "aac",  # Audio codec (AAC)
+        "-ab", "128k",  # Audio bitrate
+        "-f", "adts",  # Output format
+        "-content_type", "audio/aac",  # Content type for the HTTP stream
+        "-listen", "1",  # Make FFmpeg act as a server
+        "http://0.0.0.0:8090/feed.aac"  # Output URL
+    ]
+
+    ffmpeg_process = subprocess.Popen(
+    ffmpeg_command,
+    stdin=piper_process.stdout,  # Take input from Piper process
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE
+    )
+
+
+    try:
+        while not (stop_event.is_set() and tts_processing_queue.empty()):
+            if tts_processing_queue.qsize() > 10:
+                try:
+                    # Get one item from the queue
+                    text = [tts_processing_queue.get(timeout=0.001) for _ in range(10)]
+                    text = " ".join(text)
+
+                    if text:
+                        # Check if the Piper process is still running before writing
+                        # if piper_process.poll() is None:
+                        try:
+                            # Write the text to Piper's stdin
+                            piper_process.stdin.write(f"{text}\n")
+                            piper_process.stdin.flush()
+
+
+                        except BrokenPipeError:
+                            LOGGER.error("BrokenPipeError: Piper process terminated unexpectedly.")
+                            break
+
+                except queue.Empty:
+                    pass  # No data to process yet, continue
+
+    finally:
+        # Stop Piper subprocess if it's still running
+        if piper_process.poll() is None:
+            piper_process.stdin.close()
+            piper_process.wait()
+
+        # Print any errors from Piper
+        stderr_output = piper_process.stderr.read()
+        if stderr_output:
+            print("Piper stderr:", stderr_output)
+
+
+
 
 
 def decoded_streams_to_text(decoded_streams: tp.List[tp.Dict[str, tp.Any]]) -> str:
