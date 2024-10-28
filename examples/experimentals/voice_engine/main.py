@@ -14,6 +14,8 @@ import requests
 import logging
 import time
 import os
+import re
+import psutil
 
 LOGGER = None
 DEFAULT_CONFIG = "/home/piuser/voice/nyuntam/examples/experimentals/voice_engine/recipe/rpi5.yaml"
@@ -379,6 +381,7 @@ class Engine:
             )
             tts_processing_thread.start()
 
+
             llm_input.data["stream"] = True
             ttfs = None
             response = call_llm_environment(llm_input)
@@ -517,25 +520,24 @@ def decode_stream(
 def create_tts_wav(
     stop_event: threading.Event,
     tts_processing_queue: queue.Queue,
-    output_dir: str  = "/home/piuser/voice/core/test-ouput"
+    output_dir: str = "/home/piuser/voice/core/test-output"
 ):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    # Start Piper in a subprocess with --output_dir
     piper_process = subprocess.Popen(
-        # ["piper", "--model", "en_US-lessac-medium", "--output_dir", output_dir],
-        ["piper", "--model", "en_US-lessac-medium","--length-scale" , "2.0" ,  "--output_raw"],
+        [
+            "piper", "--model", "en_US-lessac-medium", "--length-scale" , "1.5" , "--output_raw" 
+        ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         universal_newlines=True
     )
 
-    # "ffmpeg -f s16le -ar 22050 -ac 1 -i - -acodec aac -ab 128k -f adts -content_type audio/aac -listen 1 http://0.0.0.0:8090/feed.aac"
-    # Define FFmpeg command to stream the audio over HTTP
+    piper_proc = psutil.Process(piper_process.pid)
 
-    #NOTE This is experimental because I am rying to hear the audio via a stream over SSH
+    # Define FFmpeg command to stream the audio over HTTP
     ffmpeg_command = [
         "ffmpeg",
         "-f", "s16le",  # Input format (16-bit PCM, little-endian)
@@ -547,46 +549,72 @@ def create_tts_wav(
         "-f", "adts",  # Output format
         "-content_type", "audio/aac",  # Content type for the HTTP stream
         "-listen", "1",  # Make FFmpeg act as a server
-        "http://0.0.0.0:8090/feed.aac"  # Output URL
+        "http://0.0.0.0:8090/feed.aac",  # Output URL
+        "-acodec", "pcm_s16le",  # Audio codec for WAV
+        # os.path.join(output_dir, "output.wav")  # Output WAV file path
     ]
 
     ffmpeg_process = subprocess.Popen(
-    ffmpeg_command,
-    stdin=piper_process.stdout,  # Take input from Piper process
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE
+        ffmpeg_command,
+        stdin=piper_process.stdout,  # Take input from Piper process
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
     )
 
+    buffer = ""
 
     try:
         while not (stop_event.is_set() and tts_processing_queue.empty()):
-            if tts_processing_queue.qsize() > 10:
+            if tts_processing_queue.qsize() > 1:
                 try:
                     # Get one item from the queue
-                    text = [tts_processing_queue.get(timeout=0.001) for _ in range(10)]
-                    text = " ".join(text)
+                    text_part = tts_processing_queue.get(timeout=0.001)
+                    buffer += text_part
+                    print("BUFFER : " , buffer)
 
-                    if text:
-                        # Check if the Piper process is still running before writing
-                        # if piper_process.poll() is None:
-                        try:
-                            # Write the text to Piper's stdin
-                            piper_process.stdin.write(f"{text}\n")
-                            piper_process.stdin.flush()
+                    # Check if the buffer contains a full sentence
+                    if any(delimiter in buffer for delimiter in ['.', '!', '?' , ":" , ";"]):
+                        # Split the buffer into sentences
+                        sentences = re.split(r'(?<=[.!?])\s+', buffer)
 
+                        # Keep the last partial sentence in the buffer
+                        buffer = sentences.pop() if not re.search(r'[.!?]$', buffer) and len(sentences) > 1 else ""
 
-                        except BrokenPipeError:
-                            LOGGER.error("BrokenPipeError: Piper process terminated unexpectedly.")
-                            break
+                        # print(sentences)
+
+                        # Join the complete sentences and send to Piper
+                        text = " ".join(sentences)
+
+                        if text:
+                            # Check if the Piper process is still running before writing
+                            try:
+                                print("Sending ---->", text)
+                                # Write the text to Piper's stdin
+                                piper_process.stdin.write(f"{text}\n")
+                                piper_process.stdin.flush()
+
+                            except BrokenPipeError:
+                                LOGGER.error("BrokenPipeError: Piper process terminated unexpectedly.")
+                                break
 
                 except queue.Empty:
                     pass  # No data to process yet, continue
 
     finally:
+
+        # Measure peak memory usage of Piper process
+        try:
+            peak_memory = piper_proc.memory_info().rss / (1024 * 1024)  # Convert to MB
+            print(f"Peak memory usage of Piper process: {peak_memory:.2f} MB")
+        except psutil.NoSuchProcess:
+            LOGGER.error("Piper process not found for memory measurement.")
+
         # Stop Piper subprocess if it's still running
         if piper_process.poll() is None:
             piper_process.stdin.close()
             piper_process.wait()
+            ffmpeg_process.terminate()
+            ffmpeg_process.wait()
 
         # Print any errors from Piper
         stderr_output = piper_process.stderr.read()
