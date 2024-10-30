@@ -62,8 +62,6 @@ classification_modelloading = [
     "trailmet==0.0.1rc3",
 ]
 classification = classification_datasets + classification_modelloading
-pose = od_dataset + mmpose
-segmentation = od_dataset + mmseg
 quantization = nncf + onnx + tensorrt
 
 
@@ -106,8 +104,6 @@ setup(
         # vision
         "object_detection": process(visionbase + object_detection),
         "classification": process(visionbase + classification),
-        "pose": process(visionbase + pose),
-        "segmentation": process(visionbase + segmentation),
         "nncf": process(visionbase + nncf),
         "tensorrt": process(visionbase + tensorrt),
         "onnx": process(visionbase + onnx),
