@@ -102,7 +102,6 @@ setup(
     dependency_links=dependency_links,
     extras_require={
         # vision
-        "object_detection": process(visionbase + object_detection),
         "classification": process(visionbase + classification),
         "nncf": process(visionbase + nncf),
         "tensorrt": process(visionbase + tensorrt),
