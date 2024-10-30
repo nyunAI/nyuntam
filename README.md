@@ -85,7 +85,7 @@ For running each submodule independently via Docker, use the following commands:
 - **Nyuntam Vision**:
 
     ```bash
-    docker pull nyunadmin/nyunzero_kompress_vision:v0.1
+    docker pull nyunadmin/nyunzero_kompress_vision:v0.1 
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_kompress_vision:v0.1 bash
     ```
 
@@ -95,7 +95,38 @@ For running each submodule independently via Docker, use the following commands:
     docker pull nyunadmin/nyunzero_adapt:v0.1
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_adapt:v0.1 bash
     ```
+### Using Setup.py
+    ```bash
+    python install . [extra_deps]
+    ```
+The extra dependencies allow installation of individual components of Nyuntam, the extra_dependies according to submodules is listed below
+- **Nyuntam Text Generation**
+  - "flap": For running Flap. You should also add "adapt" extra dependencies with "flap".
+  - "aqlm": For running aqlm.
+  - "autoawq": For running autoawq quantization.
+  - "qserve": For running qserve.
+- **Nyuntam Vision**
+  - "classification_stack": For complete installation of classification stack which includes Quantization, Distillation and Pruning.
+  - "classification" For Installing Model and Dataset Support without compression support. 
+  - "nncf": For NNCF QAT and PTQ. (CPU)
+  - "tensorrt": For GPU Quantization of Classification Models.
+  - "openvino": For Openvino CPU PTQ.
+  - "torchprune": For Pruning Classification Models.
+- **Nyuntam Adapt**
+  - "adapt": For complete installation of Adapt.
+  - "accelerate": For supporting multi-gpu training with Adapt.
+- **Exceptions**
+      OpenMM libraries and TensorRTLLM installations require manual installation.
+  - **OpenMM Libraries**
+          Nyuntam utilies OpenMM Libraires for importing and compressing object detection models. We utilize MMDetection and MMYolo for object detection models, MMSegmentation for           Segmentaion models, MMRazor and MMDeploy for compression and deployment of models. To install the proper libraries follow the code snippet below
 
+          ```bash
+          pip install openmim
+          mim install mmdet mmseg mmyolo mmrazor mmdeploy
+          ```
+  
+  - **TensorRTLLM**
+      To install TensorRTLLM follow the official instructions found here: [Linux](https://nvidia.github.io/TensorRT-LLM/installation/linux.html) and [Windows](https://nvidia.github.io/TensorRT-LLM/installation/windows.html).
 ## Usage
 
 ### Setting Up YAML Configuration Files
