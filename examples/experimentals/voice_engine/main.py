@@ -18,7 +18,7 @@ import re
 import psutil
 
 LOGGER = None
-DEFAULT_CONFIG = "/home/piuser/voice/nyuntam/examples/experimentals/voice_engine/recipe/rpi5.yaml"
+DEFAULT_CONFIG = "nyuntam/examples/experimentals/voice_engine/recipe/rpi5.yaml"
 
 
 def set_logger(*args, **kwargs):
@@ -70,6 +70,8 @@ class EnvironmentConfig(ABC):
 
     _executable: tp.Union[str, Path] = field(default="")
     _warmup: int = field(default=0)
+
+
 
     @property
     def executable_path(self) -> str:
@@ -160,11 +162,23 @@ class LLMEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
         cmd += SPACE
         return cmd
 
+@dataclass
+class TTSEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
+    voice: bool = field(default=False)
+    model: str = field(default='en_US-lessac-medium')
+    length_scale: float = field(default=1.5)
+
+    def get_options(self):
+        SPACE = " "
+        cmd = f""
+
+
 
 @dataclass
 class EngineEnvironmentConfig(EnvironmentConfigMeta):
     stt: STTEnvironmentConfig = field(default_factory=STTEnvironmentConfig)
     llm: LLMEnvironmentConfig = field(default_factory=LLMEnvironmentConfig)
+    tts: TTSEnvironmentConfig = field(default_factory=TTSEnvironmentConfig)
     log_path: tp.Union[str, Path] = field(default="environment.log")
 
     def __post_init__(self):
@@ -355,7 +369,7 @@ class Engine:
 
         # NOTE: When using chain of responsibility, initialize handlers here
 
-    def call(self, input: STTInput) -> EngineResponse:
+    def call(self, input: STTInput, ttsConfig) -> EngineResponse:
         assert isinstance(input, STTInput), "Input must be of type STTInput"
         tick = time.time()
         stt_response = STTResponse.from_response(call_stt_environment(input))
@@ -375,11 +389,13 @@ class Engine:
             )
             decode_thread.start()
 
-            tts_processing_thread = threading.Thread(
-                target=create_tts_wav,
-                args=(stop_event, tts_processing_queue)
-            )
-            tts_processing_thread.start()
+            if ttsConfig.voice:
+                tts_processing_thread = threading.Thread(
+                    target=create_tts_wav,
+                    args=(stop_event, tts_processing_queue, ttsConfig)
+                )
+                tts_processing_thread.start()
+                
 
 
             llm_input.data["stream"] = True
@@ -392,14 +408,16 @@ class Engine:
                 if line:
                     if ttfs is None:
                         ttfs = time.time()
-                        print("TTFS: ", ttfs - tick)
+                        LOGGER.info(f"TTFS: {ttfs - tick}" )
 
                     stream_queue.put(line)
             tock = time.time()
             stop_event.set()
 
             decode_thread.join()
-            tts_processing_thread.join()
+            if ttsConfig.voice:
+                tts_processing_thread.join()
+            
 
             llm_response = LLMResponse(
                 text=decoded_streams_to_text(list(decoded_streams.queue)),
@@ -507,11 +525,7 @@ def decode_stream(
             if line:
                 json_response = json.loads(line.decode("utf-8").replace("data: ", ""))
                 decoded_streams.put(json_response)
-                # if decode_and_print:
-                #     # print decoded stream continously with flush
-                #     print(json_response["content"], end="", flush=True)
                 if decode_and_talk:
-                    #use piper to start saying after delay of n tokens
                     tts_processing_queue.put(json_response["content"])
 
         except queue.Empty:
@@ -520,14 +534,13 @@ def decode_stream(
 def create_tts_wav(
     stop_event: threading.Event,
     tts_processing_queue: queue.Queue,
-    output_dir: str = "/home/piuser/voice/core/test-output"
+    ttsConfig,
+    # output_dir: str = "/home/piuser/voice/core/test-output",
 ):
-    # Ensure output directory exists
-    os.makedirs(output_dir, exist_ok=True)
 
     piper_process = subprocess.Popen(
         [
-            "piper", "--model", "en_US-lessac-medium", "--length-scale" , "1.5" , "--output_raw" 
+            "piper", "--model", f"{ttsConfig.model}", "--length-scale" , f"{ttsConfig.length_scale}" , "--output_raw" 
         ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
@@ -549,7 +562,7 @@ def create_tts_wav(
         "-f", "adts",  # Output format
         "-content_type", "audio/aac",  # Content type for the HTTP stream
         "-listen", "1",  # Make FFmpeg act as a server
-        "http://0.0.0.0:8090/feed.aac",  # Output URL
+        "http://0.0.0.0:8082/feed.aac",  # Output URL
         "-acodec", "pcm_s16le",  # Audio codec for WAV
         # os.path.join(output_dir, "output.wav")  # Output WAV file path
     ]
@@ -561,6 +574,26 @@ def create_tts_wav(
         stderr=subprocess.PIPE
     )
 
+    # Monitor FFmpeg HTTP stream for first byte
+    def monitor_stream():
+        LOGGER.info("🟢 Starting FFMPEG 🟢")
+        stream_start_time = time.time()
+        url = "http://0.0.0.0:8082/feed.aac"
+        while True:
+            try:
+                with requests.get(url, stream=True, timeout=1) as response:
+                    if response.status_code == 200:
+                        # Record the time when the first byte is received
+                        first_byte_time = time.time() - stream_start_time
+                        LOGGER.info(f"🔴 Time to receive first byte of audio: {first_byte_time:.2f} seconds")
+                        break
+            except requests.exceptions.RequestException as e:
+                time.sleep(1)
+
+    threading.Thread(target=monitor_stream, daemon=True).start()
+
+
+
     buffer = ""
 
     try:
@@ -570,25 +603,23 @@ def create_tts_wav(
                     # Get one item from the queue
                     text_part = tts_processing_queue.get(timeout=0.001)
                     buffer += text_part
-                    print("BUFFER : " , buffer)
+                    # LOGGER.debug(f"BUFFER : {buffer}")
 
                     # Check if the buffer contains a full sentence
-                    if any(delimiter in buffer for delimiter in ['.', '!', '?' , ":" , ";"]):
+                    if any(delimiter in buffer for delimiter in ['.', '!', '?' , ":" , ";" , ","]):
                         # Split the buffer into sentences
                         sentences = re.split(r'(?<=[.!?])\s+', buffer)
 
                         # Keep the last partial sentence in the buffer
                         buffer = sentences.pop() if not re.search(r'[.!?]$', buffer) and len(sentences) > 1 else ""
 
-                        # print(sentences)
-
                         # Join the complete sentences and send to Piper
                         text = " ".join(sentences)
 
+                        # Measure peak memory usage of Piper process
                         if text:
-                            # Check if the Piper process is still running before writing
                             try:
-                                print("Sending ---->", text)
+                                LOGGER.debug(f"Sending ----> {text}")
                                 # Write the text to Piper's stdin
                                 piper_process.stdin.write(f"{text}\n")
                                 piper_process.stdin.flush()
@@ -598,31 +629,27 @@ def create_tts_wav(
                                 break
 
                 except queue.Empty:
-                    pass  # No data to process yet, continue
+                    if stop_event.is_set():
+                        break
+                    continue  # No data to process yet, continue
+
+    except Exception as e:
+        LOGGER.debug(f"Unable to run TTS engine. Error message : {e}")
 
     finally:
-
-        # Measure peak memory usage of Piper process
-        try:
-            peak_memory = piper_proc.memory_info().rss / (1024 * 1024)  # Convert to MB
-            print(f"Peak memory usage of Piper process: {peak_memory:.2f} MB")
-        except psutil.NoSuchProcess:
-            LOGGER.error("Piper process not found for memory measurement.")
-
-        # Stop Piper subprocess if it's still running
-        if piper_process.poll() is None:
-            piper_process.stdin.close()
-            piper_process.wait()
-            ffmpeg_process.terminate()
-            ffmpeg_process.wait()
+        piper_process.stdin.close()
+        for process in [piper_process, ffmpeg_process]:
+            if process and process.poll() is None:
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
 
         # Print any errors from Piper
         stderr_output = piper_process.stderr.read()
         if stderr_output:
-            print("Piper stderr:", stderr_output)
-
-
-
+            LOGGER.error(f"Piper stderr: {stderr_output}")
 
 
 def decoded_streams_to_text(decoded_streams: tp.List[tp.Dict[str, tp.Any]]) -> str:
@@ -663,7 +690,7 @@ if __name__ == "__main__":
             if user_input == "exit":
                 break
             stt_input = STTInput(environment_config=config.stt, audio_path=user_input)
-            response = engine.call(stt_input)
+            response = engine.call(stt_input, config.tts)
             print_dict(
                 {
                     "latency": response.latency,
