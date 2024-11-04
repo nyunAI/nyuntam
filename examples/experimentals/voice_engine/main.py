@@ -71,8 +71,6 @@ class EnvironmentConfig(ABC):
     _executable: tp.Union[str, Path] = field(default="")
     _warmup: int = field(default=0)
 
-
-
     @property
     def executable_path(self) -> str:
         if isinstance(self._executable, Path):
@@ -162,16 +160,16 @@ class LLMEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
         cmd += SPACE
         return cmd
 
+
 @dataclass
 class TTSEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
     voice: bool = field(default=False)
-    model: str = field(default='en_US-lessac-medium')
+    model: str = field(default="en_US-lessac-medium")
     length_scale: float = field(default=1.5)
 
     def get_options(self):
         SPACE = " "
         cmd = f""
-
 
 
 @dataclass
@@ -385,18 +383,22 @@ class Engine:
 
             decode_thread = threading.Thread(
                 target=decode_stream,
-                args=(stop_event, stream_queue, decoded_streams, tts_processing_queue, True),
+                args=(
+                    stop_event,
+                    stream_queue,
+                    decoded_streams,
+                    tts_processing_queue,
+                    True,
+                ),
             )
             decode_thread.start()
 
             if ttsConfig.voice:
                 tts_processing_thread = threading.Thread(
                     target=create_tts_wav,
-                    args=(stop_event, tts_processing_queue, ttsConfig)
+                    args=(stop_event, tts_processing_queue, ttsConfig),
                 )
                 tts_processing_thread.start()
-                
-
 
             llm_input.data["stream"] = True
             ttfs = None
@@ -408,7 +410,7 @@ class Engine:
                 if line:
                     if ttfs is None:
                         ttfs = time.time()
-                        LOGGER.info(f"TTFS: {ttfs - tick}" )
+                        LOGGER.info(f"TTFS: {ttfs - tick}")
 
                     stream_queue.put(line)
             tock = time.time()
@@ -417,7 +419,6 @@ class Engine:
             decode_thread.join()
             if ttsConfig.voice:
                 tts_processing_thread.join()
-            
 
             llm_response = LLMResponse(
                 text=decoded_streams_to_text(list(decoded_streams.queue)),
@@ -475,7 +476,7 @@ def initialize_environment(config: EnvironmentConfig):
             + config.get_options().split()
             + config.get_model_option().split()
         )
-        
+
         LOGGER.info(f"Initializing environment with command: {' '.join(cmd)}")
         return subprocess.Popen(cmd)
 
@@ -515,7 +516,7 @@ def decode_stream(
     decoded_streams: queue.Queue,
     tts_processing_queue: queue.Queue,
     decode_and_print: bool = False,
-    decode_and_talk: bool = True
+    decode_and_talk: bool = True,
 ):
     while not stop_event.is_set() or not stream_queue.empty():
         try:
@@ -531,6 +532,7 @@ def decode_stream(
         except queue.Empty:
             pass  # No data to process yet, continue
 
+
 def create_tts_wav(
     stop_event: threading.Event,
     tts_processing_queue: queue.Queue,
@@ -540,12 +542,17 @@ def create_tts_wav(
 
     piper_process = subprocess.Popen(
         [
-            "piper", "--model", f"{ttsConfig.model}", "--length-scale" , f"{ttsConfig.length_scale}" , "--output_raw" 
+            "piper",
+            "--model",
+            f"{ttsConfig.model}",
+            "--length-scale",
+            f"{ttsConfig.length_scale}",
+            "--output_raw",
         ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True
+        universal_newlines=True,
     )
 
     piper_proc = psutil.Process(piper_process.pid)
@@ -553,17 +560,27 @@ def create_tts_wav(
     # Define FFmpeg command to stream the audio over HTTP
     ffmpeg_command = [
         "ffmpeg",
-        "-f", "s16le",  # Input format (16-bit PCM, little-endian)
-        "-ar", "22050",  # Sample rate
-        "-ac", "1",  # Number of audio channels (mono)
-        "-i", "-",  # Input from stdin (output from Piper)
-        "-acodec", "aac",  # Audio codec (AAC)
-        "-ab", "128k",  # Audio bitrate
-        "-f", "adts",  # Output format
-        "-content_type", "audio/aac",  # Content type for the HTTP stream
-        "-listen", "1",  # Make FFmpeg act as a server
+        "-f",
+        "s16le",  # Input format (16-bit PCM, little-endian)
+        "-ar",
+        "22050",  # Sample rate
+        "-ac",
+        "1",  # Number of audio channels (mono)
+        "-i",
+        "-",  # Input from stdin (output from Piper)
+        "-acodec",
+        "aac",  # Audio codec (AAC)
+        "-ab",
+        "128k",  # Audio bitrate
+        "-f",
+        "adts",  # Output format
+        "-content_type",
+        "audio/aac",  # Content type for the HTTP stream
+        "-listen",
+        "1",  # Make FFmpeg act as a server
         "http://0.0.0.0:8082/feed.aac",  # Output URL
-        "-acodec", "pcm_s16le",  # Audio codec for WAV
+        "-acodec",
+        "pcm_s16le",  # Audio codec for WAV
         # os.path.join(output_dir, "output.wav")  # Output WAV file path
     ]
 
@@ -571,7 +588,7 @@ def create_tts_wav(
         ffmpeg_command,
         stdin=piper_process.stdout,  # Take input from Piper process
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
+        stderr=subprocess.PIPE,
     )
 
     # Monitor FFmpeg HTTP stream for first byte
@@ -585,20 +602,20 @@ def create_tts_wav(
                     if response.status_code == 200:
                         # Record the time when the first byte is received
                         first_byte_time = time.time() - stream_start_time
-                        LOGGER.info(f"🔴 Time to receive first byte of audio: {first_byte_time:.2f} seconds")
+                        LOGGER.info(
+                            f"🔴 Time to receive first byte of audio: {first_byte_time:.2f} seconds"
+                        )
                         break
             except requests.exceptions.RequestException as e:
                 time.sleep(1)
 
     threading.Thread(target=monitor_stream, daemon=True).start()
 
-
-
     buffer = ""
 
     try:
-        while not (stop_event.is_set() and tts_processing_queue.empty()):
-            if tts_processing_queue.qsize() > 1:
+        while not stop_event.is_set() or not tts_processing_queue.empty():
+            if tts_processing_queue.qsize() > 0:
                 try:
                     # Get one item from the queue
                     text_part = tts_processing_queue.get(timeout=0.001)
@@ -606,12 +623,19 @@ def create_tts_wav(
                     # LOGGER.debug(f"BUFFER : {buffer}")
 
                     # Check if the buffer contains a full sentence
-                    if any(delimiter in buffer for delimiter in ['.', '!', '?' , ":" , ";" , ","]):
+                    if any(
+                        delimiter in buffer
+                        for delimiter in [".", "!", "?", ":", ";", ","]
+                    ):
                         # Split the buffer into sentences
-                        sentences = re.split(r'(?<=[.!?])\s+', buffer)
+                        sentences = re.split(r"(?<=[.!?])\s+", buffer)
 
                         # Keep the last partial sentence in the buffer
-                        buffer = sentences.pop() if not re.search(r'[.!?]$', buffer) and len(sentences) > 1 else ""
+                        buffer = (
+                            sentences.pop()
+                            if not re.search(r"[.!?]$", buffer) and len(sentences) > 1
+                            else ""
+                        )
 
                         # Join the complete sentences and send to Piper
                         text = " ".join(sentences)
@@ -625,13 +649,17 @@ def create_tts_wav(
                                 piper_process.stdin.flush()
 
                             except BrokenPipeError:
-                                LOGGER.error("BrokenPipeError: Piper process terminated unexpectedly.")
+                                LOGGER.error(
+                                    "BrokenPipeError: Piper process terminated unexpectedly."
+                                )
                                 break
 
                 except queue.Empty:
                     if stop_event.is_set():
                         break
                     continue  # No data to process yet, continue
+
+        LOGGER.debug("Received Stop Event At TTS")
 
     except Exception as e:
         LOGGER.debug(f"Unable to run TTS engine. Error message : {e}")
@@ -646,19 +674,14 @@ def create_tts_wav(
                 except subprocess.TimeoutExpired:
                     process.kill()
 
-        # Print any errors from Piper
-        stderr_output = piper_process.stderr.read()
-        if stderr_output:
-            LOGGER.error(f"Piper stderr: {stderr_output}")
-
 
 def decoded_streams_to_text(decoded_streams: tp.List[tp.Dict[str, tp.Any]]) -> str:
     return " ".join([stream["content"] for stream in decoded_streams])
 
 
+##################################################
+##################################################
 
-##################################################
-##################################################
 
 def print_dict(d: dict, indent: int = 0):
     for k, v in d.items():
