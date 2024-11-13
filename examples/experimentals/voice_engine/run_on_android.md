@@ -61,7 +61,7 @@ The code is present in nyunta, so we need to get that.
 <li>run the main_android.py using the following command : <code>python3.11 main_android.py --config recipe/recipe_android.yaml</code> </li>
 </ol>
 
-**NOTE :** If youa re running this for the first time, there maybe a few packages that will be missing. These can be installed using  `pip3.11 install [package-name]`
+**NOTE :** If you are running this for the first time, there maybe a few packages that will be missing. These can be installed using  `pip3.11 install [package-name]`
 
 
 
