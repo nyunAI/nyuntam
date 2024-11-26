@@ -4,7 +4,7 @@ llm:
   batch_size: 8192
   flash_attn: true
   gpu: false
-  model: '/data/data/com.termux/files/home/llama-model/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf'
+  model: '/data/data/com.termux/files/home/qwen-model/Qwen2.5-3.1B-Q4_0_4_4.gguf'
   n_predict: 128
   n_procs: 1
   n_threads: 2
