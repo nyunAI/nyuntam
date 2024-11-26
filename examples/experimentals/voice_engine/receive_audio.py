@@ -3,6 +3,7 @@ import threading
 import pyaudio
 import wave
 import time
+import os
 
 # Replace with your Pico W's IP address and port
 HOST = '192.168.1.24'  # Pico W's IP address
@@ -14,11 +15,13 @@ CHANNELS = 1
 FORMAT = pyaudio.paInt16
 CHUNK_SIZE = 1024  # Number of bytes per chunk
 
-# Calculate the number of chunks needed for a 3-second segment
-# Each sample is 2 bytes (16 bits), so samples per chunk = CHUNK_SIZE / 2
+# Calculate the number of chunks needed for a 5-second segment
 SAMPLES_PER_CHUNK = CHUNK_SIZE // 2
 DURATION_PER_CHUNK = SAMPLES_PER_CHUNK / SAMPLE_RATE  # Duration of each chunk in seconds
-CHUNKS_PER_SEGMENT = int(3 / DURATION_PER_CHUNK)  # Number of chunks for 3 seconds
+CHUNKS_PER_SEGMENT = int(5 / DURATION_PER_CHUNK)  # Number of chunks for 5 seconds
+
+# Timeout for no data
+NO_DATA_TIMEOUT = 1  # 1 second
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -34,6 +37,7 @@ def receive_audio():
     frames = []  # List to store audio frames for continuous playback
     segment_frames = []  # List to store frames for the current segment
     segment_number = 1  # Counter for segment files
+    last_received_time = time.time()  # Track the last received time
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(f"Connecting to {HOST}:{PORT}...")
@@ -43,24 +47,34 @@ def receive_audio():
         try:
             while True:
                 data = s.recv(CHUNK_SIZE)
-                if not data:
-                    print("No data received. Connection may have closed.")
-                    break
-                print(f"Received {len(data)} bytes of data")
-                # Write data to audio stream
-                stream.write(data)
-                # Append data to frames list for continuous playback
-                frames.append(data)
-                # Append data to segment_frames
-                segment_frames.append(data)
+                current_time = time.time()
 
-                # Check if we've collected enough chunks for a 3-second segment
-                if len(segment_frames) >= CHUNKS_PER_SEGMENT:
-                    # Save the segment to a WAV file
-                    save_segment(segment_frames, segment_number)
-                    segment_frames = []  # Reset segment frames
-                    segment_number += 1  # Increment segment counter
+                if data:
+                    print(f"Received {len(data)} bytes of data")
+                    # Reset the last received time
+                    last_received_time = current_time
+                    # Write data to audio stream
+                    stream.write(data)
+                    # Append data to frames list for continuous playback
+                    frames.append(data)
+                    # Append data to segment_frames
+                    segment_frames.append(data)
 
+                    # Check if we've collected enough chunks for a 5-second segment
+                    if len(segment_frames) >= CHUNKS_PER_SEGMENT:
+                        # Save the segment to a WAV file
+                        save_segment(segment_frames, segment_number)
+                        segment_frames = []  # Reset segment frames
+                        segment_number += 1  # Increment segment counter
+                else:
+                    # No data received
+                    if current_time - last_received_time > NO_DATA_TIMEOUT:
+                        print("No data received for more than 1 second.")
+                        # Save the entire audio data
+                        save_audio(frames)
+                        # Delete all saved segments
+                        delete_segments(segment_number)
+                        break
         except KeyboardInterrupt:
             pass
         finally:
@@ -70,9 +84,6 @@ def receive_audio():
             stream.close()
             p.terminate()
             print("Connection closed.")
-
-            # Optionally, save the entire audio data to a WAV file
-            save_audio(frames)
 
 def save_segment(frames, segment_number):
     output_filename = f'received_audio_segment_{segment_number}.wav'
@@ -84,9 +95,8 @@ def save_segment(frames, segment_number):
     wf.close()
     print(f"Segment {segment_number} saved to {output_filename}")
 
-# Optionally, define a function to save the entire audio data
 def save_audio(frames):
-    output_filename = '/data/data/com.termux/files/home/user-input-audio/received_audio.wav'
+    output_filename = 'received_audio.wav'
     wf = wave.open(output_filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
@@ -94,6 +104,13 @@ def save_audio(frames):
     wf.writeframes(b''.join(frames))
     wf.close()
     print(f"Audio data saved to {output_filename}")
+
+def delete_segments(segment_count):
+    for i in range(1, segment_count):
+        segment_filename = f'received_audio_segment_{i}.wav'
+        if os.path.exists(segment_filename):
+            os.remove(segment_filename)
+            print(f"Deleted segment {segment_filename}")
 
 if __name__ == '__main__':
     receive_audio()
