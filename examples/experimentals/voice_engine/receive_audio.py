@@ -1,12 +1,11 @@
 import socket
 import threading
-import numpy as np
 import pyaudio
 import wave
 import time
 
 # Replace with your Pico W's IP address and port
-HOST = '192.168.1.18'  # Pico W's IP address
+HOST = '192.168.1.24'  # Pico W's IP address
 PORT = 5000
 
 # Audio settings
