@@ -1,80 +1,99 @@
 import socket
-import threading
+import numpy as np
 import pyaudio
 import wave
 import time
 import os
 
-# Replace with your Pico W's IP address and port
-HOST = '192.168.1.24'  # Pico W's IP address
-PORT = 5000
+def receive_audio(path,
+                  HOST='192.168.1.2',  # Pico W's IP address
+                  PORT=5000,
+                  SAMPLE_RATE=16000,
+                  CHANNELS=1,
+                  FORMAT=pyaudio.paInt16,
+                  CHUNK_SIZE=1600):
+    """
+    Receives audio data from the Pico W over TCP and saves it to a WAV file.
 
-# Audio settings
-SAMPLE_RATE = 16000  # Match with Pico's sample rate
-CHANNELS = 1
-FORMAT = pyaudio.paInt16
-CHUNK_SIZE = 1024  # Number of bytes per chunk
+    Parameters:
+    - path (str): The file path where the audio will be saved.
+    - HOST (str): The IP address of the Pico W. Default is '192.168.1.2'.
+    - PORT (int): The port number to connect to on the Pico W. Default is 5000.
+    - SAMPLE_RATE (int): The audio sample rate. Default is 16000 Hz.
+    - CHANNELS (int): The number of audio channels. Default is 1.
+    - FORMAT: The audio format. Default is pyaudio.paInt16.
+    - CHUNK_SIZE (int): The size of each audio chunk in bytes. Default is 1600.
 
-# Calculate the number of chunks needed for a 5-second segment
-SAMPLES_PER_CHUNK = CHUNK_SIZE // 2
-DURATION_PER_CHUNK = SAMPLES_PER_CHUNK / SAMPLE_RATE  # Duration of each chunk in seconds
-CHUNKS_PER_SEGMENT = int(5 / DURATION_PER_CHUNK)  # Number of chunks for 5 seconds
+    Returns:
+    - bytes: The 5 seconds of audio data received.
+    """
+    # Each sample is 2 bytes (16 bits)
+    SAMPLES_PER_CHUNK = CHUNK_SIZE // 2
+    DURATION_PER_CHUNK = SAMPLES_PER_CHUNK / SAMPLE_RATE  # Duration of each chunk in seconds
+    CHUNKS_PER_SEGMENT = int(5 / DURATION_PER_CHUNK)  # Number of chunks for 5 seconds
 
-# Timeout for no data
-NO_DATA_TIMEOUT = 1  # 1 second
-
-# Initialize PyAudio
-p = pyaudio.PyAudio()
-
-# Create a stream to play audio
-stream = p.open(format=FORMAT,
-                channels=CHANNELS,
-                rate=SAMPLE_RATE,
-                output=True,
-                frames_per_buffer=CHUNK_SIZE)
-
-def receive_audio():
-    frames = []  # List to store audio frames for continuous playback
-    segment_frames = []  # List to store frames for the current segment
-    segment_number = 1  # Counter for segment files
-    last_received_time = time.time()  # Track the last received time
+    # Initialize PyAudio
+    p = pyaudio.PyAudio()
+    
+    # Create a stream to play audio
+    stream = p.open(format=FORMAT,
+                    channels=CHANNELS,
+                    rate=SAMPLE_RATE,
+                    output=True,
+                    frames_per_buffer=SAMPLES_PER_CHUNK)
+    
+    frames = []  # List to store audio frames for playback and saving
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(f"Connecting to {HOST}:{PORT}...")
-        s.connect((HOST, PORT))
-        print("Connected to Pico W. Receiving audio data...")
+        try:
+            s.connect((HOST, PORT))
+            print("Connected to Pico W. Receiving audio data...")
+        except Exception as e:
+            print(f"Failed to connect: {e}")
+            return None
 
         try:
-            while True:
+            chunks_received = 0
+            while chunks_received < CHUNKS_PER_SEGMENT:
                 data = s.recv(CHUNK_SIZE)
-                current_time = time.time()
+                if not data:
+                    print("No data received. Connection may have closed.")
+                    break
+                print(f"Received {len(data)} bytes of data")
 
-                if data:
-                    print(f"Received {len(data)} bytes of data")
-                    # Reset the last received time
-                    last_received_time = current_time
-                    # Write data to audio stream
-                    stream.write(data)
-                    # Append data to frames list for continuous playback
-                    frames.append(data)
-                    # Append data to segment_frames
-                    segment_frames.append(data)
+                # Convert bytes to NumPy array
+                audio_data = np.frombuffer(data, dtype=np.int16)
 
-                    # Check if we've collected enough chunks for a 5-second segment
-                    if len(segment_frames) >= CHUNKS_PER_SEGMENT:
-                        # Save the segment to a WAV file
-                        save_segment(segment_frames, segment_number)
-                        segment_frames = []  # Reset segment frames
-                        segment_number += 1  # Increment segment counter
-                else:
-                    # No data received
-                    if current_time - last_received_time > NO_DATA_TIMEOUT:
-                        print("No data received for more than 1 second.")
-                        # Save the entire audio data
-                        save_audio(frames)
-                        # Delete all saved segments
-                        delete_segments(segment_number)
-                        break
+                # Remove DC offset (if necessary)
+                dc_offset = np.mean(audio_data)
+                audio_data = audio_data - int(dc_offset)
+
+                # Apply gain to amplify the audio
+                gain_factor = 2.0  # Adjust this value as needed
+                audio_data = audio_data * gain_factor
+
+                # Ensure we don't exceed the int16 range
+                audio_data = np.clip(audio_data, -32768, 32767).astype(np.int16)
+
+                # Convert back to bytes
+                processed_data = audio_data.tobytes()
+
+                # Write data to audio stream
+                stream.write(processed_data)
+
+                # Append data to frames list
+                frames.append(processed_data)
+
+                chunks_received += 1
+
+            # Save the segment to a WAV file
+            save_segment(frames, path, p, CHANNELS, FORMAT, SAMPLE_RATE)
+
+            # Return the 5 seconds of audio bytes received
+            audio_bytes = b''.join(frames)
+            return audio_bytes
+
         except KeyboardInterrupt:
             pass
         finally:
@@ -85,32 +104,21 @@ def receive_audio():
             p.terminate()
             print("Connection closed.")
 
-def save_segment(frames, segment_number):
-    output_filename = f'received_audio_segment_{segment_number}.wav'
+def save_segment(frames, path, p, CHANNELS, FORMAT, SAMPLE_RATE):
+    output_filename = path
     wf = wave.open(output_filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
     wf.setframerate(SAMPLE_RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
-    print(f"Segment {segment_number} saved to {output_filename}")
+    print(f"Audio segment saved to {output_filename}")
 
-def save_audio(frames):
-    output_filename = 'received_audio.wav'
-    wf = wave.open(output_filename, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(SAMPLE_RATE)
-    wf.writeframes(b''.join(frames))
-    wf.close()
-    print(f"Audio data saved to {output_filename}")
-
-def delete_segments(segment_count):
-    for i in range(1, segment_count):
-        segment_filename = f'received_audio_segment_{i}.wav'
-        if os.path.exists(segment_filename):
-            os.remove(segment_filename)
-            print(f"Deleted segment {segment_filename}")
-
+# Example usage:
 if __name__ == '__main__':
-    receive_audio()
+    # Specify the path where the WAV file should be saved
+    path = 'received_audio_segment.wav'
+    while(1):
+        audio_bytes = receive_audio(path)
+        time.sleep(2)
+    # Now audio_bytes contains the 5 seconds of audio data received
