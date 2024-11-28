@@ -5,7 +5,7 @@ import wave
 import time
 
 def receive_audio(path='./received_audio.wav',
-                  HOST='192.168.1.24',  # Pico W's IP address
+                  HOST='192.168.1.2',  # Pico W's IP address
                   PORT=5000,
                   SAMPLE_RATE=16000,
                   CHANNELS=1,
@@ -17,7 +17,7 @@ def receive_audio(path='./received_audio.wav',
     Initially blocks to wait for data, then becomes non-blocking for termination.
     """
     # Each sample is 2 bytes (16 bits)
-    BYTES_PER_SAMPLE = 2
+    BYTES_PER_SAMPLE = 2  # FIXED: Changed from 1 to 2 for 16-bit audio
     TOTAL_SAMPLES = SAMPLE_RATE * CHANNELS * 5  # 5 seconds of audio
     TOTAL_BYTES = TOTAL_SAMPLES * BYTES_PER_SAMPLE
 
@@ -28,7 +28,8 @@ def receive_audio(path='./received_audio.wav',
     stream = p.open(format=FORMAT,
                     channels=CHANNELS,
                     rate=SAMPLE_RATE,
-                    output=True)
+                    output=True,
+                    frames_per_buffer=CHUNK_SIZE)  # Added frames_per_buffer
 
     frames = []  # List to store audio frames
     received_bytes = 0  # Counter for total bytes received
@@ -52,7 +53,7 @@ def receive_audio(path='./received_audio.wav',
             while True:
                 try:
                     # Receive data
-                    data = s.recv(1600)
+                    data = s.recv(CHUNK_SIZE * BYTES_PER_SAMPLE)  # Adjusted receive size
                     if data:
                         if not first_byte_received:
                             first_byte_received = True
@@ -64,9 +65,9 @@ def receive_audio(path='./received_audio.wav',
                         data_buffer += data
 
                         # Process data in CHUNK_SIZE increments
-                        while len(data_buffer) >= CHUNK_SIZE:
-                            chunk = data_buffer[:CHUNK_SIZE]
-                            data_buffer = data_buffer[CHUNK_SIZE:]
+                        while len(data_buffer) >= CHUNK_SIZE * BYTES_PER_SAMPLE:  # Adjusted chunk check
+                            chunk = data_buffer[:CHUNK_SIZE * BYTES_PER_SAMPLE]
+                            data_buffer = data_buffer[CHUNK_SIZE * BYTES_PER_SAMPLE:]
 
                             # Convert bytes to NumPy array
                             audio_data = np.frombuffer(chunk, dtype=np.int16)
