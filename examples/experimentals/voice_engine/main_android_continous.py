@@ -291,9 +291,11 @@ class LLMInput:
         return cls(environment_config, stt_response.text)
 
     def get_data(self):
+        self.prompt_qwen = f"<|im_start|>system: You are Qwen, a smart and intelligent smart assistant who can give clear and crisp answer to user. You do not hallucinate at all <|im_end|> <|im_start|>user: {self.prompt} <|im_end|> <|im_start|>assistant "
+        print(self.prompt_qwen)
         return {
             **self.data,
-            "prompt": self.prompt,
+            "prompt": self.prompt_qwen,
         }
 
 
