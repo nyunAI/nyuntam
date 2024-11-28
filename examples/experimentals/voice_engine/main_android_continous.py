@@ -581,13 +581,6 @@ def create_tts_wav(
                     if any(
                         delimiter in buffer
                         for delimiter in [".", "!", "?", ":", ";", "," , "and", "but", "or", "nor", "for", "yet", "so",  # Coordinating conjunctions
-                                          "after", "although", "as", 
-                                            "because", "before", "by the time", "even if", "if", 
-                                            "in case", "lest", "once", "only if", "provided that", 
-                                            "since", "than", "that", "though", "till", "unless", 
-                                            "until", "when", "whenever", "where", "whereas", "wherever", "whether", 
-                                            "while",  # Subordinating conjunctions
-                                            "both", "either", "neither", # Correlative conjunctions
                                         ]
                     ):
                         # Split the buffer into sentences
