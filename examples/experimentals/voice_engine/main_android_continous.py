@@ -684,11 +684,11 @@ if __name__ == "__main__":
     try:
         while True:
             # Directory to watch for audio files
-            audio_file_dir = "/data/data/com.termux/files/home/user-input-audio"
+            audio_file_dir = "./received_audio.wav"
             receive_audio(audio_file_dir)
             # Continuously search for an audio file
             #user_input = wait_for_audio_file(audio_file_dir)
-            user_input = "/data/data/com.termux/files/home/user-input-audio/received_audio.wav"
+            user_input = "./received_audio.wav"
 
             # Execute the processing once the audio file is found
             stt_input = STTInput(environment_config=config.stt, audio_path=user_input)

@@ -5,7 +5,7 @@ import wave
 import time
 
 def receive_audio(path='./received_audio.wav',
-                  HOST='192.168.1.2',  # Pico W's IP address
+                  HOST='192.168.1.24',  # Pico W's IP address
                   PORT=5000,
                   SAMPLE_RATE=16000,
                   CHANNELS=1,
@@ -73,12 +73,12 @@ def receive_audio(path='./received_audio.wav',
                             audio_data = np.frombuffer(chunk, dtype=np.int16)
 
                             # Remove DC offset (optional)
-                            dc_offset = np.mean(audio_data)
-                            audio_data = audio_data - int(dc_offset)
+                            # dc_offset = np.mean(audio_data)
+                            # audio_data = audio_data - int(dc_offset)
 
-                            # Apply gain to amplify the audio
-                            gain_factor = 2.0
-                            audio_data = audio_data * gain_factor
+                            # # Apply gain to amplify the audio
+                            # gain_factor = 2.0
+                            # audio_data = audio_data * gain_factor
 
                             # Ensure we don't exceed the int16 range
                             audio_data = np.clip(audio_data, -32768, 32767).astype(np.int16)
