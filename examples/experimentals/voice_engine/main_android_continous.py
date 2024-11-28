@@ -379,6 +379,11 @@ class Engine:
         stt_response = STTResponse.from_response(call_stt_environment(input))
         stt_latency = time.time()
         LOGGER.debug(f"STT response: {stt_response}")
+        if (stt_response.text == '{"text": " "}' ) or (stt_response.text == '{"text": " "}') or (stt_response.text == '{"text": "  "}' ) or (stt_response.text is None ) :
+            LOGGER.debug("Could not find any STT output for LLM")
+            return EngineResponse(
+                stt_response=stt_response,
+            ) 
         llm_input = LLMInput.from_stt_response(self.config.llm, stt_response)
         if llm_input.stream:
             # implement stream response handling
@@ -695,13 +700,15 @@ if __name__ == "__main__":
             # Execute the processing once the audio file is found
             stt_input = STTInput(environment_config=config.stt, audio_path=user_input)
             response = engine.call(stt_input, config.tts)
-            print_dict(
-                {
-                    "latency": response.latency,
-                    "ttfs": response.llm_response.ttfs,
-                    "stt_latency": response.stt_latency,
-                }
-            )
+
+
+            # print_dict(
+            #     {
+            #         "latency": response.latency,
+            #         "ttfs": response.llm_response.ttfs,
+            #         "stt_latency": response.stt_latency,
+            #     }
+            # )
             print(f"-" * 50)
             try:
                 os.remove(user_input)
