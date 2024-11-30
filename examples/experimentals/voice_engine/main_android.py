@@ -144,6 +144,7 @@ class LLMEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
         ubatch_size = f"-ub {self.ubatch_size}"
         port = f"--port {self.port}"
         n_predict = f"-n {self.n_predict}"
+        context_length = f"-c 2048"
 
         cmd = threads
         cmd += SPACE
@@ -152,6 +153,8 @@ class LLMEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
         cmd += ubatch_size
         cmd += SPACE
         cmd += n_predict
+        cmd += SPACE
+        cmd += context_length
         cmd += SPACE
         if self.flash_attn:
             cmd += flash_attn
@@ -469,6 +472,12 @@ def kill_process(process: subprocess.Popen):
     LOGGER.info(f"Process {process.pid} terminated gracefully.")
 
 
+# Set CPU affinity for the entire process
+def process_affinity(process_id, affinity_cores):
+    p = psutil.Process(process_id)
+    p.cpu_affinity(affinity_cores)
+
+
 def initialize_environment(config: EnvironmentConfig):
     with warmup_environment(config._warmup):
         cmd: tp.List[str] = (
@@ -518,6 +527,7 @@ def decode_stream(
     decode_and_print: bool = False,
     decode_and_talk: bool = True,
 ):
+    LOGGER.debug("Decode Thread Started.")
     while not stop_event.is_set() or not stream_queue.empty():
         try:
             line: bytearray = stream_queue.get(
@@ -531,6 +541,7 @@ def decode_stream(
 
         except queue.Empty:
             pass  # No data to process yet, continue
+    LOGGER.debug("Decode Thread Stopped.")
 
 
 def create_tts_wav(
@@ -539,15 +550,10 @@ def create_tts_wav(
     ttsConfig,
     # output_dir: str = "/home/piuser/voice/core/test-output",
 ):
-
+    LOGGER.debug("TTS Thread Started")
     piper_process = subprocess.Popen(
         [
-            "piper",
-            "--model",
-            f"{ttsConfig.model}",
-            "--length-scale",
-            f"{ttsConfig.length_scale}",
-            "--output_raw",
+            "espeak"
         ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
@@ -555,61 +561,9 @@ def create_tts_wav(
         universal_newlines=True,
     )
 
+    LOGGER.debug(f"PIPER PID, {piper_process.pid}")
+
     piper_proc = psutil.Process(piper_process.pid)
-
-    # Define FFmpeg command to stream the audio over HTTP
-    ffmpeg_command = [
-        "ffmpeg",
-        "-f",
-        "s16le",  # Input format (16-bit PCM, little-endian)
-        "-ar",
-        "22050",  # Sample rate
-        "-ac",
-        "1",  # Number of audio channels (mono)
-        "-i",
-        "-",  # Input from stdin (output from Piper)
-        "-acodec",
-        "aac",  # Audio codec (AAC)
-        "-ab",
-        "128k",  # Audio bitrate
-        "-f",
-        "adts",  # Output format
-        "-content_type",
-        "audio/aac",  # Content type for the HTTP stream
-        "-listen",
-        "1",  # Make FFmpeg act as a server
-        "http://0.0.0.0:8082/feed.aac",  # Output URL
-        "-acodec",
-        "pcm_s16le",  # Audio codec for WAV
-        # os.path.join(output_dir, "output.wav")  # Output WAV file path
-    ]
-
-    ffmpeg_process = subprocess.Popen(
-        ffmpeg_command,
-        stdin=piper_process.stdout,  # Take input from Piper process
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-
-    # Monitor FFmpeg HTTP stream for first byte
-    def monitor_stream():
-        LOGGER.info("🟢 Starting FFMPEG 🟢")
-        stream_start_time = time.time()
-        url = "http://0.0.0.0:8082/feed.aac"
-        while True:
-            try:
-                with requests.get(url, stream=True, timeout=1) as response:
-                    if response.status_code == 200:
-                        # Record the time when the first byte is received
-                        first_byte_time = time.time() - stream_start_time
-                        LOGGER.info(
-                            f"🔴 Time to receive first byte of audio: {first_byte_time:.2f} seconds"
-                        )
-                        break
-            except requests.exceptions.RequestException as e:
-                time.sleep(1)
-
-    threading.Thread(target=monitor_stream, daemon=True).start()
 
     buffer = ""
 
@@ -625,7 +579,15 @@ def create_tts_wav(
                     # Check if the buffer contains a full sentence
                     if any(
                         delimiter in buffer
-                        for delimiter in [".", "!", "?", ":", ";", ","]
+                        for delimiter in [".", "!", "?", ":", ";", "," , "and", "but", "or", "nor", "for", "yet", "so",  # Coordinating conjunctions
+                                          "after", "although", "as", "as if", "as long as", "as much as", "as soon as", "as though", 
+                                            "because", "before", "by the time", "even if", "even though", "if", "if only", 
+                                            "in case", "in order that", "lest", "once", "only if", "provided that", 
+                                            "since", "so that", "than", "that", "though", "till", "unless", 
+                                            "until", "when", "whenever", "where", "whereas", "wherever", "whether", 
+                                            "while",  # Subordinating conjunctions
+                                            "both", "either", "neither", "not only", "whether or not"  # Correlative conjunctions
+                                        ]
                     ):
                         # Split the buffer into sentences
                         sentences = re.split(r"(?<=[.!?])\s+", buffer)
@@ -671,6 +633,7 @@ def create_tts_wav(
                 process.terminate()
                 try:
                     process.wait(timeout=5)
+                    LOGGER.debug("TTS thread Stopped.")
                 except subprocess.TimeoutExpired:
                     process.kill()
 

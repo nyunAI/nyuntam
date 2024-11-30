@@ -16,6 +16,7 @@ import time
 import os
 import re
 import psutil
+from receive_audio import receive_audio
 
 LOGGER = None
 DEFAULT_CONFIG = "nyuntam/examples/experimentals/voice_engine/recipe/rpi5.yaml"
@@ -144,6 +145,7 @@ class LLMEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
         ubatch_size = f"-ub {self.ubatch_size}"
         port = f"--port {self.port}"
         n_predict = f"-n {self.n_predict}"
+        context_length = f"-c 2048"
 
         cmd = threads
         cmd += SPACE
@@ -152,6 +154,8 @@ class LLMEnvironmentConfig(EnvironmentConfig, EnvironmentConfigMeta):
         cmd += ubatch_size
         cmd += SPACE
         cmd += n_predict
+        cmd += SPACE
+        cmd += context_length
         cmd += SPACE
         if self.flash_attn:
             cmd += flash_attn
@@ -287,9 +291,11 @@ class LLMInput:
         return cls(environment_config, stt_response.text)
 
     def get_data(self):
+        self.prompt_qwen = f"<|im_start|>system: You are Qwen, a smart and intelligent smart assistant who can give clear and crisp answer to user. You do not hallucinate at all <|im_end|> <|im_start|>user: {self.prompt} <|im_end|> <|im_start|>assistant "
+        print(self.prompt_qwen)
         return {
             **self.data,
-            "prompt": self.prompt,
+            "prompt": self.prompt_qwen,
         }
 
 
@@ -373,6 +379,11 @@ class Engine:
         stt_response = STTResponse.from_response(call_stt_environment(input))
         stt_latency = time.time()
         LOGGER.debug(f"STT response: {stt_response}")
+        if (stt_response.text == '{"text": " "}' ) or (stt_response.text == '{"text": " "}') or (stt_response.text == '{"text": "  "}' ) or (stt_response.text is None ) :
+            LOGGER.debug("Could not find any STT output for LLM")
+            return EngineResponse(
+                stt_response=stt_response,
+            ) 
         llm_input = LLMInput.from_stt_response(self.config.llm, stt_response)
         if llm_input.stream:
             # implement stream response handling
@@ -469,6 +480,12 @@ def kill_process(process: subprocess.Popen):
     LOGGER.info(f"Process {process.pid} terminated gracefully.")
 
 
+# Set CPU affinity for the entire process
+def process_affinity(process_id, affinity_cores):
+    p = psutil.Process(process_id)
+    p.cpu_affinity(affinity_cores)
+
+
 def initialize_environment(config: EnvironmentConfig):
     with warmup_environment(config._warmup):
         cmd: tp.List[str] = (
@@ -518,6 +535,7 @@ def decode_stream(
     decode_and_print: bool = False,
     decode_and_talk: bool = True,
 ):
+    LOGGER.debug("Decode Thread Started.")
     while not stop_event.is_set() or not stream_queue.empty():
         try:
             line: bytearray = stream_queue.get(
@@ -531,6 +549,7 @@ def decode_stream(
 
         except queue.Empty:
             pass  # No data to process yet, continue
+    LOGGER.debug("Decode Thread Stopped.")
 
 
 def create_tts_wav(
@@ -539,15 +558,10 @@ def create_tts_wav(
     ttsConfig,
     # output_dir: str = "/home/piuser/voice/core/test-output",
 ):
-
+    LOGGER.debug("TTS Thread Started")
     piper_process = subprocess.Popen(
         [
-            "piper",
-            "--model",
-            f"{ttsConfig.model}",
-            "--length-scale",
-            f"{ttsConfig.length_scale}",
-            "--output_raw",
+            "espeak"
         ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
@@ -555,61 +569,9 @@ def create_tts_wav(
         universal_newlines=True,
     )
 
+    LOGGER.debug(f"PIPER PID, {piper_process.pid}")
+
     piper_proc = psutil.Process(piper_process.pid)
-
-    # Define FFmpeg command to stream the audio over HTTP
-    ffmpeg_command = [
-        "ffmpeg",
-        "-f",
-        "s16le",  # Input format (16-bit PCM, little-endian)
-        "-ar",
-        "22050",  # Sample rate
-        "-ac",
-        "1",  # Number of audio channels (mono)
-        "-i",
-        "-",  # Input from stdin (output from Piper)
-        "-acodec",
-        "aac",  # Audio codec (AAC)
-        "-ab",
-        "128k",  # Audio bitrate
-        "-f",
-        "adts",  # Output format
-        "-content_type",
-        "audio/aac",  # Content type for the HTTP stream
-        "-listen",
-        "1",  # Make FFmpeg act as a server
-        "http://0.0.0.0:8082/feed.aac",  # Output URL
-        "-acodec",
-        "pcm_s16le",  # Audio codec for WAV
-        # os.path.join(output_dir, "output.wav")  # Output WAV file path
-    ]
-
-    ffmpeg_process = subprocess.Popen(
-        ffmpeg_command,
-        stdin=piper_process.stdout,  # Take input from Piper process
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-
-    # Monitor FFmpeg HTTP stream for first byte
-    def monitor_stream():
-        LOGGER.info("🟢 Starting FFMPEG 🟢")
-        stream_start_time = time.time()
-        url = "http://0.0.0.0:8082/feed.aac"
-        while True:
-            try:
-                with requests.get(url, stream=True, timeout=1) as response:
-                    if response.status_code == 200:
-                        # Record the time when the first byte is received
-                        first_byte_time = time.time() - stream_start_time
-                        LOGGER.info(
-                            f"🔴 Time to receive first byte of audio: {first_byte_time:.2f} seconds"
-                        )
-                        break
-            except requests.exceptions.RequestException as e:
-                time.sleep(1)
-
-    threading.Thread(target=monitor_stream, daemon=True).start()
 
     buffer = ""
 
@@ -625,7 +587,8 @@ def create_tts_wav(
                     # Check if the buffer contains a full sentence
                     if any(
                         delimiter in buffer
-                        for delimiter in [".", "!", "?", ":", ";", ","]
+                        for delimiter in [".", "!", "?", ":", ";", "," , "and", "but", "or", "nor", "for", "yet", "so",  # Coordinating conjunctions
+                                        ]
                     ):
                         # Split the buffer into sentences
                         sentences = re.split(r"(?<=[.!?])\s+", buffer)
@@ -671,6 +634,7 @@ def create_tts_wav(
                 process.terminate()
                 try:
                     process.wait(timeout=5)
+                    LOGGER.debug("TTS thread Stopped.")
                 except subprocess.TimeoutExpired:
                     process.kill()
 
@@ -692,12 +656,32 @@ def print_dict(d: dict, indent: int = 0):
             print(" " * indent, f" - {k}: {v}")
 
 
+
+import os
+import time
+from pathlib import Path
+
+def wait_for_audio_file(directory):
+    """
+    Continuously watch for an audio file in the specified directory.
+    Returns the path to the audio file once found.
+    """
+    print(f"Watching directory: {directory}")
+    while True:
+        files = [f for f in os.listdir(directory) if f.endswith(".wav")]
+        if files:
+            # Assuming you want to process the first found file
+            file_path = os.path.join(directory, files[0])
+            print(f"Found audio file: {file_path}")
+            return file_path
+        time.sleep(0.5)  # Wait for 1 second before checking again
+
+
 if __name__ == "__main__":
     args = parse_args()
     if args.config:
         config = EngineEnvironmentConfig.from_yaml(args.config)
         print_dict(config.to_dict())
-
     else:
         config = EngineEnvironmentConfig()
         config.to_yaml("/home/piuser/edge/recipe/default.yaml")
@@ -706,22 +690,32 @@ if __name__ == "__main__":
 
     try:
         while True:
-            # input an audio file path from the user
-            user_input = input("Enter the path to the audio file: ")
-            if user_input == "":
-                user_input = "/home/piuser/shwu/audio_samples/5sec/79833.wav"
-            if user_input == "exit":
-                break
+            # Directory to watch for audio files
+            audio_file_dir = "./received_audio.wav"
+            receive_audio(audio_file_dir)
+            # Continuously search for an audio file
+            #user_input = wait_for_audio_file(audio_file_dir)
+            user_input = "./received_audio.wav"
+
+            # Execute the processing once the audio file is found
             stt_input = STTInput(environment_config=config.stt, audio_path=user_input)
             response = engine.call(stt_input, config.tts)
-            print_dict(
-                {
-                    "latency": response.latency,
-                    "ttfs": response.llm_response.ttfs,
-                    "stt_latency": response.stt_latency,
-                }
-            )
+
+
+            # print_dict(
+            #     {
+            #         "latency": response.latency,
+            #         "ttfs": response.llm_response.ttfs,
+            #         "stt_latency": response.stt_latency,
+            #     }
+            # )
             print(f"-" * 50)
+            try:
+                os.remove(user_input)
+                print(f"Deleted processed file: {user_input}")
+            except OSError as e:
+                print(f"Error deleting file: {user_input}, {e}")
+
     except Exception as e:
         engine.terminate()
-        raise e
+        raise 

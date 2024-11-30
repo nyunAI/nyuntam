@@ -1,0 +1,477 @@
+2024-11-13 14:01:53,569 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:01:58,586 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:01:58,596 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:01:58,598 - __main__ - INFO - STT process initialized with PID: 8415
+2024-11-13 14:01:58,599 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:01:58,602 - __main__ - ERROR - Failed to initialize LLM process: [Errno 13] Permission denied: '/data/data/com.termux/files/home/llama.cpp/llama-server'
+2024-11-13 14:04:08,010 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:04:13,023 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:04:13,033 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:04:13,035 - __main__ - INFO - STT process initialized with PID: 8554
+2024-11-13 14:04:13,036 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:04:13,041 - __main__ - ERROR - Failed to initialize LLM process: [Errno 13] Permission denied: '/data/data/com.termux/files/home/llama.cpp/llama-server'
+2024-11-13 14:24:33,136 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:24:38,165 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:24:38,175 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:24:38,178 - __main__ - INFO - STT process initialized with PID: 10850
+2024-11-13 14:24:38,178 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:24:48,265 - __main__ - INFO - LLM process initialized with PID: 10859
+2024-11-13 14:24:48,293 - __main__ - INFO - Process 10850 terminated gracefully.
+2024-11-13 14:24:48,469 - __main__ - INFO - Process 10859 terminated gracefully.
+2024-11-13 14:31:24,457 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:31:29,481 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:31:29,494 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:31:29,497 - __main__ - INFO - STT process initialized with PID: 16751
+2024-11-13 14:31:29,497 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:31:39,506 - __main__ - INFO - LLM process initialized with PID: 16760
+2024-11-13 14:31:39,535 - __main__ - INFO - Process 16751 terminated gracefully.
+2024-11-13 14:31:39,699 - __main__ - INFO - Process 16760 terminated gracefully.
+2024-11-13 14:35:13,569 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:35:18,593 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:35:18,604 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:35:18,606 - __main__ - INFO - STT process initialized with PID: 17760
+2024-11-13 14:35:18,606 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:35:28,622 - __main__ - INFO - LLM process initialized with PID: 17772
+2024-11-13 14:35:33,724 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:35:33,741 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 35
+2024-11-13 14:35:33,757 - __main__ - INFO - Process 17760 terminated gracefully.
+2024-11-13 14:35:33,972 - __main__ - INFO - Process 17772 terminated gracefully.
+2024-11-13 14:40:59,905 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:41:04,929 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:41:04,943 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:41:04,945 - __main__ - INFO - STT process initialized with PID: 22547
+2024-11-13 14:41:04,945 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:41:14,958 - __main__ - INFO - LLM process initialized with PID: 22563
+2024-11-13 14:41:17,573 - __main__ - INFO - Process 22547 terminated gracefully.
+2024-11-13 14:41:17,739 - __main__ - INFO - Process 22563 terminated gracefully.
+2024-11-13 14:42:04,177 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:42:09,203 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:42:09,211 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:42:09,213 - __main__ - INFO - STT process initialized with PID: 22741
+2024-11-13 14:42:09,213 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:42:19,223 - __main__ - INFO - LLM process initialized with PID: 22750
+2024-11-13 14:42:21,680 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:42:25,983 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:42:25,985 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:42:25,985 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:42:25,988 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:42:25,996 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:42:25,996 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:42:27,441 - __main__ - INFO - TTFS: 5.778118371963501
+2024-11-13 14:42:35,438 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:44:10,904 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:44:15,222 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:44:15,231 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:44:15,236 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:44:15,242 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:44:15,254 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:44:15,261 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:44:16,192 - __main__ - INFO - TTFS: 5.319575071334839
+2024-11-13 14:44:28,328 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:51:00,038 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:51:05,062 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:51:05,072 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:51:05,075 - __main__ - INFO - STT process initialized with PID: 24744
+2024-11-13 14:51:05,076 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 4 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:51:15,083 - __main__ - INFO - LLM process initialized with PID: 24753
+2024-11-13 14:51:16,671 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:51:20,765 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:51:20,766 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:51:20,767 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:51:20,772 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:51:20,781 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:51:20,782 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:51:21,858 - __main__ - INFO - TTFS: 5.194319725036621
+2024-11-13 14:51:43,463 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:52:02,088 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:52:05,715 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:52:05,717 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:52:05,717 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:52:05,720 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:52:05,724 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:52:05,725 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:52:06,926 - __main__ - INFO - TTFS: 4.842855453491211
+2024-11-13 14:52:29,029 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:55:20,037 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:55:25,059 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:55:25,070 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:55:25,073 - __main__ - INFO - STT process initialized with PID: 27355
+2024-11-13 14:55:25,073 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 4 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:55:35,084 - __main__ - INFO - LLM process initialized with PID: 27364
+2024-11-13 14:55:47,163 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:55:51,171 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:55:51,172 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:55:51,173 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:55:51,176 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:55:51,181 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:55:51,182 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:55:52,203 - __main__ - INFO - TTFS: 5.0501768589019775
+2024-11-13 14:56:24,591 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:56:58,785 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:57:02,408 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:57:02,409 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:57:02,411 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:57:02,415 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:57:02,419 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:57:02,421 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:57:03,427 - __main__ - INFO - TTFS: 4.6472227573394775
+2024-11-13 14:57:26,751 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:58:19,877 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 14:58:24,905 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:58:24,912 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 14:58:24,914 - __main__ - INFO - STT process initialized with PID: 28320
+2024-11-13 14:58:24,914 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 14:58:34,917 - __main__ - INFO - LLM process initialized with PID: 28329
+2024-11-13 14:58:44,587 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:58:48,728 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:58:48,733 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:58:48,736 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:58:48,740 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:58:48,745 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:58:48,746 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:58:51,879 - __main__ - INFO - TTFS: 7.300859451293945
+2024-11-13 14:59:04,608 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 14:59:15,314 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 14:59:18,960 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 14:59:18,961 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 14:59:18,962 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 14:59:18,967 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 14:59:18,971 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 14:59:18,972 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 14:59:19,879 - __main__ - INFO - TTFS: 4.58224630355835
+2024-11-13 14:59:33,417 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:00:03,367 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:00:07,011 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:00:07,013 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:00:07,014 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:00:07,018 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:00:07,025 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:00:07,026 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:00:07,923 - __main__ - INFO - TTFS: 4.569139003753662
+2024-11-13 15:00:20,743 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:14:50,561 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 15:14:55,586 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:14:55,601 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 15:14:55,603 - __main__ - INFO - STT process initialized with PID: 7594
+2024-11-13 15:14:55,603 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 20 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 15:15:05,613 - __main__ - INFO - LLM process initialized with PID: 7610
+2024-11-13 15:15:11,880 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:15:16,129 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:15:16,133 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:15:16,135 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:15:16,142 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:15:16,168 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:15:16,169 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:15:19,826 - __main__ - INFO - TTFS: 7.970261096954346
+2024-11-13 15:15:33,055 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:15:41,269 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:15:46,513 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:15:46,514 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:15:46,515 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:15:46,529 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:15:46,545 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:15:46,546 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:15:47,750 - __main__ - INFO - TTFS: 6.495905160903931
+2024-11-13 15:16:07,495 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:19:53,329 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 15:19:58,353 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:19:58,369 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 15:19:58,372 - __main__ - INFO - STT process initialized with PID: 17073
+2024-11-13 15:19:58,372 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 15:20:08,382 - __main__ - INFO - LLM process initialized with PID: 17084
+2024-11-13 15:20:13,987 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:20:18,139 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:20:18,143 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:20:18,144 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:20:18,153 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:20:18,357 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:20:18,358 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:20:19,192 - __main__ - INFO - TTFS: 5.216456651687622
+2024-11-13 15:20:46,262 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:20:51,005 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:20:54,997 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:20:55,003 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:20:55,005 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:20:55,010 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:20:55,020 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:20:55,021 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:20:55,906 - __main__ - INFO - TTFS: 4.929144382476807
+2024-11-13 15:21:16,969 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:28:38,763 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 15:28:43,784 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:28:43,797 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 15:28:43,800 - __main__ - INFO - STT process initialized with PID: 19544
+2024-11-13 15:28:43,801 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 15:28:53,809 - __main__ - INFO - LLM process initialized with PID: 19555
+2024-11-13 15:28:53,837 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:28:57,890 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:28:57,891 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:28:57,892 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:28:57,895 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:28:57,899 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:28:57,899 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:28:58,812 - __main__ - INFO - TTFS: 4.995412588119507
+2024-11-13 15:29:14,216 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:29:14,228 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:29:17,867 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:29:17,869 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:29:17,869 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:29:17,874 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:29:17,879 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:29:17,880 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:29:18,787 - __main__ - INFO - TTFS: 4.568600654602051
+2024-11-13 15:29:30,814 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:29:30,827 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:29:34,473 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:29:34,475 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:29:34,476 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:29:34,480 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:29:34,486 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:29:34,487 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:29:35,392 - __main__ - INFO - TTFS: 4.5740437507629395
+2024-11-13 15:29:46,359 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:29:50,053 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:29:54,103 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 46
+2024-11-13 15:29:54,105 - __main__ - DEBUG - STT response: STTResponse(text=' What is the value of 34 plus 53?\n')
+2024-11-13 15:29:54,106 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:29:54,108 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:29:54,112 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:29:54,114 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:29:55,016 - __main__ - INFO - TTFS: 4.9750142097473145
+2024-11-13 15:30:03,720 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:30:51,976 - __main__ - INFO - Process 19544 terminated gracefully.
+2024-11-13 15:30:52,344 - __main__ - INFO - Process 19555 terminated gracefully.
+2024-11-13 15:48:38,415 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 15:48:43,438 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:48:43,446 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 15:48:43,448 - __main__ - INFO - STT process initialized with PID: 31465
+2024-11-13 15:48:43,449 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 15:48:53,456 - __main__ - INFO - LLM process initialized with PID: 31481
+2024-11-13 15:48:56,556 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:49:00,762 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 42
+2024-11-13 15:49:00,766 - __main__ - DEBUG - STT response: STTResponse(text=' Give me 5 examples of colors\n')
+2024-11-13 15:49:00,767 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:49:00,773 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:49:00,783 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:49:00,784 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:49:01,575 - __main__ - INFO - TTFS: 5.037225723266602
+2024-11-13 15:49:27,828 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 15:57:30,444 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 15:57:35,466 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:57:35,477 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 15:57:35,479 - __main__ - INFO - STT process initialized with PID: 4584
+2024-11-13 15:57:35,480 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 15:57:45,518 - __main__ - INFO - LLM process initialized with PID: 4597
+2024-11-13 15:57:52,592 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 15:57:57,229 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 42
+2024-11-13 15:57:57,235 - __main__ - DEBUG - STT response: STTResponse(text=' Give me 5 examples of colors\n')
+2024-11-13 15:57:57,238 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 15:57:57,241 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 15:57:57,250 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 15:57:57,251 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 15:57:58,101 - __main__ - INFO - TTFS: 5.519280195236206
+2024-11-13 15:58:20,259 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 16:01:23,932 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 16:56:38,215 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 16:56:43,240 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 16:56:43,249 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 16:56:43,252 - __main__ - INFO - STT process initialized with PID: 994
+2024-11-13 16:56:43,253 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 16:56:53,261 - __main__ - INFO - LLM process initialized with PID: 1033
+2024-11-13 16:57:38,944 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 16:57:42,571 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 42
+2024-11-13 16:57:42,576 - __main__ - DEBUG - STT response: STTResponse(text=' Give me 5 examples of colors\n')
+2024-11-13 16:57:42,577 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 16:57:42,578 - __main__ - DEBUG - TTS Thread Started
+2024-11-13 16:57:42,583 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 16:57:42,596 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 16:57:42,597 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 16:57:42,599 - __main__ - DEBUG - PIPER PID, 2253
+2024-11-13 16:57:44,621 - __main__ - INFO - TTFS: 5.689475059509277
+2024-11-13 16:57:45,908 - __main__ - DEBUG - Sending ----> Here are 5 examples of colors
+2024-11-13 16:57:46,146 - __main__ - DEBUG - Sending ----> :
+
+2024-11-13 16:57:46,592 - __main__ - DEBUG - Sending ----> 1.
+2024-11-13 16:57:47,474 - __main__ - DEBUG - Sending ---->  Red
+2.
+2024-11-13 16:57:48,316 - __main__ - DEBUG - Sending ---->  Blue
+3.
+2024-11-13 16:57:49,144 - __main__ - DEBUG - Sending ---->  Yellow
+4.
+2024-11-13 16:57:49,958 - __main__ - DEBUG - Sending ---->  Green
+5.
+2024-11-13 16:57:51,727 - __main__ - DEBUG - Sending ---->  Purple
+
+I'm happy to give you more
+2024-11-13 16:57:52,121 - __main__ - DEBUG - Sending ---->  examples if
+2024-11-13 16:57:52,923 - __main__ - DEBUG - Sending ---->  you'd like!
+2024-11-13 16:57:53,110 - __main__ - DEBUG - Received Stop Event At TTS
+2024-11-13 16:57:53,112 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 17:01:28,067 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 17:01:31,681 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 42
+2024-11-13 17:01:31,682 - __main__ - DEBUG - STT response: STTResponse(text=' Give me 5 examples of colors\n')
+2024-11-13 17:01:31,683 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 17:01:31,684 - __main__ - DEBUG - TTS Thread Started
+2024-11-13 17:01:31,686 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 17:01:31,696 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 17:01:31,697 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 17:01:31,697 - __main__ - DEBUG - PIPER PID, 3006
+2024-11-13 17:01:32,538 - __main__ - INFO - TTFS: 4.486324310302734
+2024-11-13 17:01:33,762 - __main__ - DEBUG - Sending ----> Here are 5 examples of colors
+2024-11-13 17:01:36,713 - __main__ - DEBUG - Sending ----> 
+Blue
+Red
+Yellow
+Green
+Purple
+
+Let me know if
+2024-11-13 17:01:38,077 - __main__ - DEBUG - Sending ---->  you'd like me to provide more
+2024-11-13 17:01:38,479 - __main__ - DEBUG - Sending ---->  examples.
+2024-11-13 17:01:39,057 - __main__ - DEBUG - Sending ---->  
+
+Note:
+2024-11-13 17:01:39,651 - __main__ - DEBUG - Sending ---->  I can also
+2024-11-13 17:01:40,259 - __main__ - DEBUG - Sending ---->  give you information
+2024-11-13 17:01:40,831 - __main__ - DEBUG - Sending ---->  about the colors
+2024-11-13 17:01:41,431 - __main__ - DEBUG - Sending ---->  you choose if
+2024-11-13 17:01:42,220 - __main__ - DEBUG - Sending ---->  you'd like.
+2024-11-13 17:01:42,404 - __main__ - DEBUG - Sending ---->  For
+2024-11-13 17:01:42,823 - __main__ - DEBUG - Sending ---->  example,
+2024-11-13 17:01:43,008 - __main__ - DEBUG - Sending ---->  if
+2024-11-13 17:01:43,811 - __main__ - DEBUG - Sending ---->  you choose blue,
+2024-11-13 17:01:44,610 - __main__ - DEBUG - Sending ---->  I could provide information
+2024-11-13 17:01:44,997 - __main__ - DEBUG - Sending ---->  about different
+2024-11-13 17:01:45,815 - __main__ - DEBUG - Sending ---->  shades of blue,
+2024-11-13 17:01:46,595 - __main__ - DEBUG - Sending ---->  blue pigments,
+2024-11-13 17:01:47,402 - __main__ - DEBUG - Sending ---->  blue dyes,
+2024-11-13 17:01:47,814 - __main__ - DEBUG - Sending ---->  blue colors
+2024-11-13 17:01:48,412 - __main__ - DEBUG - Sending ---->  in nature,
+2024-11-13 17:01:48,814 - __main__ - DEBUG - Sending ---->  etc.
+2024-11-13 17:01:49,622 - __main__ - DEBUG - Sending ---->  Let me know if
+2024-11-13 17:01:50,432 - __main__ - DEBUG - Sending ---->  you'd like that
+2024-11-13 17:01:50,651 - __main__ - DEBUG - Sending ---->  information
+2024-11-13 17:01:50,839 - __main__ - DEBUG - Sending ----> .
+2024-11-13 17:01:51,851 - __main__ - DEBUG - Sending ---->  
+
+Let me know if
+2024-11-13 17:01:53,069 - __main__ - DEBUG - Sending ---->  you have any other questions or
+2024-11-13 17:01:53,271 - __main__ - DEBUG - Sending ---->  if
+2024-11-13 17:01:55,298 - __main__ - DEBUG - Sending ---->  there's anything else I can help you with.
+2024-11-13 17:01:56,543 - __main__ - DEBUG - Sending ---->  
+
+Here are 5 more
+2024-11-13 17:01:57,146 - __main__ - DEBUG - Sending ---->  examples of colors
+2024-11-13 17:01:57,949 - __main__ - DEBUG - Received Stop Event At TTS
+2024-11-13 17:01:57,949 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 17:11:29,744 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-13 17:11:34,758 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 17:11:34,765 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-13 17:11:34,767 - __main__ - INFO - STT process initialized with PID: 9692
+2024-11-13 17:11:34,767 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Llama-3.2-3B-Instruct-Q4_0_4_4.gguf
+2024-11-13 17:11:44,778 - __main__ - INFO - LLM process initialized with PID: 9728
+2024-11-13 17:11:47,775 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 17:11:52,281 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 42
+2024-11-13 17:11:52,283 - __main__ - DEBUG - STT response: STTResponse(text=' Give me 5 examples of colors\n')
+2024-11-13 17:11:52,284 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 17:11:52,285 - __main__ - DEBUG - TTS Thread Started
+2024-11-13 17:11:52,287 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 17:11:52,351 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 17:11:52,353 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 17:11:52,393 - __main__ - DEBUG - PIPER PID, 9901
+2024-11-13 17:11:54,178 - __main__ - INFO - TTFS: 6.445502042770386
+2024-11-13 17:11:54,559 - __main__ - DEBUG - Sending ----> 1.
+2024-11-13 17:11:55,508 - __main__ - DEBUG - Sending ---->  Red
+2.
+2024-11-13 17:11:56,447 - __main__ - DEBUG - Sending ---->  Blue
+3.
+2024-11-13 17:11:57,295 - __main__ - DEBUG - Sending ---->  Green
+4.
+2024-11-13 17:11:58,214 - __main__ - DEBUG - Sending ---->  Yellow
+5.
+2024-11-13 17:12:00,611 - __main__ - DEBUG - Sending ---->  Purple
+
+Here are 5 examples of colors
+2024-11-13 17:12:00,814 - __main__ - DEBUG - Sending ----> :
+
+
+2024-11-13 17:12:01,343 - __main__ - DEBUG - Sending ----> 1.
+2024-11-13 17:12:02,340 - __main__ - DEBUG - Sending ---->  Red
+2.
+2024-11-13 17:12:03,231 - __main__ - DEBUG - Sending ---->  Blue
+3.
+2024-11-13 17:12:04,225 - __main__ - DEBUG - Sending ---->  Green
+4.
+2024-11-13 17:12:05,043 - __main__ - DEBUG - Sending ---->  Yellow
+5.
+2024-11-13 17:12:07,347 - __main__ - DEBUG - Sending ---->  Purple
+
+The text is written in **bold text**,
+2024-11-13 17:12:07,776 - __main__ - DEBUG - Sending ---->  indicating that
+2024-11-13 17:12:08,601 - __main__ - DEBUG - Sending ---->  the examples of colors
+2024-11-13 17:12:09,874 - __main__ - DEBUG - Sending ---->  are in **bold**.
+2024-11-13 17:12:11,158 - __main__ - DEBUG - Sending ---->  Here is the revised text:
+
+
+
+2024-11-13 17:12:13,072 - __main__ - DEBUG - Sending ----> <font face="Courier New">
+1.
+2024-11-13 17:12:14,966 - __main__ - DEBUG - Sending ---->  <b>Red</b>
+2.
+2024-11-13 17:12:16,841 - __main__ - DEBUG - Sending ---->  <b>Blue</b>
+3.
+2024-11-13 17:12:18,755 - __main__ - DEBUG - Sending ---->  <b>Green</b>
+4.
+2024-11-13 17:12:20,643 - __main__ - DEBUG - Sending ---->  <b>Yellow</b>
+5.
+2024-11-13 17:12:22,311 - __main__ - DEBUG - Decode Thread Stopped.
+2024-11-13 17:12:22,311 - __main__ - DEBUG - Received Stop Event At TTS
+2024-11-13 17:12:30,693 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-13 17:12:34,397 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /inference HTTP/11" 200 42
+2024-11-13 17:12:34,398 - __main__ - DEBUG - STT response: STTResponse(text=' Give me 5 examples of colors\n')
+2024-11-13 17:12:34,399 - __main__ - DEBUG - Decode Thread Started.
+2024-11-13 17:12:34,400 - __main__ - DEBUG - TTS Thread Started
+2024-11-13 17:12:34,402 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8081
+2024-11-13 17:12:34,407 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8081 "POST /completion HTTP/11" 200 None
+2024-11-13 17:12:34,408 - __main__ - DEBUG - LLM response: <Response [200]>
+2024-11-13 17:12:34,412 - __main__ - DEBUG - PIPER PID, 10312
+2024-11-13 17:12:35,239 - __main__ - INFO - TTFS: 4.553896427154541
+2024-11-13 17:12:36,490 - __main__ - DEBUG - Sending ----> Here are 5 examples of colors
+2024-11-13 17:12:36,692 - __main__ - DEBUG - Sending ----> :
+
+2024-11-13 17:12:37,099 - __main__ - DEBUG - Sending ----> 1.
+2024-11-13 17:12:37,950 - __main__ - DEBUG - Sending ---->  Blue
+2.
+2024-11-13 17:12:38,772 - __main__ - DEBUG - Sending ---->  Green
+3.
+2024-11-13 17:12:39,621 - __main__ - DEBUG - Sending ---->  Yellow
+4.
+2024-11-13 17:12:40,442 - __main__ - DEBUG - Sending ---->  Red
+5.
+2024-11-13 17:12:41,690 - __main__ - DEBUG - Sending ---->  Purple
+
+Let me know if
+2024-11-26 16:50:29,837 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-26 16:50:34,876 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-26 16:50:34,893 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-26 16:50:34,896 - __main__ - INFO - STT process initialized with PID: 9648
+2024-11-26 16:50:34,896 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Qwen2.5-3.1B-Q4_0_4_4.gguf
+2024-11-26 16:50:44,908 - __main__ - INFO - LLM process initialized with PID: 9660
+2024-11-26 16:50:47,295 - __main__ - INFO - Process 9648 terminated gracefully.
+2024-11-26 16:50:47,706 - __main__ - INFO - Process 9660 terminated gracefully.
+2024-11-26 17:04:19,477 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-26 17:04:24,525 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-26 17:04:24,545 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-26 17:04:24,549 - __main__ - INFO - STT process initialized with PID: 11898
+2024-11-26 17:04:24,550 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Qwen2.5-3.1B-Q4_0_4_4.gguf
+2024-11-26 17:04:34,563 - __main__ - INFO - LLM process initialized with PID: 11983
+2024-11-26 17:25:45,391 - __main__ - INFO - Process 11898 terminated gracefully.
+2024-11-26 17:25:45,598 - __main__ - INFO - Process 11983 terminated gracefully.
+2024-11-26 17:25:49,938 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/whisper.cpp/server -t 4 -p 1 -ng -fa --port 8080 -m /data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin
+2024-11-26 17:25:54,983 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:8080
+2024-11-26 17:25:54,998 - urllib3.connectionpool - DEBUG - http://127.0.0.1:8080 "POST /load HTTP/11" 200 43
+2024-11-26 17:25:55,001 - __main__ - INFO - STT process initialized with PID: 13518
+2024-11-26 17:25:55,002 - __main__ - INFO - Initializing environment with command: /data/data/com.termux/files/home/llama.cpp/llama-server -t 2 -b 8192 -ub 512 -n 128 -c 2048 -fa --port 8081 -m /data/data/com.termux/files/home/models/Qwen2.5-3.1B-Q4_0_4_4.gguf
+2024-11-26 17:26:05,016 - __main__ - INFO - LLM process initialized with PID: 13573
+2024-11-26 17:28:59,360 - __main__ - INFO - Process 13518 terminated gracefully.
+2024-11-26 17:28:59,468 - __main__ - INFO - Process 13573 terminated gracefully.

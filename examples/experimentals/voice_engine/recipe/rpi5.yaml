@@ -5,10 +5,10 @@ llm:
   batch_size: 8192
   flash_attn: true
   gpu: false
-  model: 'llama.cpp/local_models/llama38B-Model-8.0B-Q4_0_4_4.gguff' # find the model here - https://huggingface.co/AbhrantaNYUN/meta-llama3-8B-Q4_0_4_4/tree/main
+  model: 'llama38B-Model-8.0B-Q4_0_4_4.gguff' # find the model here - https://huggingface.co/AbhrantaNYUN/meta-llama3-8B-Q4_0_4_4/tree/main
   n_predict: 128
   n_procs: 1
-  n_threads: 4
+  n_threads: 2
   port: 8081
   stream: true
   ubatch_size: 512
@@ -17,8 +17,12 @@ stt:
   _warmup: 5
   flash_attn: true
   gpu: false
-  model: 'whisper.cpp/models/ggml-tiny-q4_0.en.bin'
+  model: 'whisper.cpp/models/local_models/ggml-tiny-q4_0.en.bin'
   n_procs: 1
   n_threads: 4
   port: 8080
+tts:
+  voice: true
+  model: "en_US-lessac-medium"
+  length_scale: 1.5
 log_path: environment.log

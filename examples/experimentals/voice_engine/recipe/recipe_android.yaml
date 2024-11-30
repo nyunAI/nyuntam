@@ -1,0 +1,27 @@
+llm:
+  _executable: '/data/data/com.termux/files/home/llama.cpp/llama-server'
+  _warmup: 10
+  batch_size: 8192
+  flash_attn: true
+  gpu: false
+  model: '/data/data/com.termux/files/home/models/Qwen2.5-3.1B-Q4_0_4_4.gguf'
+  n_predict: 128
+  n_procs: 1
+  n_threads: 2
+  port: 8081
+  stream: true
+  ubatch_size: 512
+stt:
+  _executable: '/data/data/com.termux/files/home/whisper.cpp/server'
+  _warmup: 5
+  flash_attn: true
+  gpu: false
+  model: '/data/data/com.termux/files/home/models/ggml-tiny-q4_0.bin'
+  n_procs: 1
+  n_threads: 4
+  port: 8080
+tts:
+  voice: true
+  model: "en_US-lessac-medium"
+  length_scale: 1.5
+log_path: environment.log
