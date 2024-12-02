@@ -35,7 +35,13 @@ For more details, visit the [NyunZero CLI Documentation](https://github.com/nyun
     ```bash
     docker pull <docker_image_name_or_id>
     ```
-
+    Docker images for different submodules : 
+    <ul>
+    <li>TEXT GENERATION - nyunadmin/nyunzero_text_generation</li>
+    <li>TEXT GENERATION WITH TENSORRT-LLM  - nyunadmin/nyunzero_text_generation_tensorrt_llm</li>
+    <li>VISION - nyunadmin/nyunzero_kompress_vision </li>
+    <li>ADAPT - nyunadmin/nyunzero_adapt</li>
+    </ul>
 3. **Run the Docker Container**:
 
     ```bash
@@ -96,37 +102,42 @@ For running each submodule independently via Docker, use the following commands:
     docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_adapt:v0.1 bash
     ```
 ### Using Setup.py
-    ```bash
-    python install . [extra_deps]
-    ```
 The extra dependencies allow installation of individual components of Nyuntam, the extra_dependies according to submodules is listed below
 - **Nyuntam Text Generation**
-  - "flap": For running Flap. You should also add "adapt" extra dependencies with "flap".
-  - "aqlm": For running aqlm.
-  - "autoawq": For running autoawq quantization.
-  - "qserve": For running qserve.
+  - **flap**: For running Flap. Flap's fine-tuning requires uses Adapt in the backend, so you should also add "adapt" and it's related dependencies along with "flap".
+  -  **aqlm**: For running aqlm.
+  -  **autoawq**: For running autoawq quantization.
+  - **qserve**: For running qserve.
 - **Nyuntam Vision**
-  - "classification_stack": For complete installation of classification stack which includes Quantization, Distillation and Pruning.
-  - "classification" For Installing Model and Dataset Support without compression support. 
-  - "nncf": For NNCF QAT and PTQ. (CPU)
-  - "tensorrt": For GPU Quantization of Classification Models.
-  - "openvino": For Openvino CPU PTQ.
-  - "torchprune": For Pruning Classification Models.
+  - **classification_stack**: For complete installation of classification stack which includes Quantization, Distillation and Pruning.
+  - **classification** For Installing Model and Dataset Support without compression support. 
+  - **nncf**: For NNCF QAT and PTQ. (CPU)
+  - **tensorrt**: For using TensorRT to quantize models.
+  - **openvino**: For Openvino CPU PTQ.
+  - **torchprune**: For Pruning Classification Models using torchprune.
 - **Nyuntam Adapt**
-  - "adapt": For complete installation of Adapt.
-  - "accelerate": For supporting multi-gpu training with Adapt.
-- **Exceptions**
-      OpenMM libraries and TensorRTLLM installations require manual installation.
+  - **adapt**: For complete installation of Adapt.
+  - **accelerate**: For supporting multi-gpu training with Adapt.
+- **NOTE**
+  - **OpenMM libraries** and **TensorRTLLM** require manual installation.
   - **OpenMM Libraries**
-          Nyuntam utilies OpenMM Libraires for importing and compressing object detection models. We utilize MMDetection and MMYolo for object detection models, MMSegmentation for           Segmentaion models, MMRazor and MMDeploy for compression and deployment of models. To install the proper libraries follow the code snippet below
+          Nyuntam utilies OpenMM Libraires for importing and compressing object detection models. We utilize MMDetection and MMYolo for object detection models, MMSegmentation for           Segmentation models, MMRazor and MMDeploy for compression and deployment of models. To install the proper libraries follow the code snippet below
 
-          ```bash
-          pip install openmim
-          mim install mmdet mmseg mmyolo mmrazor mmdeploy
-          ```
+    ```bash
+      pip install openmim
+      mim install mmdet mmseg mmyolo mmrazor mmdeploy
+    ```
   
   - **TensorRTLLM**
       To install TensorRTLLM follow the official instructions found here: [Linux](https://nvidia.github.io/TensorRT-LLM/installation/linux.html) and [Windows](https://nvidia.github.io/TensorRT-LLM/installation/windows.html).
+
+  To download the extra dependencies, use the following : 
+
+  ```bash
+    python install . [extra_deps]
+  ```
+
+
 ## Usage
 
 ### Setting Up YAML Configuration Files
@@ -136,6 +147,7 @@ Each submodule in Nyuntam requires a YAML file that defines all the necessary hy
 - **Nyuntam Text Generation**:
   - Refer to [dataset imports](https://nyunai.github.io/nyuntam-docs/dataset/) and [models imports](https://nyunai.github.io/nyuntam-docs/model/) for configuration details.
   - Scripts and example YAML files are available [here](https://github.com/nyunAI/nyuntam-text-generation/tree/main/scripts).
+  - Details on setting up model & dataset paths, compression algorithms, and other parameters can be found in the [documentation here](https://nyunai.github.io/nyuntam-docs/nyuntam_text_generation/).
 
 - **Nyuntam Vision**:
   - Example YAML configurations are can be found [here](https://github.com/nyunAI/nyuntam-vision/tree/main/scripts). 
@@ -143,7 +155,7 @@ Each submodule in Nyuntam requires a YAML file that defines all the necessary hy
 
 - **Nyuntam Adapt**:
   - For fine-tuning and transfer learning tasks, example YAML configurations are available [here](https://github.com/nyunAI/nyuntam_adapt/tree/main/scripts)
-  - Detailed explanations on model & dataset path setups, params, and algorithms are available in the [documentation](https://nyunai.github.io/nyuntam-docs/adapt/).
+  - Detailed explanations on model & dataset path setups, params, and algorithms are available in the [documentation](https://nyunai.github.io/nyuntam-docs/nyuntam_adapt/).
 
 ### Running Experiments
 
