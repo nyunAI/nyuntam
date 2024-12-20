@@ -1,6 +1,7 @@
 [submodule "text_generation"]
 	path = text_generation
-	url = https://github.com/nyunAI/nyuntam-text-generation.git
+	url = https://github.com/ishanpandeynyunai/nyuntam-text-generation.git
+	branch = docker_text_generation
 [submodule "vision"]
 	path = vision
 	url = https://github.com/nyunAI/nyuntam-vision.git
