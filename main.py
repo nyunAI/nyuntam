@@ -6,19 +6,20 @@ from nyuntam.factory import Factory
 from nyuntam.utils.logger import set_logger
 from nyuntam.commands import get_args
 
-set_logger()
-
 import logging
 
+set_logger()
 
 def main():
+    # Retrieve command-line arguments
     args = get_args()
+
     try:
+        # Create Factory from YAML or JSON
         if args.yaml_path:
             factory = Factory.create_from_yaml(args.yaml_path)
         else:
             factory = Factory.create_from_json(args.json_path)
-
     except Exception as e:
         logging.exception(f"Failed to create Factory instance: {e}")
         raise
@@ -35,7 +36,6 @@ def main():
     except Exception as e:
         logging.exception(f"Failed to run job: {e}")
         raise
-
 
 if __name__ == "__main__":
     main()

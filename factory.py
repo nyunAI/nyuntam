@@ -108,13 +108,13 @@ class Factory:
         task = Task.create(job_service, args.get(FactoryArgumentKeys.TASK, None))
         cls = get_factories(task, job_service)
         for caller in cls:
-            try:
-                instance = caller(args)
-                return instance
-            except Exception as e:
-                logger.exception(f"[{caller.__name__}] {e}")
-                continue
-        raise Exception("Factory instance could not be created.")
+            # try:
+            instance = caller(args)
+            return instance
+        #     except Exception as e:
+        #         logger.exception(f"[{caller.__name__}] {e}")
+        #         continue
+        # raise Exception("Factory instance could not be created.")
 
     @classmethod
     def create_from_json(
