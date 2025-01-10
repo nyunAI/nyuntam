@@ -3,9 +3,7 @@ from abc import ABC, ABCMeta, abstractmethod
 __all__ = [
     "Algorithm",
     "CompressionAlgorithm",
-    "VisionAlgorithm",
-    "TextGenerationAlgorithm",
-    "AdaptAlgorithm",
+    "TextGenerationAlgorithm"
 ]
 
 
@@ -29,21 +27,5 @@ class CompressionAlgorithm(Algorithm, metaclass=ABCMeta):
         """Compress the model."""
 
 
-class VisionAlgorithm(CompressionAlgorithm):
-    """Base class for all of Nyun's Vision compression algorithms."""
-
-
 class TextGenerationAlgorithm(CompressionAlgorithm):
     """Base class for all of Nyun's Text Generation compression algorithms."""
-
-
-class AdaptionAlgorithm(Algorithm):
-    """Base class for all of Nyun's Adapt compression algorithms."""
-
-    def run(self):
-        """The run method for the algorithm."""
-        self.adapt_model()
-
-    @abstractmethod
-    def adapt_model(self):
-        """Adapt the model."""

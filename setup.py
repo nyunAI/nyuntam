@@ -43,26 +43,11 @@ install_requires = [
     "wheel"
 ]
 
-visionbase = [
-    "opencv-python-headless==4.8.1.78",
-    "Pillow==9.4.0",
-    "scipy",
-    "scikit-image==0.22.0",
-]
+
 onnx = ["onnx==1.15.0", "onnxruntime==1.16.3"]
-nncf = onnx + ["openvino==2023.2.0", "openvino-telemetry==2023.2.1", "nncf==2.7.0"]
 tensorrt = onnx + ["tensorrt==8.5.2", "pycuda"]
 
-torchprune = ["torch-pruning==1.3.2"]
-
-classification_datasets = ["trailmet==0.0.1rc3", "torchvision"]
-classification_modelloading = [
-    "huggingface==0.0.1",
-    "timm==0.9.2",
-    "trailmet==0.0.1rc3",
-]
-classification = classification_datasets + classification_modelloading
-quantization = nncf + onnx + tensorrt
+quantization = onnx + tensorrt
 
 
 adaptbase = [
@@ -102,23 +87,19 @@ setup(
     dependency_links=dependency_links,
     extras_require={
         # vision
-        "classification": process(visionbase + classification),
-        "nncf": process(visionbase + nncf),
-        "tensorrt": process(visionbase + tensorrt),
-        "onnx": process(visionbase + onnx),
-        "torchprune": process(visionbase + torchprune),
-        "classificationstack": process(visionbase + classification + quantization),
+        "tensorrt": process(tensorrt),
+        "onnx": process(onnx),
+        "classificationstack": process(quantization),
         # # adapt
         "adapt": adaptbase,
         "accelerate": accelerate,
         # # text-generation
         "text-gen": process(
-            textgen_base + flap + tensorrtllm + qserve + autoawq + aqlm
+            textgen_base + flap + tensorrt + qserve + autoawq + aqlm
         ),
         "flap": process(textgen_base + flap),
         "aqlm": process(textgen_base + aqlm),
         "autoawq": process(textgen_base + autoawq),
         "qserve": process(textgen_base + qserve),
-        "adapt":process(adaptbase)
     }
 )
