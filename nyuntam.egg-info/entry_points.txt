@@ -1,2 +1,0 @@
-[console_scripts]
-nyun = cli.cli:app
