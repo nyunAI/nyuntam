@@ -1,0 +1,20 @@
+packaging
+accelerate
+datasets
+flash_attn
+sentencepiece
+torch
+transformers
+# wandb ## optional
+
+## nyuntam_adapt
+# -r nyuntam_adapt/requirements.txt
+bitsandbytes
+evaluate
+ninja
+nltk
+optimum
+peft
+Pillow
+timm
+trl

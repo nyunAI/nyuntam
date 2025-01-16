@@ -1,3 +1,27 @@
+Metadata-Version: 2.1
+Name: nyuntam
+Version: 0.1.0
+Summary: Nyuntam CLI and Core Library
+Home-page: https://github.com/nyunAI/nyuntam.git
+Author: NyunAI
+Author-email: contact@nyunai.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8, <=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer
+Requires-Dist: docker
+Requires-Dist: python-dotenv
+Requires-Dist: PyYAML
+Requires-Dist: StrEnum
+
 # Nyun CLI
 
 Nyun CLI is a command-line interface tool that provides a convenient way to initialize and manage your Nyun workspace, as well as run various scripts and algorithms supported by Nyun.

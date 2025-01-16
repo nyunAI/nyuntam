@@ -1,0 +1,5 @@
+typer
+docker
+python-dotenv
+PyYAML
+StrEnum

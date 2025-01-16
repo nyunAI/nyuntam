@@ -1,3 +1,0 @@
-[submodule "text_generation"]
-	path = text_generation
-	url = https://github.com/nyunAI/nyuntam-text-generation.git

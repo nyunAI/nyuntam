@@ -1,0 +1,33 @@
+# test yaml 1: the paths are what is within the docker - /custom_data/<path>
+
+ALGORITHM: AutoAWQ
+ALGO_TYPE: "llm"
+MODEL: "meta-llama/Meta-Llama-3-8B"
+CUSTOM_MODEL_PATH: ""
+MODEL_PATH: "/user_data/jobs/1"
+CACHE_PATH: "/user_data/.cache"
+JOB_ID: 1
+JOB_PATH: "/user_data/jobs/1"
+JOB_SERVICE: "Kompress"
+TASK: "llm"
+OUTPUT_PATH: "/user_data/models"
+USER_FOLDER: "/user_data"
+LOGGING_PATH: "/user_data/logs/1"
+
+DATA_URL: ""
+DATASET_NAME: "wikitext"
+DATASET_SUBNAME: "wikitext-2-raw-v1"
+DATA_PATH: ""
+TEXT_COLUMN: "text" # if multiple, separate by comma e.g. 'instruction,input,output'
+SPLIT: "train"
+FORMAT_STRING: # format string for multicolumned datasets
+
+CUDA_ID: "0,1,2,3"
+
+llm:
+  AutoAWQ:
+    # Quantization parameters
+    ZERO_POINT: True                    # zero point quantization
+    W_BIT: 4                            # weight bitwidth
+    Q_GROUP_SIZE: 128                   # group size for quantization
+    VERSION: "GEMM"                     # quantization version (GEMM or GEMV)
