@@ -6,9 +6,7 @@ from typing import Dict, AnyStr, Union, Tuple, Optional
 from cli.core.constants import WorkspaceExtension, WorkspaceMessage, WorkspaceSpec
 from cli.core.extension import (
     BaseExtension,
-    KompressVisionExtension,
-    KompressTextGenerationExtension,
-    AdaptExtension,
+    NyuntamTextGenerationExtension,
 )
 from cli.core.logger import init_logger
 
@@ -228,12 +226,8 @@ class Workspace:
         ext_obj = BaseExtension()
         for key, value in extensions.items():
             if value == "True":
-                if WorkspaceExtension(key) == WorkspaceExtension.VISION:
-                    KompressVisionExtension()
-                elif WorkspaceExtension(key) == WorkspaceExtension.TEXT_GENERATION:
-                    KompressTextGenerationExtension()
-                elif WorkspaceExtension(key) == WorkspaceExtension.ADAPT:
-                    AdaptExtension()
+                if WorkspaceExtension(key) == WorkspaceExtension.TEXT_GENERATION:
+                    NyuntamTextGenerationExtension()
         ext_obj.install()
         return ext_obj
 
@@ -257,7 +251,7 @@ class Workspace:
 
 def get_workspace_and_custom_data_paths(
     workspace: Union[Path, AnyStr, None], custom_data: Union[Path, AnyStr, None]
-) -> Tuple[Path, Path]:
+) -> Tuple[Path, Path, Optional[list]]:
     """
     Get the workspace and custom data paths from the provided input or workspace spec.
 

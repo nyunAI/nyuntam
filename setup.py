@@ -25,7 +25,7 @@ setup(
     url="https://github.com/nyunAI/nyuntam.git",
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.8, <=3.11",
+    python_requires=">=3.8, <3.13",
     install_requires=install_requires,
     entry_points={
         "console_scripts": [
@@ -42,5 +42,6 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
 )

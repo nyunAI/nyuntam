@@ -38,9 +38,7 @@ class WorkspaceMessage(StrEnum):
 # Workspace extension
 class WorkspaceExtension(StrEnum):
 
-    VISION = "kompress-vision"
-    TEXT_GENERATION = "kompress-text-generation"
-    ADAPT = "adapt"
+    TEXT_GENERATION = "nyuntam-text-generation"
 
     ALL = "all"
     NONE = "none"
@@ -60,9 +58,7 @@ class WorkspaceExtension(StrEnum):
             return retlist
         elif extension == WorkspaceExtension.ALL:
             return [
-                WorkspaceExtension.VISION,
                 WorkspaceExtension.TEXT_GENERATION,
-                WorkspaceExtension.ADAPT,
             ]
         else:
             return [extension]
@@ -73,17 +69,13 @@ class WorkspaceExtension(StrEnum):
     ) -> Dict["WorkspaceExtension", str]:
         if any(WorkspaceExtension(ext) == WorkspaceExtension.ALL for ext in extension):
             return {
-                WorkspaceExtension.VISION: "True",
                 WorkspaceExtension.TEXT_GENERATION: "True",
-                WorkspaceExtension.ADAPT: "True",
             }
         elif any(
             WorkspaceExtension(ext) == WorkspaceExtension.NONE for ext in extension
         ):
             return {
-                WorkspaceExtension.VISION: "False",
                 WorkspaceExtension.TEXT_GENERATION: "False",
-                WorkspaceExtension.ADAPT: "False",
             }
         else:
             # iteratively carry ahead the dictionary and update the extension
@@ -148,35 +140,18 @@ class WorkspaceSpec(StrEnum):
 
 
 class DockerRepository(StrEnum):
-    # kompress
-    NYUN_KOMPRESS = "nyunadmin/nyun_kompress"
-
-    # adapt
-    NYUN_ADAPT = "nyunadmin/adapt"
-
-    # public
-    NYUN_ZERO_VISION = "nyunadmin/nyunzero_kompress_vision"
-    NYUN_ZERO_TEXT_GENERATION = "nyunadmin/nyuntam-text-generation"
-    NYUN_ZERO_ADAPT = "nyunadmin/nyunzero_adapt"
-    NYUN_ZERO_TEXT_GENERATION_TENSORRT_LLM = (
-        "nyunadmin/nyunzero_text_generation_tensorrt_llm"
+    NYUNTAM_TEXT_GENERATION = "nyunadmin/nyuntam-text-generation"
+    NYUNTAM_TEXT_GENERATION_TENSORRT_LLM = (
+        "nyunadmin/nyuntam-text-generation-tensorrt-llm"
     )
 
 
 class DockerTag(StrEnum):
-    # kompress vision
-    MAIN_KOMPRESS = "main_kompress"
-    KOMPRESS_MMRAZOR = "mmrazor"
-
-    # kompress text generation
+    # text generation
     FLAP = "flap"
-    MLCLLM = "mlcllm"
-    TENSORRTLLM = "tensorrtllm"
-    EXLLAMA = "exllama"
+    TENSORRTLLM =    "tensorrtllm"
     AWQ = "autoawq"
 
-    # adapt
-    ADAPT = "february"
     LATEST = "latest"
     # public v0.1
     V0_1 = "v0.1"
@@ -184,47 +159,18 @@ class DockerTag(StrEnum):
 
 
 class Platform(StrEnum):
-    # Platforms: {'timm', 'huggingface', 'mmpose', 'mmdet', None, 'torchvision', 'mmyolo', 'mmseg'}
     HUGGINGFACE = "huggingface"
     TIMM = "timm"
-    MMPOSE = "mmpose"
-    MMDET = "mmdet"
-    TORCHVISION = "torchvision"
-    MMYOLO = "mmyolo"
-    MMSEG = "mmseg"
+
 
 
 class Algorithm(StrEnum):
-
-    # kompress vision
-    KDTRANSFER = "KDTransfer"
-    MMRAZORDISTILL = "MMRazorDistill"
-    ONNXQUANT = "ONNXQuant"
-    FXQUANT = "FXQuant"
-    MMRAZOR = "MMRazor"
-    NNCFQAT = "NNCFQAT"
-    TORCHPRUNE = "TorchPrune"
-    NNCF = "NNCF"
-
-    # kompress text-generation
+    # text-generation
     AUTOAWQ = "AutoAWQ"
-    MLCLLM = "MLCLLM"
-    EXLLAMA = "ExLlama"
     TENSORRTLLM = "TensorRTLLM"
     FLAPPRUNER = "FlapPruner"
     TENSORRT = "TensorRT"
 
-    # adapt
-    # NOTE: The following values are essentially "TASK" values in adapt
-    # TODO: Use a constant set of keys post standardization of hyperparams across Nyun
-
-    DETECTION = "object_detection"
-    IMAGE_CLASSIFICATION = "image_classification"
-    POSE_DETECTION = "pose_estimation"
-    QUESTION_ANSWERING = "question_answering"
-    SEGMENTATION = "image_segmentation"
-    SEQ2SEQ_TASKS = "Seq2Seq_tasks"
-    TEXT_CLASSIFICATION = "text_classification"
     TEXT_GENERATION = "text_generation"
 
 
@@ -248,13 +194,8 @@ class DockerPath(Enum):
     def get_customdata_path_in_docker(
         workspace_extension: Union[WorkspaceExtension, str]
     ) -> Path:
-        if WorkspaceExtension(workspace_extension) in {
-            WorkspaceExtension.TEXT_GENERATION,
-            WorkspaceExtension.VISION,
-        }:
-            return DockerPath.WORKSPACE.value / "Kompress" / "custom_data"
-        elif WorkspaceExtension(workspace_extension) in {WorkspaceExtension.ADAPT}:
-            return DockerPath.WORKSPACE.value / "Adapt" / "custom_data"
+        if WorkspaceExtension(workspace_extension) == WorkspaceExtension.TEXT_GENERATION:
+            return DockerPath.WORKSPACE.value / "custom_data"
 
     @staticmethod
     def get_script_path_in_docker(script_path: Path):

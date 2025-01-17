@@ -364,8 +364,6 @@ def get_service_from_metadata_extension_type(extension_type: WorkspaceExtension)
     """Get the service name from the metadata extension type."""
     if extension_type in {
         WorkspaceExtension.TEXT_GENERATION,
-        WorkspaceExtension.VISION,
-        WorkspaceExtension.ADAPT,
     }:
         return str(NYUNTAM)
 
