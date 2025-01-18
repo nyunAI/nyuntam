@@ -1,6 +1,6 @@
 # Nyuntam 🚀
 
-**Nyuntam** is NyunAI's cutting-edge toolkit for optimizing and accelerating large language models (LLMs) through state-of-the-art compression techniques. 🛠️ With an integrated CLI, managing your workflows and experimenting with various compression and adaptation methods has never been easier! ✨
+**Nyuntam** is NyunAI's cutting-edge toolkit for optimizing and accelerating large language models (LLMs) through state-of-the-art compression techniques. 🛠️ With an integrated CLI, managing your workflows and experimenting with various compression methods has never been easier! ✨
 
 ## Quick Start ⚡
 
@@ -29,8 +29,7 @@ Ready to dive in? Here's a minimal example to get you up and running with Nyunta
 -   **State-of-the-Art Compression**: 🗜️ Includes advanced techniques like pruning, quantization, and distillation to ensure model efficiency without sacrificing performance.
 -   **Multi-Platform Support**: 💻 Run experiments seamlessly on various platforms using Docker or virtual environments.
 -   **Integrated CLI**: ⌨️ Built-in command-line interface (`nyun`) for easy workspace management and experiment execution.
--   **Extensible Architecture**: 🧩 Supports various tasks including text generation and model adaptation.
-
+-   **Extensible Architecture**: 🧩 Supports various SOTA compression algorithms, using a single cli command.
 ## Installation 🛠️
 
 ### Prerequisites
