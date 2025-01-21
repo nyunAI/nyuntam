@@ -1,3 +1,9 @@
+*env
+*egg-info
 __pycache__
-
-user_data/
+build
+dist
+.github
+.nyunservice
+tests/
+nyuntam/text_generation/

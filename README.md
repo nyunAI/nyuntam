@@ -1,164 +1,196 @@
-# Nyuntam
+# Nyuntam 🚀
 
-**Nyuntam** is NyunAI's advanced suite designed to optimize, adapt, and accelerate a wide array of deep learning models across various domains. The repository is structured into several submodules, each targeting specific tasks:
+**Nyuntam** is NyunAI's cutting-edge toolkit for optimizing and accelerating large language models (LLMs) through state-of-the-art compression techniques. 🛠️ With an integrated CLI, managing your workflows and experimenting with various compression methods has never been easier! ✨
 
-- **Nyuntam Text Generation**: Focuses on compressing large language models for text generation tasks.
-- **Nyuntam Vision**: Tailored for compressing and optimizing vision models.
-- **Nyuntam Adapt**: A robust module for fine-tuning and transfer learning across both vision and language models leveraging SoTA PEFT, full-finetuning and GPU parallelism.
+## Quick Start ⚡
 
-## Key Features
+Ready to dive in? Here's a minimal example to get you up and running with Nyuntam:
 
-- **State-of-the-Art Compression**: Includes techniques such as pruning, quantization, distillation, and more, to ensure model efficiency without compromising performance.
-- **Adaptation**: Fine-tune and adapt vision and language models to specific tasks and datasets using methods like (Q)LoRA, (Q)SSF, and others.
-- **Multi-Platform Support**: Run experiments seamlessly on various platforms using Docker or virtual environments.
-- **CLI Integration**: Simplify your workflow with the [NyunZero CLI](https://github.com/nyunAI/nyunzero-cli?tab=readme-ov-file#nyun-cli).
+1.  **Initialize Your Workspace:** 🗂️
+    First, set up your workspace using the `nyun init` command. This creates the necessary directories and configurations for your experiments.
 
-## Installation
+    ```bash
+    nyun init ~/my-workspace ~/my-data --extensions text-gen
+    ```
 
-### NyunZero CLI (Recommended)
+    This command initializes a workspace at `~/my-workspace`, sets the custom data path to `~/my-data`, and installs the `text-gen` extension.
 
-The fastest way to install and use Nyuntam is through the NyunZero CLI. It streamlines the setup process and gets you running experiments in no time.
+2.  **Run an Example Experiment:** 🏃‍♀️
+    Now, run an example experiment using a pre-configured YAML file. For instance, to try out FLAP pruning:
 
-For more details, visit the [NyunZero CLI Documentation](https://github.com/nyunAI/nyunzero-cli).
+    ```bash
+    nyun run examples/text-generation/flap_pruning/config.yaml
+    ```
 
-### Git + Docker
+    This command executes the main script using the configurations specified in the provided YAML file.
 
-1. **Clone the Repository**:
+## Key Features ✨
 
+-   **State-of-the-Art Compression**: 🗜️ Includes advanced techniques like pruning, quantization, and distillation to ensure model efficiency without sacrificing performance.
+-   **Multi-Platform Support**: 💻 Run experiments seamlessly on various platforms using Docker or virtual environments.
+-   **Integrated CLI**: ⌨️ Built-in command-line interface (`nyun`) for easy workspace management and experiment execution.
+-   **Extensible Architecture**: 🧩 Supports various SOTA compression algorithms, using a single cli command.
+## Installation 🛠️
+
+### Prerequisites
+
+-   Python 3.8 or later
+-   For GPU support: NVIDIA Container Toolkit (when using Docker) 🐳
+
+### Quick Install
+
+Install Nyuntam using pip:
+
+```bash
+pip install nyuntam
+```
+
+### Alternative Installation Methods
+
+#### Git + Docker 🐳
+
+1.  **Install NVIDIA Container Toolkit** (Linux):
+    ```bash
+    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    
+    curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+      sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+      sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+    
+    sudo apt-get update
+    sudo apt-get install -y nvidia-container-toolkit
+    sudo nvidia-ctk runtime configure --runtime=docker
+    sudo systemctl restart docker
+    ```
+
+2.  **Clone and Setup**:
+    ```bash
+    git clone --recursive https://github.com/nyunAI/nyuntam.git
+    cd nyuntam
+    docker pull nyunadmin/nyuntam-text-generation:latest
+    docker run -it -d --gpus all -v $(pwd):/workspace --name nyuntam-dev --network=host nyunadmin/nyuntam-text-generation:latest bash
+    ```
+
+#### Git + Virtual Environment 🧪
+
+1.  **Clone Repository**:
     ```bash
     git clone --recursive https://github.com/nyunAI/nyuntam.git
     cd nyuntam
     ```
 
-2. **Pull the Required Docker Image**:
-
-    ```bash
-    docker pull <docker_image_name_or_id>
-    ```
-
-3. **Run the Docker Container**:
-
-    ```bash
-    docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host <docker_image_name_or_id> bash
-    ```
-
-<span style="color:red">**NOTE:**</span> Ensure that `nvidia-container-toolkit` is installed before running the Docker container. For access to gated repositories within the containers, add Hugging Face tokens.
-
-### Git + Virtual Environment
-
-1. **Clone the Repository**:
-
-    ```bash
-    git clone --recursive https://github.com/nyunAI/nyuntam.git
-    cd nyuntam
-    ```
-
-2. **Create and Activate a Virtual Environment**:
-
+2.  **Setup Environment**:
     ```bash
     python3 -m venv {ENVIRONMENT_NAME}
     source {ENVIRONMENT_NAME}/bin/activate
+    pip install -r requirements.txt
     ```
 
-3. **Install the Required Packages**:
+#### Using Setup.py
 
+## Development 🧑‍💻
+
+This section is for developers who want to dive deep and modify the Nyuntam codebase.
+
+### Setting Up Your Development Environment
+
+1.  **Clone the Repository**:
     ```bash
-    # for text_generation
-    pip install -r text_generation/requirements.txt 
-    # for vision
-    pip install -r vision/requirements.txt 
-    # for nyuntam_adapt
-    pip install -r nyuntam_adapt/requirements.txt 
+    git clone --recursive https://github.com/nyunAI/nyuntam.git
+    cd nyuntam
     ```
 
-### Docker for Submodules
+2.  **Choose Your Environment**:
+    -   **Docker**: Follow the instructions in the "Git + Docker" section above.
+    -   **Virtual Environment**: Follow the instructions in the "Git + Virtual Environment" section above.
 
-For running each submodule independently via Docker, use the following commands:
+### Working with the Code
 
-- **Nyuntam Text Generation**:
+-   **Core Scripts**: The core scripts like `main.py`, `algorithm.py`, and `commands.py` are located in the root directory of the `nyuntam` folder.
+-   **Examples**: Practical examples for different tasks are located in the `nyuntam/examples` directory. Each subdirectory includes a `README.md` for guidance and `config.yaml` files for configurations.
+-   **Modules**: The main modules for text generation are located in the `nyuntam/text_generation` directory.
+-   **Utilities**: Utility scripts and functions are located in the `nyuntam/utils` directory.
 
+### Running Experiments (Development)
+
+1.  **Prepare Configuration**:
+    Create a YAML file defining your experiment parameters. Example configurations are available in the `nyuntam/examples` directory.
+
+    -   Refer to [dataset imports](https://nyunai.github.io/nyuntam-docs/dataset/) and [models imports](https://nyunai.github.io/nyuntam-docs/model/) for configuration details.
+    -   Scripts and example YAML files are available [here](https://github.com/nyunAI/nyuntam-text-generation/tree/main/scripts).
+
+2.  **Execute**:
     ```bash
-    docker pull nyunadmin/nyunzero_text_generation:v0.1
-    docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_text_generation:v0.1 bash
+    python nyuntam/main.py --yaml_path path/to/recipe.yaml
     ```
 
-- **Nyuntam Vision**:
+## Usage ⚙️
 
-    ```bash
-    docker pull nyunadmin/nyunzero_kompress_vision:v0.1 
-    docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_kompress_vision:v0.1 bash
-    ```
+### Initializing a Workspace
 
-- **Nyuntam Adapt**:
+Before running experiments, initialize your workspace:
 
-    ```bash
-    docker pull nyunadmin/nyunzero_adapt:v0.1
-    docker run -it -d --gpus all -v $(pwd):/workspace --name {CONTAINER_NAME} --network=host nyunadmin/nyunzero_adapt:v0.1 bash
-    ```
-### Using Setup.py
-    ```bash
-    python install . [extra_deps]
-    ```
-The extra dependencies allow installation of individual components of Nyuntam, the extra_dependies according to submodules is listed below
-- **Nyuntam Text Generation**
-  - "flap": For running Flap. You should also add "adapt" extra dependencies with "flap".
-  - "aqlm": For running aqlm.
-  - "autoawq": For running autoawq quantization.
-  - "qserve": For running qserve.
-- **Nyuntam Vision**
-  - "classification_stack": For complete installation of classification stack which includes Quantization, Distillation and Pruning.
-  - "classification" For Installing Model and Dataset Support without compression support. 
-  - "nncf": For NNCF QAT and PTQ. (CPU)
-  - "tensorrt": For GPU Quantization of Classification Models.
-  - "openvino": For Openvino CPU PTQ.
-  - "torchprune": For Pruning Classification Models.
-- **Nyuntam Adapt**
-  - "adapt": For complete installation of Adapt.
-  - "accelerate": For supporting multi-gpu training with Adapt.
-- **Exceptions**
-      OpenMM libraries and TensorRTLLM installations require manual installation.
-  - **OpenMM Libraries**
-          Nyuntam utilies OpenMM Libraires for importing and compressing object detection models. We utilize MMDetection and MMYolo for object detection models, MMSegmentation for           Segmentaion models, MMRazor and MMDeploy for compression and deployment of models. To install the proper libraries follow the code snippet below
+```bash
+nyun init [WORKSPACE_PATH] [CUSTOM_DATA_PATH] [OPTIONS]
+```
 
-          ```bash
-          pip install openmim
-          mim install mmdet mmseg mmyolo mmrazor mmdeploy
-          ```
-  
-  - **TensorRTLLM**
-      To install TensorRTLLM follow the official instructions found here: [Linux](https://nvidia.github.io/TensorRT-LLM/installation/linux.html) and [Windows](https://nvidia.github.io/TensorRT-LLM/installation/windows.html).
-## Usage
+Options:
 
-### Setting Up YAML Configuration Files
+-   `--overwrite`, `-o`: Overwrite existing workspace
+-   `--extensions`, `-e`: Specify extensions to install:
+    -   `text-gen`: For text generation
+    -   `all`: Install all extensions
+    -   `none`: No extensions
 
-Each submodule in Nyuntam requires a YAML file that defines all the necessary hyperparameters and configurations for running experiments. Examples and templates for these YAML files can be found within each submodule.
+Example:
 
-- **Nyuntam Text Generation**:
-  - Refer to [dataset imports](https://nyunai.github.io/nyuntam-docs/dataset/) and [models imports](https://nyunai.github.io/nyuntam-docs/model/) for configuration details.
-  - Scripts and example YAML files are available [here](https://github.com/nyunAI/nyuntam-text-generation/tree/main/scripts).
-
-- **Nyuntam Vision**:
-  - Example YAML configurations are can be found [here](https://github.com/nyunAI/nyuntam-vision/tree/main/scripts). 
-  - Details on setting up model & dataset paths, compression algorithms, and other parameters can be found in the [documentation here](https://nyunai.github.io/nyuntam-docs/nyuntam_vision/).
-
-- **Nyuntam Adapt**:
-  - For fine-tuning and transfer learning tasks, example YAML configurations are available [here](https://github.com/nyunAI/nyuntam_adapt/tree/main/scripts)
-  - Detailed explanations on model & dataset path setups, params, and algorithms are available in the [documentation](https://nyunai.github.io/nyuntam-docs/adapt/).
+```bash
+nyun init ~/my-workspace ~/my-data --extensions text-gen
+```
 
 ### Running Experiments
 
-To run an experiment, use the following command from within the appropriate submodule directory:
+1.  **Prepare Configuration**:
+    Create a YAML file defining your experiment parameters. Example configurations are available in the `nyuntam/examples` directory.
+
+    -   Refer to [dataset imports](https://nyunai.github.io/nyuntam-docs/dataset/) and [models imports](https://nyunai.github.io/nyuntam-docs/model/) for configuration details.
+    -   Scripts and example YAML files are available [here](https://github.com/nyunAI/nyuntam-text-generation/tree/main/scripts).
+
+2.  **Execute**:
+    ```bash
+    nyun run path/to/recipe.yaml
+    ```
+
+    For chained execution:
+
+    ```bash
+    nyun run script1.yaml script2.yaml
+    ```
+
+## Examples 💡
+
+For detailed examples and use cases, check out our [examples directory](./nyuntam/examples/readme.md), which includes:
+
+### Text Generation
+
+-   [Maximising math performance for extreme compressions: 2-bit Llama3-8b (w2a16)](./nyuntam/examples/text-generation/aqlm_quantization/readme.md)
+-   [Efficient 4-bit Quantization (w4a16) of Llama3.1-8b](./nyuntam/examples/text-generation/awq_quantization/readme.md)
+-   [Llama3.1 70B: 0.5x the cost & size](./nyuntam/examples/text-generation/flap_pruning/readme.md)
+-   [Achieving Up to 2.5x TensorRTLLM Speedups](./nyuntam/examples/text-generation/lmquant_quantization/readme.md)
+-   [Accelerating a 4-bit Quantised Llama Model](./nyuntam/examples/text-generation/tensorrtllm_engine/readme.md)
+
+## Documentation 📚
+
+For complete documentation, visit [NyunAI Docs](https://nyunai.github.io/nyuntam-docs)
+
+## Version Information ℹ️
+
+Check your installed version:
 
 ```bash
-python main.py --yaml_path {path/to/recipe.yaml}
+nyun version
 ```
 
-This command will execute the main script using the configurations specified in the YAML file.
+---
 
-## Examples
-
-For detailed examples and use cases, refer to [examples](./examples/readme.md)
-
-## Documentation
-
-For complete details checkout [NyunAI Docs](https://nyunai.github.io/nyuntam-docs)
+<span style="color:red">**NOTE:**</span> For access to gated repositories within containers, ensure you have the necessary Hugging Face tokens configured. 🔑

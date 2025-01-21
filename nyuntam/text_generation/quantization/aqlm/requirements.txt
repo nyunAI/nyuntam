@@ -1,0 +1,3 @@
+-r AQLM/requirements.txt
+lm-eval==0.4.3
+peft==0.2.0

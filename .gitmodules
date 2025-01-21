@@ -1,9 +1,3 @@
-[submodule "text_generation"]
-	path = text_generation
+[submodule "nyuntam/text_generation"]
+	path = nyuntam/text_generation
 	url = https://github.com/nyunAI/nyuntam-text-generation.git
-[submodule "vision"]
-	path = vision
-	url = https://github.com/nyunAI/nyuntam-vision.git
-[submodule "nyuntam_adapt"]
-	path = nyuntam_adapt
-	url = https://github.com/nyunAI/nyuntam_adapt.git

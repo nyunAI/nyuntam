@@ -1,0 +1,13 @@
+[submodule "engines/tensorrt_llm/TensorRT-LLM"]
+	path = engines/tensorrt_llm/TensorRT-LLM
+	url = https://github.com/nyunAI/TensorRT-LLM.git
+[submodule "pruning/flap/FLAP"]
+	path = pruning/flap/FLAP
+	url = https://github.com/nyunAI/FLAP.git
+[submodule "engines/mit_han_lab_qserve/QServe"]
+	path = engines/mit_han_lab_qserve/QServe
+	url = https://github.com/nyunAI/qserve.git
+[submodule "quantization/aqlm/AQLM"]
+	path = quantization/aqlm/AQLM
+	url = https://github.com/nyunAI/AQLM.git
+	branch = pv-tuning

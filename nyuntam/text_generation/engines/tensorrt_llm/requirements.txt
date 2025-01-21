@@ -1,0 +1,4 @@
+# Note:
+# requirements fail with conda due to mpi4py installation issue; prefer usage via docker or build from ./TensorRT-LLM
+mpi4py              ## if fails to install, refer - https://github.com/mpi4py/mpi4py/issues/335
+TensorRT-LLM        ## if fails, install with `pip install --extra-index-url https://pypi.nvidia.com tensorrt-llm`

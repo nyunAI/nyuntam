@@ -1,0 +1,200 @@
+calib:
+  num_samples: 128
+  seq_length: 1024
+  min_seq_length: 0
+  max_seq_length: 0
+quant:
+  bias_correction: true
+  develop_dtype: torch.float32
+  enable_reorder: false
+  enable_rotation: true
+  enable_select_ipts: false
+  enable_select_opts: false
+  enable_select_wgts: false
+  enable_smooth: true
+  ipts:
+    calib_range:
+      degree: 2
+      element_batch_size: 64
+      element_size: 512
+      granularity: ChannelGroup
+      max_expand: 1.0
+      max_shrink: 0.2
+      num_grids: 80
+      objective: OutputsError
+      outputs_device: cuda
+      pre_reshape: true
+      ratio: 1.0
+      sample_batch_size: -1
+      sample_size: -1
+      skip_proj_1st: false
+      skip_proj_2nd: false
+      skip_proj_out: false
+      skip_proj_qkv: false
+      skip_router: false
+      strategy: GridSearch
+    compute_dtype: null
+    dtype: sint8
+    enable_calib_range: false
+    group_scale_dtypes:
+    - torch.float16
+    group_shapes:
+    - - 1
+      - -1
+    skip_embed: true
+    skip_head: true
+    skip_proj_1st: false
+    skip_proj_2nd: false
+    skip_proj_out: false
+    skip_proj_qkv: false
+    skip_router: true
+    static: false
+  opts:
+    calib_range:
+      allow_kernel_calib: false
+      degree: 2
+      element_batch_size: 64
+      element_size: 512
+      granularity: ChannelGroup
+      max_expand: 1.0
+      max_shrink: 0.2
+      num_grids: 80
+      objective: OutputsError
+      outputs_device: cuda
+      pre_reshape: true
+      ratio: 1.0
+      sample_batch_size: -1
+      sample_size: -1
+      skip_attn_k: false
+      skip_attn_q: false
+      skip_attn_v: false
+      strategy: GridSearch
+    compute_dtype: null
+    dtype: sint8
+    enable_calib_range: false
+    group_scale_dtypes:
+    - torch.float16
+    group_shapes:
+    - - 1
+      - -1
+    skip_attn_k: false
+    skip_attn_q: false
+    skip_attn_v: false
+    static: false
+  post_rotary: true
+  lm_head: false ## other details infered from wgts (bits, sym, dtype)
+  reorder:
+    allow_kernel_calib: false
+    channel_index: Transpose
+    channel_metric: InputsAbsMax
+    degree: 2
+    dynamic: false
+    element_batch_size: -1
+    element_size: -1
+    outputs_device: cpu
+    pre_reshape: true
+    sample_batch_size: -1
+    sample_size: -1
+    skip_proj_2nd: false
+    skip_proj_out: false
+    skip_residual: true
+    strategy: GridSearch
+  rotation:
+    random: false
+    transform_proj_2nd: false
+    transform_proj_out: false
+  smooth:
+    enable_xw: true
+    enable_yx: true
+    xw:
+      allow_kernel_calib: false
+      alpha: 0.05
+      beta: 0.95
+      degree: 2
+      element_batch_size: -1
+      element_size: -1
+      granularity: Layer
+      num_grids: 20
+      objective: OutputsError
+      outputs_device: cpu
+      pre_reshape: true
+      ranges:
+      - - AbsMax
+        - AbsMax
+      sample_batch_size: -1
+      sample_size: -1
+      skip_proj_1st: true
+      skip_proj_2nd: false
+      skip_proj_out: false
+      skip_proj_qkv: true
+      strategy: Manual
+    yx:
+      alpha: 0.5
+      beta: ' -2'
+      degree: 2
+      element_batch_size: -1
+      element_size: -1
+      granularity: Layer
+      num_grids: 20
+      objective: OutputsError
+      outputs_device: cpu
+      pre_reshape: true
+      ranges:
+      - - AbsMax
+        - AbsMax
+      sample_batch_size: -1
+      sample_size: -1
+      skip_attn_qk: false
+      strategy: GridSearch
+  wgts:
+    calib_kernel:
+      enable_gptq: true
+      gptq:
+        block_size: 128
+        damp_percentage: 0.01
+        hessian_block_size: 512
+        include_proj_1st: true
+        include_proj_2nd: true
+        include_proj_out: true
+        include_proj_qkv: true
+        num_inv_tries: 250
+    calib_range:
+      allow_kernel_calib: false
+      degree: 2
+      element_batch_size: 64
+      element_size: 512
+      granularity: Group
+      max_expand: 1.0
+      max_shrink: 0.2
+      num_grids: 80
+      objective: OutputsError
+      outputs_device: cuda
+      pre_reshape: true
+      ratio: 1.0
+      sample_batch_size: -1
+      sample_size: -1
+      skip_proj_1st: false
+      skip_proj_2nd: false
+      skip_proj_out: false
+      skip_proj_qkv: false
+      skip_router: false
+      strategy: GridSearch
+    compute_dtype: null
+    compute_group_level: -1
+    dtype: sint4
+    enable_calib_kernel: true
+    enable_calib_range: true
+    group_scale_dtypes:
+    - torch.float16
+    group_shapes:
+    - - 1
+      - -1
+    saturate_compute_dtype: false
+    skip_embed: true
+    skip_head: true
+    skip_proj_1st: false
+    skip_proj_2nd: false
+    skip_proj_out: false
+    skip_proj_qkv: false
+    skip_router: true
+    static: false

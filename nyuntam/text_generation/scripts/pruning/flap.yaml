@@ -1,0 +1,96 @@
+ALGORITHM: "FlapPruner"
+ALGO_TYPE: "llm"
+MODEL: "meta-llama/Meta-Llama-3-8B"
+CACHE_PATH: "user_data/.cache"
+JOB_ID: 1
+JOB_PATH: "user_data/jobs/1"
+JOB_SERVICE: "Kompress"
+LOGGING_PATH: "user_data/logs/1/"
+MODEL_PATH: ""
+TASK: "llm"
+OUTPUT_PATH: "user_data/models"
+USER_FOLDER: "user_data"
+PLATFORM: "huggingface"
+
+DATA_URL: ""
+DATASET_NAME: "wikitext"
+DATASET_SUBNAME: "wikitext-2-raw-v1"
+DATA_PATH: ""
+TEXT_COLUMN: "text" # if multiple, separate by comma e.g. 'instruction,input,output'
+SPLIT: "train"
+FORMAT_STRING: # format string for multicolumned datasets
+
+CUDA_ID: "0"
+
+llm:
+  FlapPruner:
+    dtype: "float16"
+    metrics: "WIFV"
+    nsamples: 1024
+    pruning_ratio: 0.5
+    remove_heads: -1
+    save_model: None
+    seed: 0
+    start_pruning_layer_idx: 22
+    structure: "AL-AM"
+
+    to_finetune: False
+
+    # fine tune params - Accepts all params as in Adapt
+
+    DO_TRAIN: True
+    DO_EVAL: False
+    NUM_WORKERS: 4
+    BATCH_SIZE: 4
+    EPOCHS: 0.001
+    STEPS: 1
+    OPTIMIZER: "paged_adamw_32bit"
+    LR: 0.0002
+    SCHEDULER_TYPE: "constant"
+    WEIGHT_DECAY: 0.001
+    BETA1: 0.9
+    BETA2: 0.999
+    ADAM_EPS: "1e-8"
+    INTERVAL: "steps"
+    INTERVAL_STEPS: 50
+    NO_OF_CHECKPOINTS: 5
+    FP16: False
+    RESUME_FROM_CHECKPOINT: False
+    GRADIENT_ACCUMULATION_STEPS: 1
+    GRADIENT_CHECKPOINTING: True
+    GROUP_BY_LENGTH: True
+
+    LAST_LAYER_TUNING: True
+    FULL_FINE_TUNING: False
+
+    PEFT_METHOD: "LoRA"
+
+    r: 8
+    alpha: 16
+    dropout: 0.1
+    peft_type_lora: "LoRA"
+    target_modules: null
+
+    fan_in_fan_out: False
+    init_lora_weights: True
+    peft_type_ssf: "SSF"
+
+    # bnb config
+    load_in_4bit: False
+    bnb_4bit_compute_dtype: "float16"
+    bnb_4bit_quant_type: "nf4"
+    bnb_4bit_use_double_quant: False
+
+    load_in_8bit: False
+    llm_int8_threshold: 6.0
+    llm_int8_skip_modules: null
+    llm_int8_enable_fp32_cpu_offload: False
+    llm_int8_has_fp16_weight: False
+
+    packing: True
+    dataset_text_field: "text"
+    max_seq_length: 512
+    flash_attention2: False
+    blocksize: 128
+
+    SAVE_METHOD: "full_torch_model"

@@ -1,0 +1,48 @@
+ALGORITHM: LMQuant
+ALGO_TYPE: "llm"
+MODEL: "meta-llama/Meta-Llama-3-8B"
+CUSTOM_MODEL_PATH: ""
+MODEL_PATH: "user_data/jobs/1"
+CACHE_PATH: "user_data/.cache"
+JOB_ID: 1
+JOB_PATH: "user_data/jobs/1"
+JOB_SERVICE: "Kompress"
+TASK: "llm"
+OUTPUT_PATH: "user_data/models"
+USER_FOLDER: "user_data"
+LOGGING_PATH: "user_data/logs/1"
+
+DATA_URL: ""
+DATASET_NAME: "wikitext"
+DATASET_SUBNAME: "wikitext-2-raw-v1"
+DATA_PATH: ""
+TEXT_COLUMN: "text" # if multiple, separate by comma e.g. 'instruction,input,output'
+SPLIT: "train"
+FORMAT_STRING: # format string for multicolumned datasets
+
+CUDA_ID: "0"
+
+llm:
+  LMQuant:
+    # Quantization parameters
+    save_model: True
+    keep_scales: True
+    loads_with_qserve: False
+    dtype: float32
+
+    quant_type: "g128" ## one of ['llm', 'gchn', 'g128', 'sq_dynamic', 'sq_static', 'awq', 'gptq']
+    quant.develop_dtype: torch.float32
+    quant.smooth.xw.alpha: 0.3
+    quant.smooth.xw.beta: 0.7
+    quant.smooth.yx.strategy: GridSearch
+    quant.smooth.yx.beta: " -2"
+
+    quant.wgts.calib_range.outputs_device: cpu
+    quant.reorder.outputs_device: cpu
+    quant.smooth.xw.outputs_device: cpu
+    quant.smooth.yx.outputs_device: cpu
+
+    # Nested dictionary for quantization parameters
+    eval.tasks: ["wikitext"]
+    eval.max_seq_length: 4096
+    eval.evaluator: "gptq"

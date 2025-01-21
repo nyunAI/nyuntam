@@ -1,124 +1,47 @@
 from setuptools import setup, find_packages
-import re
-from collections import Counter
+from cli.version import __version__ as version
+import os
+import sys
 
+readme_file = os.path.join(os.path.dirname(__file__), "README.md")
 
-def process(requirements: list) -> list:
-    def get_package_names(unique_reqirements):
-        unique_reqirements_stripped = [
-            requirement.strip() for requirement in unique_reqirements
-        ]
-        unique_requirements_names_only = [
-            re.split("(==|>=|<=)", requirement)[0]
-            for requirement in unique_reqirements_stripped
-        ]
-        return unique_requirements_names_only
+with open(readme_file, "r") as fh:
+    long_description = fh.read()
 
-    def check_clashes(unique_requirements):
-        unique_packages = get_package_names(unique_requirements)
-        if len(set(unique_packages)) != len(unique_requirements):
-            counter = Counter(unique_packages)
-            repeating_packages = [
-                package for package, count in counter.items() if count > 1
-            ]
-            raise ValueError(
-                f"The following packages have multiple version dependencies {repeating_packages}"
-            )
+# required lib
+install_requires = ["typer", "docker", "python-dotenv", "PyYAML"]
 
-    unique_requirements = list(set(requirements))
-    check_clashes(unique_requirements)
-    return unique_requirements
+if sys.version_info.major >= 3 and sys.version_info.minor < 11:
+    install_requires.extend(["StrEnum"])
 
-
-install_requires = [
-    "strenum",
-    "PyYAML",
-    "torch==2.3.0",
-    "gdown",
-    "pathtools",
-    "tqdm",
-    "requests==2.28.2",
-    "psutil",
-    "wandb",
-    "wheel"
-]
-
-visionbase = [
-    "opencv-python-headless==4.8.1.78",
-    "Pillow==9.4.0",
-    "scipy",
-    "scikit-image==0.22.0",
-]
-onnx = ["onnx==1.15.0", "onnxruntime==1.16.3"]
-nncf = onnx + ["openvino==2023.2.0", "openvino-telemetry==2023.2.1", "nncf==2.7.0"]
-tensorrt = onnx + ["tensorrt==8.5.2", "pycuda"]
-
-torchprune = ["torch-pruning==1.3.2"]
-
-classification_datasets = ["trailmet==0.0.1rc3", "torchvision"]
-classification_modelloading = [
-    "huggingface==0.0.1",
-    "timm==0.9.2",
-    "trailmet==0.0.1rc3",
-]
-classification = classification_datasets + classification_modelloading
-quantization = nncf + onnx + tensorrt
-
-
-adaptbase = [
-    "peft==0.11.1",
-    "bitsandbytes==0.43.1",
-    "sentence-transformers==2.2.2",
-    "sentencepiece==0.2.0",
-    "transformers==4.40.1",
-    "triton==2.3.0",
-    "trl==0.8.6",
-]
-accelerate = ["accelerate==0.29.3"]
-
-textgen_base = ["transformers==4.40.1", "datasets==2.19.0", "sentencepiece==0.2.0"]
-autoawq = ["autoawq", "autoawq_kernels"]
-
-aqlm = accelerate + [
-    "safetensors==0.4.3",
-]
-
-flap = [
-    "packaging",
-    "flash_attn",
-] + adaptbase
-
-qserve = ["Qserve"]
-
-
-dependency_links = ["https://download.pytorch.org/whl/cu121", "https://pypi.nvidia.com"]
 setup(
     name="nyuntam",
-    version="0.0.1",
-    description="Nyuntam Setup",
-    long_description="Nyuntam blah",
+    version=version,
+    author="NyunAI",
+    author_email="contact@nyunai.com",
+    description="Nyuntam CLI and Core Library",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/nyunAI/nyuntam.git",
     packages=find_packages(),
+    include_package_data=True,
+    python_requires=">=3.8, <3.13",
     install_requires=install_requires,
-    dependency_links=dependency_links,
-    extras_require={
-        # vision
-        "classification": process(visionbase + classification),
-        "nncf": process(visionbase + nncf),
-        "tensorrt": process(visionbase + tensorrt),
-        "onnx": process(visionbase + onnx),
-        "torchprune": process(visionbase + torchprune),
-        "classificationstack": process(visionbase + classification + quantization),
-        # # adapt
-        "adapt": adaptbase,
-        "accelerate": accelerate,
-        # # text-generation
-        "text-gen": process(
-            textgen_base + flap + tensorrtllm + qserve + autoawq + aqlm
-        ),
-        "flap": process(textgen_base + flap),
-        "aqlm": process(textgen_base + aqlm),
-        "autoawq": process(textgen_base + autoawq),
-        "qserve": process(textgen_base + qserve),
-        "adapt":process(adaptbase)
-    }
+    entry_points={
+        "console_scripts": [
+            "nyun=cli.cli:app",
+        ],
+    },
+    extras_require={},
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+    ],
 )
