@@ -1,6 +1,6 @@
 import typer
 from pathlib import Path
-from cli.version import __version__
+from version import __version__
 from cli.docs import NYUN_TRADEMARK
 from cli.core.workspace import (
     Workspace,

@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nyuntam"
+version = "0.1.0"
+description = "Nyuntam CLI and Core Library"
+readme = "README.md"
+authors = [
+    {name = "NyunAI", email = "contact@nyunai.com"}
+]
+license = {file = "LICENSE"}
+requires-python = ">=3.8, <3.13"
+keywords = ["nyuntam", "llm", "text-generation", "compression"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "typer",
+    "docker",
+    "python-dotenv", 
+    "PyYAML",
+    "strenum; python_version < '3.11'"
+]
+
+[project.urls]
+Homepage = "https://github.com/nyunAI/nyuntam"
+Repository = "https://github.com/nyunAI/nyuntam.git"
+Documentation = "https://github.com/nyunAI/nyuntam/blob/main/README.md"
+
+[project.optional-dependencies]
+text-gen = [
+    "torch==2.3.0",
+    "transformers==4.40.1",
+    "datasets==2.19.0",
+    "sentencepiece==0.2.0",
+    "autoawq",
+    "autoawq_kernels"
+]
+tensorrt = [
+    "onnx==1.15.0",
+    "onnxruntime==1.16.3",
+    "tensorrt==8.5.2",
+    "pycuda"
+]
+
+[project.scripts]
+nyun = "cli.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["cli", "nyuntam"]
